@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: broadcast-derby
+    volumes:
+      - ./web/:/usr/src/web
+    ports:
+      - 9870:9870
+    tty: true
