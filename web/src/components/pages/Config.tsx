@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 
 // mui
 import Button from '@mui/material/Button'
@@ -9,7 +10,9 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Grid from '@mui/material/Grid'
 import Switch from '@mui/material/Switch'
 
+// utils
 import { Racehorse } from '../../interface'
+import { RACEHORSE_MAX_COUNT } from '../../const'
 
 // molecules
 import StatusSlider from '../molecules/StatusSlider'
@@ -21,6 +24,7 @@ import RacehorseConfig from '../organisms/RacehorseConfig'
  * 設定画面
  */
 const ConfigPage: React.FC = () => {
+  const dispatch = useDispatch()
   /**
    * 出走馬追加時テンプレート
    */
@@ -35,37 +39,53 @@ const ConfigPage: React.FC = () => {
     popular: 1,
   }
   /**
-   * 出走馬最大値
-   */
-  const RACEHORSE_MAX_COUNT = 11
-  /**
    * 配信者用設定を表示するかどうか
    */
   const [isShowPrivateContent, setShowPrivateContent] = useState(false)
   /**
-   * 全応援補正率
+   * 全応援補正率を適用させるかどうか
    */
-  const [allSupport, setAllSupport] = useState<number | number[]>(1)
+  const [canExecuteAllSupport, setExecuteAllSupport] = useState(false)
   /**
-   * 全調子補正率
-   */
-  const [allCondition, setAllCondition] = useState<number | number[]>(1)
+  * 全応援補正率
+  */
+  const [allSupport, setAllSupport] = useState<number | number[]>(0)
   /**
-   * 全順位補正率
+   * 全調子補正率を適用させるかどうか
    */
-  const [allRanking, setAllRanking] = useState<number | number[]>(1)
+  const [canExecuteAllCondition, setExecuteAllCondition] = useState(false)
   /**
-   * 全距離補正率
-   */
-  const [allDistance, setAllDistance] = useState<number | number[]>(1)
+  * 全調子補正率
+  */
+  const [allCondition, setAllCondition] = useState<number | number[]>(0)
   /**
-   * 全人気補正率
+   * 全順位補正率を適用させるかどうか
    */
-  const [allPopular, setAllPopular] = useState<number | number[]>(1)
+  const [canExecuteAllRanking, setExecuteAllRanking] = useState(false)
+  /**
+  * 全順位補正率
+  */
+  const [allRanking, setAllRanking] = useState<number | number[]>(0)
+  /**
+   * 全距離補正率を適用させるかどうか
+   */
+  const [canExecuteAllDistance, setExecuteAllDistance] = useState(false)
+  /**
+  * 全距離補正率
+  */
+  const [allDistance, setAllDistance] = useState<number | number[]>(0)
+  /**
+   * 全人気補正率を適用させるかどうか
+   */
+  const [canExecuteAllPopular, setExecuteAllPopular] = useState(false)
+  /**
+  * 全人気補正率
+  */
+  const [allPopular, setAllPopular] = useState<number | number[]>(0)
   /**
    * 出走馬一覧
    */
-  const [racehorses, setRacehorses] = useState<Racehorse[]>([])
+  const racehorses = useSelector((state: any) => state.racehorsesReducer.racehorses)
   /**
    * 配信者用設定を表示するかどうかのスイッチ変更時イベント
    */
@@ -76,84 +96,109 @@ const ConfigPage: React.FC = () => {
    * 応援補正率変更時
    */
   useEffect(() => {
-    racehorses.forEach(rh => rh.support = allSupport)
-    setRacehorses(racehorses.concat())
-  }, [allSupport,])
+    // 初回のみ実行しない
+    if (!canExecuteAllSupport) {
+      setExecuteAllSupport(true)
+      return
+    }
+    racehorses.forEach((rh: Racehorse) => rh.support = allSupport)
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
+  }, [allSupport])
   /**
    * 調子補正率変更時
    */
   useEffect(() => {
-    racehorses.forEach(rh => rh.condition = allCondition)
-    setRacehorses(racehorses.concat())
-  }, [allCondition,])
+    // 初回のみ実行しない
+    if (!canExecuteAllCondition) {
+      setExecuteAllCondition(true)
+      return
+    }
+    racehorses.forEach((rh: Racehorse) => rh.condition = allCondition)
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
+  }, [allCondition])
   /**
    * 順位補正率変更時
    */
   useEffect(() => {
-    racehorses.forEach(rh => rh.ranking = allRanking)
-    setRacehorses(racehorses.concat())
-  }, [allRanking,])
+    // 初回のみ実行しない
+    if (!canExecuteAllRanking) {
+      setExecuteAllRanking(true)
+      return
+    }
+    racehorses.forEach((rh: Racehorse) => rh.ranking = allRanking)
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
+  }, [allRanking])
   /**
-   * 順位補正率変更時
+   * 距離補正率変更時
    */
   useEffect(() => {
-    racehorses.forEach(rh => rh.distance = allDistance)
-    setRacehorses(racehorses.concat())
-  }, [allDistance,])
+    // 初回のみ実行しない
+    if (!canExecuteAllDistance) {
+      setExecuteAllDistance(true)
+      return
+    }
+    racehorses.forEach((rh: Racehorse) => rh.distance = allDistance)
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
+  }, [allDistance])
   /**
-   * 順位補正率変更時
+   * 人気補正率変更時
    */
   useEffect(() => {
-    racehorses.forEach(rh => rh.popular = allPopular)
-    setRacehorses(racehorses.concat())
+    // 初回のみ実行しない
+    if (!canExecuteAllPopular) {
+      setExecuteAllPopular(true)
+      return
+    }
+    racehorses.forEach((rh: Racehorse) => rh.popular = allPopular)
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
   }, [allPopular])
   /**
    * 出走馬追加ボタン押下時イベント
    */
   const handleAddRacehorseClick = () => {
     racehorses.push(RACEHORSE_TEMPLATE)
-    setRacehorses(racehorses.concat())
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
   }
   /**
    * 全応援補正率変更時イベント
    */
   const handleAllSupportStatusChange = (value: number | number[]) => {
-    racehorses.forEach(rh => rh.support = value)
+    racehorses.forEach((rh: Racehorse) => rh.support = value)
     setAllSupport(value)
   }
   /**
    * 全調子補正率変更時イベント
    */
   const handleAllConditionStatusChange = (value: number | number[]) => {
-    racehorses.forEach(rh => rh.condition = value)
+    racehorses.forEach((rh: Racehorse) => rh.condition = value)
     setAllCondition(value)
   }
   /**
    * 全順位補正率変更時イベント
    */
   const handleAllRankingStatusChange = (value: number | number[]) => {
-    racehorses.forEach(rh => rh.ranking = value)
+    racehorses.forEach((rh: Racehorse) => rh.ranking = value)
     setAllRanking(value)
   }
   /**
    * 全距離補正率変更時イベント
    */
   const handleAllDistanceStatusChange = (value: number | number[]) => {
-    racehorses.forEach(rh => rh.distance = value)
+    racehorses.forEach((rh: Racehorse) => rh.distance = value)
     setAllDistance(value)
   }
   /**
    * 全人気補正率変更時イベント
    */
   const handleAllPopularStatusChange = (value: number | number[]) => {
-    racehorses.forEach(rh => rh.popular = value)
+    racehorses.forEach((rh: Racehorse) => rh.popular = value)
     setAllPopular(value)
   }
   /**
    * 一括ランダムボタン押下時イベント
    */
   const handleAllPerfectRandomButtonClick = () => {
-    racehorses.forEach(rh => {
+    racehorses.forEach((rh: Racehorse) => {
       const val1 = Math.floor(Math.random() * (100 - 0) + 0)
       const val2 = Math.floor(Math.random() * (100 - 0) + 0)
       const val3 = Math.floor(Math.random() * (100 - 0) + 0)
@@ -165,7 +210,7 @@ const ConfigPage: React.FC = () => {
       rh.distance = val4
       rh.popular = val5
     })
-    setRacehorses(racehorses.concat())
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
   }
   /**
    * 統一ランダムボタン押下時イベント
@@ -182,14 +227,19 @@ const ConfigPage: React.FC = () => {
     setAllDistance(val4)
     setAllPopular(val5)
   }
+  /**
+   * 出走馬情報変更時イベント
+   */
   const handleRacehorseConfigChange = (racehorse: Racehorse, index: number) => {
     racehorses[index] = racehorse
-    setRacehorses(racehorses.concat())
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
   }
+  /**
+   * 出走馬情報削除イベント
+   */
   const handleRacehorseDelete = (index: number) => {
     racehorses.splice(index, 1)
-    setRacehorses(racehorses.concat())
-
+    dispatch({ type: "UPDATE_RACEHORSES", payload: racehorses.concat() })
   }
   return (
     <Grid container>
@@ -299,7 +349,7 @@ const ConfigPage: React.FC = () => {
         </Card>
       </Grid>
       <Grid item container xs={12}>
-        {racehorses.map((rh, index) => (
+        {racehorses.map((rh: Racehorse, index: number) => (
           <Grid item xs={4} key={index}>
             <RacehorseConfig
               racehorse={rh}

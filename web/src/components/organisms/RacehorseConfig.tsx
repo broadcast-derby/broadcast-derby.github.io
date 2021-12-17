@@ -12,6 +12,7 @@ import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import Select from '@mui/material/Select'
 
+// utils
 import { Racehorse } from '../../interface'
 import { COLORS } from '../../const'
 

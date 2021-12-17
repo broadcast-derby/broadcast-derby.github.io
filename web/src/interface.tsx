@@ -36,3 +36,11 @@ export interface Racehorse {
    */
   popular: number | number[],
 }
+
+/**
+ * store
+ */
+export interface Store {
+  count: number,
+  racehorses: Racehorse[]
+}

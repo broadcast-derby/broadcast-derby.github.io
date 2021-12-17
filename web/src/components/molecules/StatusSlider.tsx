@@ -7,7 +7,6 @@ import Input from '@mui/material/Input'
 import Slider from '@mui/material/Slider'
 import Typography from '@mui/material/Typography'
 
-
 /**
  * ステータススライダーProps
  */
