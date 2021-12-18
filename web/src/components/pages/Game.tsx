@@ -1,22 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@mui/styles'
 
 // mui
-import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Grid from '@mui/material/Grid'
-import Switch from '@mui/material/Switch'
 
 // utils
 import { Racehorse } from '../../interface'
-import { RACEHORSE_MAX_COUNT } from '../../const'
-
-// molecules
-import StatusSlider from '../molecules/StatusSlider'
 
 // organisms
 import RacehorseConfig from '../organisms/RacehorseConfig'
