@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@mui/styles'
 
@@ -6,6 +6,7 @@ import { makeStyles } from '@mui/styles'
 import Grid from '@mui/material/Grid'
 
 // utils
+import { getComments } from '../../action/comment'
 import { Racehorse } from '../../interface'
 
 // organisms
@@ -33,6 +34,15 @@ const GamePage: React.FC = () => {
    */
   const handleRacehorseDelete = (index: number) => {
   }
+  /**
+   * 一旦仮にsetIntervalでコメント毎秒取得
+   */
+  useEffect(() => {
+    setInterval(() => {
+      dispatch(getComments)
+    }, 1000)
+  }, [])
+
   return (
     <Grid container>
       <Grid item xs={12}>

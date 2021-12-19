@@ -5,18 +5,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
 import Grid from '@mui/material/Grid'
-import Input from '@mui/material/Input'
-import InputLabel from '@mui/material/InputLabel'
-import Switch from '@mui/material/Switch'
 
 // utils
 import { Racehorse } from '../../interface'
 import { RACEHORSE_MAX_COUNT } from '../../const'
-import store from '../../store'
 
 // molecules
 import StatusSlider from '../molecules/StatusSlider'
@@ -41,95 +34,6 @@ const ConfigPage: React.FC = () => {
     ranking: 1,
     distance: 1,
     popular: 1,
-  }
-  /**
-   * 配信者用設定を表示するかどうか
-   */
-  const [isShowPrivateContent, setShowPrivateContent] = useState(false)
-  /**
-   * 配信者用設定を表示するかどうかのスイッチ変更時イベント
-   */
-  const handleShowPrivateSwitchChange = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    setShowPrivateContent(checked)
-  }
-  /**
-   * ニコニコURLを表示するかどうか
-   */
-  const [isShowNiconicoUrlInput, setShowNiconicoUrlInput] = useState(false)
-  /**
-   * ニコニコURLを表示するかどうかのスイッチ変更時イベント
-   */
-  const handleShowNiconicoUrlInputSwitchChange = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    setShowNiconicoUrlInput(checked)
-  }
-  /**
-   * ニコニコURL
-   */
-  const [niconicoUrl, setNiconicoUrl] = useState<String>(store.getState().privateSettingReducer.niconicoUrl)
-  /**
-   * ニコニコURL変更時イベント
-   */
-  const handleNiconicoUrlChange = (val: String) => {
-    setNiconicoUrl(val)
-  }
-  /**
-   * ニコニコURL更新ボタン押下時イベント
-   */
-  const handleUpdateNiconicoUrlClick = () => {
-    dispatch({ type: 'UPDATE_NICONICO_URL', payload: niconicoUrl })
-  }
-  /**
-   * YoutubeURLを表示するかどうか
-   */
-  const [isShowYoutubeUrlInput, setShowYoutubeUrlInput] = useState(false)
-
-  /**
-   * YoutubeURLを表示するかどうかのスイッチ変更時イベント
-   */
-  const handleShowYoutubeUrlInputSwitchChange = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    setShowYoutubeUrlInput(checked)
-  }
-  /**
-   * youtubeURL
-   */
-  const [youtubeUrl, setYoutubeUrl] = useState<String>(store.getState().privateSettingReducer.youtubeUrl)
-  /**
-   * YoutubeURL変更時イベント
-   */
-  const handleYoutubeUrlChange = (val: String) => {
-    setYoutubeUrl(val)
-  }
-  /**
-   * YoutubeURL更新ボタン押下時イベント
-   */
-  const handleUpdateYoutubeUrlClick = () => {
-    dispatch({ type: 'UPDATE_YOUTUBE_URL', payload: youtubeUrl })
-  }
-  /**
-   * TwitcvURLを表示するかどうか
-   */
-  const [isShowTwitchUrlInput, setShowTwitchUrlInput] = useState(false)
-  /**
-   * TwitchURLを表示するかどうかのスイッチ変更時イベント
-   */
-  const handleShowTwitchUrlInputSwitchChange = (_: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    setShowTwitchUrlInput(checked)
-  }
-  /**
-   * twitchURL
-   */
-  const [twitchUrl, setTwitchUrl] = useState<String>(store.getState().privateSettingReducer.twitchUrl)
-  /**
-   * TwitchURL変更時イベント
-   */
-  const handleTwitchUrlChange = (val: String) => {
-    setTwitchUrl(val)
-  }
-  /**
-   * TwitchURL更新ボタン押下時イベント
-   */
-  const handleUpdateTwitchUrlClick = () => {
-    dispatch({ type: 'UPDATE_TWITCH_URL', payload: twitchUrl })
   }
   /**
    * 出走馬追加ボタン押下時イベント
@@ -328,130 +232,6 @@ const ConfigPage: React.FC = () => {
     <Grid container>
       <Grid item xs={12}>
         設定画面
-      </Grid>
-      <Grid container item xs={12}>
-        <Card>
-          <CardContent>
-            <Grid item xs={12}>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={isShowPrivateContent}
-                      onChange={handleShowPrivateSwitchChange}
-                    />
-                  }
-                  label="配信者用設定を表示する"
-                />
-              </FormGroup>
-            </Grid>
-            <Grid item xs={12}>
-              {isShowPrivateContent ?
-                <FormGroup>
-                  <Grid container>
-                    <Grid item xs={3}>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={isShowNiconicoUrlInput}
-                            onChange={handleShowNiconicoUrlInputSwitchChange}
-                          />
-                        }
-                        label="ニコニコURL"
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      {isShowNiconicoUrlInput ?
-                        <FormControl variant="standard" fullWidth>
-                          <InputLabel htmlFor="niconico">ニコニコ生放送</InputLabel>
-                          <Input
-                            id="niconico"
-                            value={niconicoUrl}
-                            onChange={(e) => handleNiconicoUrlChange(e.target.value)} />
-                        </FormControl>
-                        : null}
-                    </Grid>
-                    <Grid item xs={3}>
-                      {isShowNiconicoUrlInput ?
-                        <Button
-                          variant="contained"
-                          onClick={handleUpdateNiconicoUrlClick}
-                        >
-                          更新
-                        </Button>
-                        : null}
-                    </Grid>
-                    <Grid item xs={3}>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={isShowYoutubeUrlInput}
-                            onChange={handleShowYoutubeUrlInputSwitchChange}
-                          />
-                        }
-                        label="YoutubeURL"
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      {isShowYoutubeUrlInput ?
-                        <FormControl variant="standard" fullWidth>
-                          <InputLabel htmlFor="youtube">Youtube Live</InputLabel>
-                          <Input
-                            id="youtube"
-                            value={youtubeUrl}
-                            onChange={(e) => handleYoutubeUrlChange(e.target.value)} />
-                        </FormControl>
-                        : null}
-                    </Grid>
-                    <Grid item xs={3}>
-                      {isShowYoutubeUrlInput ?
-
-                        <Button
-                          variant="contained"
-                          onClick={handleUpdateYoutubeUrlClick}
-                        >
-                          更新
-                        </Button>
-                        : null}
-                    </Grid>
-                    <Grid item xs={3}>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={isShowTwitchUrlInput}
-                            onChange={handleShowTwitchUrlInputSwitchChange}
-                          />
-                        }
-                        label="TwitchURL"
-                      />
-                    </Grid>
-                    <Grid item xs={6}>
-                      {isShowTwitchUrlInput ?
-                        <FormControl variant="standard" fullWidth>
-                          <InputLabel htmlFor="twitch">Twitch</InputLabel>
-                          <Input
-                            id="twitch"
-                            value={twitchUrl}
-                            onChange={(e) => handleTwitchUrlChange(e.target.value)} />
-                        </FormControl>
-                        : null}
-                    </Grid>
-                    <Grid item xs={3}>
-                      {isShowTwitchUrlInput ?
-                        <Button
-                          variant="contained"
-                          onClick={handleUpdateTwitchUrlClick}
-                        >
-                          更新
-                        </Button>
-                        : null}
-                    </Grid>
-                  </Grid>
-                </FormGroup>
-                : null}
-            </Grid>
-          </CardContent>
-        </Card>
       </Grid>
       <Grid item xs={12}>
         <Card>

@@ -1,12 +1,24 @@
-import { createStore, combineReducers } from 'redux'
+import {
+  applyMiddleware,
+  combineReducers,
+  createStore,
+} from 'redux'
+import thunk from 'redux-thunk'
 
 // reducer 
-import { privateSettingReducer } from '../reducer/privateSetting'
+import { commentReducer } from '../reducer/comment'
 import { racehorsesReducer } from '../reducer/racehorse'
 
+/**
+ * root-reducer
+ */
 const reducer = combineReducers({
-  privateSettingReducer,
+  commentReducer,
   racehorsesReducer,
 })
-const store = createStore(reducer)
+
+/**
+ * store
+ */
+const store = createStore(reducer, applyMiddleware(thunk))
 export default store
