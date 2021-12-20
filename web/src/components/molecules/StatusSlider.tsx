@@ -1,4 +1,5 @@
 import React from 'react'
+import { styled } from '@mui/material/styles'
 
 // mui
 import Button from '@mui/material/Button'
@@ -7,6 +8,13 @@ import Input from '@mui/material/Input'
 import Slider from '@mui/material/Slider'
 import Typography from '@mui/material/Typography'
 
+
+const PrettoSlider = styled(Slider)({
+  '& .MuiSlider-disabled': {
+    color: 'blue',
+  },
+});
+
 /**
  * ステータススライダーProps
  */
@@ -14,7 +22,7 @@ export interface StatusSliderProps {
   /**
    * 説明文
    */
-  description: String,
+  description: string,
   /**
    * 最大値
    */
@@ -24,9 +32,13 @@ export interface StatusSliderProps {
    */
   min: number,
   /**
+   * 読み取り専用かどうか
+   */
+  readonly: boolean,
+  /**
    * 項目名
    */
-  title: String,
+  title: string,
   /**
    * 設定値
    */
@@ -52,6 +64,10 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
    * 最小値
    */
   min,
+  /**
+   * 読み取り専用かどうか
+   */
+  readonly,
   /**
    * 項目名
    */
@@ -97,37 +113,44 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
           {title}
         </Typography>
         <Typography gutterBottom>
-          {description}
+          {readonly ? value : description}
         </Typography>
       </Grid>
-      <Grid item xs={6}>
-        <Slider
-          value={value}
-          onChange={(_, val) => handleSliderChange(val)}
-          min={min}
-          max={max}
-        />
-      </Grid>
-      <Grid item xs={1}>
-        <Input
-          fullWidth
-          value={value}
-          onChange={(e) => handleInputChange(e.target.value)}
-          inputProps={{
-            min: min,
-            max: max,
-            type: 'number',
-          }}
-        />
-      </Grid>
-      <Grid item xs={3}>
-        <Button
-          variant="contained"
-          onClick={handleRandomButtonClick}
-        >
-          ランダム
-        </Button>
-      </Grid>
+      <React.Fragment>
+        <Grid item xs={6}>
+          <PrettoSlider
+            disabled={readonly}
+            value={value}
+            onChange={(_, val) => handleSliderChange(val)}
+            min={min}
+            max={max}
+          />
+        </Grid>
+        <Grid item xs={1}>
+          {readonly ? null : (
+            <Input
+              fullWidth
+              value={value}
+              onChange={(e) => handleInputChange(e.target.value)}
+              inputProps={{
+                min: min,
+                max: max,
+                type: 'number',
+              }}
+            />
+          )}
+        </Grid>
+        <Grid item xs={3}>
+          {readonly ? null : (
+            <Button
+              variant="contained"
+              onClick={handleRandomButtonClick}
+            >
+              ランダム
+            </Button>
+          )}
+        </Grid>
+      </React.Fragment>
     </Grid>
   )
 }

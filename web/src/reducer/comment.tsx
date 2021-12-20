@@ -1,3 +1,4 @@
+import { ACTION_COMMENT_GET_COMMENTS } from '../const'
 
 /**
  * 初期値
@@ -14,7 +15,7 @@ const initialState = () => {
 export const commentReducer = (state = initialState(), action: any) => {
   switch (action.type) {
     // コメント取得
-    case 'GET_COMMENT':
+    case ACTION_COMMENT_GET_COMMENTS:
       return {
         comments: action.payload
       }

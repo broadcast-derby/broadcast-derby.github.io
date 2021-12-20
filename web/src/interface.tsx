@@ -1,20 +1,31 @@
 
 /**
- * 出走馬
+ * 出走馬基礎情報
+ * 設定に限らず固定値
  */
-export interface Racehorse {
+export interface RacehorseBase {
   /**
    * 名前
    */
-  name: String,
+  name: string,
   /**
    * 色
    */
-  color: String,
+  color: string,
   /**
    * 番号
    */
   number: number,
+  /**
+   * 画像のパス
+   */
+   imagePath: string,
+}
+/**
+ * 出走馬詳細
+ * Configで設定するパラメータ
+ */
+export interface RacehorseDetail extends RacehorseBase {
   /**
    * 応援補正値
    */
@@ -36,11 +47,65 @@ export interface Racehorse {
    */
   popular: number | number[],
 }
+/**
+ * 出走する出走馬詳細
+ * ゲーム中に変化するパラメータ
+ */
+export interface RealRacehorse extends RacehorseDetail {
+  /**
+   * 今の調子
+   */
+  currentCondition: number,
+}
+
+/**
+ * 色
+ */
+export interface Color {
+  /**
+   * キー
+   */
+  key: string,
+  /**
+   * 色名
+   */
+  name: string,
+  /**
+   * カラーコード
+   */
+  code: string,
+}
 
 /**
  * store
  */
 export interface Store {
   count: number,
-  racehorses: Racehorse[]
+  racehorses: RacehorseDetail[]
+}
+
+/**
+ * 式別
+ */
+export interface Formula {
+  /**
+   * 名前
+   */
+  name: string,
+  /**
+   * 説明
+   */
+  description: string,
+  /**
+   * 必要馬数
+   */
+  racehorseCount: number,
+  /**
+   * 組み合わせかどうか
+   */
+  isCombination: boolean,
+  /**
+   * キーワード
+   */
+  keyword: string,
 }
