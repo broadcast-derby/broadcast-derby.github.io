@@ -8,8 +8,8 @@ import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 
 // utils
-import { RealRacehorse } from '../../interface'
-import { RACEHORSES } from '../../const'
+import { RacehorseBase, RacehorseDetail } from '../../interface'
+import { ACTION_RACEHORSE_UPDATE_RACEHORSES, RACEHORSES } from '../../const'
 
 // molecules
 import StatusSlider from '../molecules/StatusSlider'
@@ -23,30 +23,43 @@ import RacehorseConfig from '../organisms/RacehorseConfig'
 const RacehorseEditor: React.FC = () => {
   const dispatch = useDispatch()
   /**
-   * 出走馬追加時テンプレート
+   * 出走馬一覧
    */
-  const RACEHORSE_TEMPLATE = {
-    name: '',
-    color: '',
-    number: 0,
-    support: 1,
-    condition: 1,
-    ranking: 1,
-    distance: 1,
-    popular: 1,
+  const racehorses: RacehorseDetail[] = useSelector((state: any) => state.racehorsesReducer.racehorses)
+  /**
+   * RacehorseBaseからRacehorseDetailへキャスト
+   */
+  const castDetail = (base: RacehorseBase | undefined): RacehorseDetail => {
+    return {
+      name: base?.name ?? '',
+      color: base?.color ?? '',
+      number: base?.number ?? 0,
+      imagePath: base?.imagePath ?? '',
+      support: 1,
+      condition: 1,
+      ranking: 1,
+      distance: 1,
+      popular: 1,
+    }
   }
   /**
    * 出走馬追加ボタン押下時イベント
    */
   const handleAddRacehorseClick = () => {
-    racehorses.push(RACEHORSE_TEMPLATE)
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    // 出走馬一覧からまだ追加されていない出走馬を設定する
+    const racehorse: RacehorseDetail = castDetail(
+      RACEHORSES.find(
+        (constRacehorses: RacehorseBase) => !racehorses.find((r: RacehorseDetail) => r.number === constRacehorses.number)
+      )
+    )
+    racehorses.push(racehorse)
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }
   /**
    * 一括ランダムボタン押下時イベント
    */
   const handleAllPerfectRandomButtonClick = () => {
-    racehorses.forEach((rh: RealRacehorse) => {
+    racehorses.forEach((rh: RacehorseDetail) => {
       const val1 = Math.floor(Math.random() * (100 - 0) + 0)
       const val2 = Math.floor(Math.random() * (100 - 0) + 0)
       const val3 = Math.floor(Math.random() * (100 - 0) + 0)
@@ -58,7 +71,7 @@ const RacehorseEditor: React.FC = () => {
       rh.distance = val4
       rh.popular = val5
     })
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }
   /**
    * 統一ランダムボタン押下時イベント
@@ -78,7 +91,7 @@ const RacehorseEditor: React.FC = () => {
   /**
    * 全応援補正率を適用させるかどうか
    */
-  const [canExecuteAllSupport, setExecuteAllSupport] = useState(false)
+  const [canExecuteAllSupport, setExecuteAllSupport] = useState<boolean>(false)
   /**
   * 全応援補正率
   */
@@ -86,7 +99,7 @@ const RacehorseEditor: React.FC = () => {
   /**
    * 全調子補正率を適用させるかどうか
    */
-  const [canExecuteAllCondition, setExecuteAllCondition] = useState(false)
+  const [canExecuteAllCondition, setExecuteAllCondition] = useState<boolean>(false)
   /**
   * 全調子補正率
   */
@@ -94,7 +107,7 @@ const RacehorseEditor: React.FC = () => {
   /**
    * 全順位補正率を適用させるかどうか
    */
-  const [canExecuteAllRanking, setExecuteAllRanking] = useState(false)
+  const [canExecuteAllRanking, setExecuteAllRanking] = useState<boolean>(false)
   /**
   * 全順位補正率
   */
@@ -102,7 +115,7 @@ const RacehorseEditor: React.FC = () => {
   /**
    * 全距離補正率を適用させるかどうか
    */
-  const [canExecuteAllDistance, setExecuteAllDistance] = useState(false)
+  const [canExecuteAllDistance, setExecuteAllDistance] = useState<boolean>(false)
   /**
   * 全距離補正率
   */
@@ -110,7 +123,7 @@ const RacehorseEditor: React.FC = () => {
   /**
    * 全人気補正率を適用させるかどうか
    */
-  const [canExecuteAllPopular, setExecuteAllPopular] = useState(false)
+  const [canExecuteAllPopular, setExecuteAllPopular] = useState<boolean>(false)
   /**
   * 全人気補正率
   */
@@ -119,35 +132,35 @@ const RacehorseEditor: React.FC = () => {
    * 全応援補正率変更時イベント
    */
   const handleAllSupportStatusChange = (value: number | number[]) => {
-    racehorses.forEach((rh: RealRacehorse) => rh.support = value)
+    racehorses.forEach((rh: RacehorseDetail) => rh.support = value)
     setAllSupport(value)
   }
   /**
    * 全調子補正率変更時イベント
    */
   const handleAllConditionStatusChange = (value: number | number[]) => {
-    racehorses.forEach((rh: RealRacehorse) => rh.condition = value)
+    racehorses.forEach((rh: RacehorseDetail) => rh.condition = value)
     setAllCondition(value)
   }
   /**
    * 全順位補正率変更時イベント
    */
   const handleAllRankingStatusChange = (value: number | number[]) => {
-    racehorses.forEach((rh: RealRacehorse) => rh.ranking = value)
+    racehorses.forEach((rh: RacehorseDetail) => rh.ranking = value)
     setAllRanking(value)
   }
   /**
    * 全距離補正率変更時イベント
    */
   const handleAllDistanceStatusChange = (value: number | number[]) => {
-    racehorses.forEach((rh: RealRacehorse) => rh.distance = value)
+    racehorses.forEach((rh: RacehorseDetail) => rh.distance = value)
     setAllDistance(value)
   }
   /**
    * 全人気補正率変更時イベント
    */
   const handleAllPopularStatusChange = (value: number | number[]) => {
-    racehorses.forEach((rh: RealRacehorse) => rh.popular = value)
+    racehorses.forEach((rh: RacehorseDetail) => rh.popular = value)
     setAllPopular(value)
   }
   /**
@@ -159,8 +172,8 @@ const RacehorseEditor: React.FC = () => {
       setExecuteAllSupport(true)
       return
     }
-    racehorses.forEach((rh: RealRacehorse) => rh.support = allSupport)
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    racehorses.forEach((rh: RacehorseDetail) => rh.support = allSupport)
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }, [allSupport])
   /**
    * 全調子補正率変更時
@@ -171,8 +184,8 @@ const RacehorseEditor: React.FC = () => {
       setExecuteAllCondition(true)
       return
     }
-    racehorses.forEach((rh: RealRacehorse) => rh.condition = allCondition)
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    racehorses.forEach((rh: RacehorseDetail) => rh.condition = allCondition)
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }, [allCondition])
   /**
    * 全順位補正率変更時
@@ -183,8 +196,8 @@ const RacehorseEditor: React.FC = () => {
       setExecuteAllRanking(true)
       return
     }
-    racehorses.forEach((rh: RealRacehorse) => rh.ranking = allRanking)
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    racehorses.forEach((rh: RacehorseDetail) => rh.ranking = allRanking)
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }, [allRanking])
   /**
    * 全距離補正率変更時
@@ -195,8 +208,8 @@ const RacehorseEditor: React.FC = () => {
       setExecuteAllDistance(true)
       return
     }
-    racehorses.forEach((rh: RealRacehorse) => rh.distance = allDistance)
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    racehorses.forEach((rh: RacehorseDetail) => rh.distance = allDistance)
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }, [allDistance])
   /**
    * 全人気補正率変更時
@@ -207,26 +220,22 @@ const RacehorseEditor: React.FC = () => {
       setExecuteAllPopular(true)
       return
     }
-    racehorses.forEach((rh: RealRacehorse) => rh.popular = allPopular)
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    racehorses.forEach((rh: RacehorseDetail) => rh.popular = allPopular)
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }, [allPopular])
-  /**
-   * 出走馬一覧
-   */
-  const racehorses = useSelector((state: any) => state.racehorsesReducer.racehorses)
   /**
    * 出走馬情報変更時イベント
    */
-  const handleRacehorseConfigChange = (racehorse: RealRacehorse, index: number) => {
+  const handleRacehorseConfigChange = (racehorse: RacehorseDetail, index: number) => {
     racehorses[index] = racehorse
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }
   /**
    * 出走馬情報削除イベント
    */
   const handleRacehorseDelete = (index: number) => {
     racehorses.splice(index, 1)
-    dispatch({ type: 'UPDATE_RACEHORSES', payload: racehorses.concat() })
+    dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }
   return (
     <Card>
@@ -238,7 +247,9 @@ const RacehorseEditor: React.FC = () => {
                 variant="contained"
                 onClick={handleAddRacehorseClick}
                 disabled={racehorses.length === RACEHORSES.length}
-              >馬追加</Button>
+              >
+                魚追加
+              </Button>
             </CardContent>
           </Card>
         </Grid>
@@ -315,12 +326,12 @@ const RacehorseEditor: React.FC = () => {
           </Card>
         </Grid>
         <Grid item container xs={12}>
-          {racehorses.map((rh: RealRacehorse, index: number) => (
+          {racehorses.map((rh: RacehorseDetail, index: number) => (
             <Grid item xs={4} key={index}>
               <RacehorseConfig
                 racehorse={rh}
                 readonly={false}
-                onChange={(r: RealRacehorse) => handleRacehorseConfigChange(r, index)}
+                onChange={(r: RacehorseDetail) => handleRacehorseConfigChange(r, index)}
                 onDelete={() => handleRacehorseDelete(index)}
               />
             </Grid>

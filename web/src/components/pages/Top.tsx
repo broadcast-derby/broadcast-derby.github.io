@@ -74,13 +74,13 @@ const TopPage: React.FC = () => {
   /**
    * 出走馬選択ダイアログを表示するかどうか
    */
-  const [isOpenSelectRacehorseDialog, setOpenSelectRacehorseDialog] = useState(false)
+  const [isOpenSelectRacehorseDialog, setOpenSelectRacehorseDialog] = useState<boolean>(false)
   /**
    * 選択する出走馬のindex
    * 選択された出走馬の一覧のindexでなく、
    * 式別によって選択する必要がある出走馬のindex
    */
-  const [selectedRacehorseIndex, setSelectedIndex] = useState(0)
+  const [selectedRacehorseIndex, setSelectedIndex] = useState<number>(0)
   /**
    * 出走馬選択ダイアログを表示するボタン押下時イベント
    * 引数より、選択した出走馬の情報を配列のどこに入れるかをstateに格納する
@@ -103,11 +103,11 @@ const TopPage: React.FC = () => {
   /**
    * 金額
    */
-  const [money, setMoney] = useState(0)
+  const [money, setMoney] = useState<number>(0)
   /**
    * チケット発行ダイアログを表示するかどうか
    */
-  const [isOpenTicketDialog, setOpenTicketDialog] = useState(false)
+  const [isOpenTicketDialog, setOpenTicketDialog] = useState<boolean>(false)
   /**
    * 発行ボタン押下時イベント
    */
@@ -123,7 +123,7 @@ const TopPage: React.FC = () => {
   /**
    * 発行ボタンを非表示とするか銅か
    */
-  const [disabledIssueButton, setDisabledIssueButton] = useState(true)
+  const [disabledIssueButton, setDisabledIssueButton] = useState<boolean>(true)
   /**
    * 発行ボタンを非表示にするかどうか判定する
    */

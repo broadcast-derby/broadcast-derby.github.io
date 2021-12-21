@@ -5,17 +5,10 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import CardActions from '@mui/material/CardActions'
 import CardContent from '@mui/material/CardContent'
-import FormControl from '@mui/material/FormControl'
 import Grid from '@mui/material/Grid'
-import Input from '@mui/material/Input'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import Rating from '@mui/material/Rating'
-import Select from '@mui/material/Select'
 
 // utils
-import { RealRacehorse } from '../../interface'
-import { COLORS } from '../../const'
+import { RacehorseDetail } from '../../interface'
 
 // molecules
 import StatusSlider from '../molecules/StatusSlider'
@@ -27,7 +20,7 @@ interface RacehorseConfigProps {
   /**
    * 出走馬情報
    */
-  racehorse: RealRacehorse,
+  racehorse: RacehorseDetail,
   /**
    * 読み取り専用かどうか
    */
@@ -62,27 +55,6 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
    */
   onDelete,
 }) => {
-  /**
-   * 名前変更時イベント
-   */
-  const handleNameChange = (val: string) => {
-    racehorse.name = val
-    onChange(racehorse)
-  }
-  /**
-   * 色変更時イベント
-   */
-  const handleColorChange = (val: string) => {
-    racehorse.color = val
-    onChange(racehorse)
-  }
-  /**
-   * 番号変更時イベント
-   */
-  const handleNumberChange = (val: string) => {
-    racehorse.number = !val ? 0 : Number(val)
-    onChange(racehorse)
-  }
   /**
    * 応援補正変更時イベント
    */
@@ -123,71 +95,34 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
       <CardContent>
         <Grid container>
           <Grid item xs={12}>
-            {readonly ? (
-              <Grid container>
-                <Grid item xs={3}>
-                  名前
-                </Grid>
-                <Grid item xs={9}>
-                  {racehorse.name}
-                </Grid>
+            <Grid container>
+              <Grid item xs={3}>
+                名前
               </Grid>
-            ) : (
-              <FormControl variant="standard" fullWidth>
-                <InputLabel htmlFor="name">名前</InputLabel>
-                <Input
-                  id="name"
-                  value={racehorse.name}
-                  onChange={(e) => handleNameChange(e.target.value)} />
-              </FormControl>
-            )}
+              <Grid item xs={9}>
+                {racehorse.name}
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12}>
-            {readonly ? (
-              <Grid container>
-                <Grid item xs={3}>
-                  指定色
-                </Grid>
-                <Grid item xs={9}>
-                  {racehorse.color}
-                </Grid>
+            <Grid container>
+              <Grid item xs={3}>
+                指定色
               </Grid>
-            ) : (
-              <FormControl variant="standard" fullWidth>
-                <InputLabel htmlFor="color">指定色</InputLabel>
-                <Select
-                  id="color"
-                  value={racehorse.color}
-                  label="指定色"
-                  onChange={(e) => handleColorChange(e.target.value)}
-                >
-                  {COLORS.map((c, index: number) => (
-                    <MenuItem key={index} value={c.key}>{c.name}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
+              <Grid item xs={9}>
+                {racehorse.color}
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item xs={12}>
-            {readonly ? (
-              <Grid container>
-                <Grid item xs={3}>
-                  番号
-                </Grid>
-                <Grid item xs={9}>
-                  {racehorse.number}
-                </Grid>
+            <Grid container>
+              <Grid item xs={3}>
+                番号
               </Grid>
-            ) : (
-              <FormControl variant="standard" fullWidth>
-                <InputLabel htmlFor="number">番号</InputLabel>
-                <Input
-                  id="number"
-                  value={racehorse.number}
-                  type="number"
-                  onChange={(e) => handleNumberChange(e.target.value)} />
-              </FormControl>
-            )}
+              <Grid item xs={9}>
+                {racehorse.number}
+              </Grid>
+            </Grid>
           </Grid>
           {readonly ? (
             <Grid item container xs={12}>
@@ -195,7 +130,7 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
                 今日の調子
               </Grid>
               <Grid item xs={9}>
-                <Rating name="customized-10" readOnly value={Math.round(racehorse.currentCondition / 10.0)} max={10} />
+                {/* <Rating name="customized-10" readOnly value={Math.round(racehorse.currentCondition / 10.0)} max={10} /> */}
               </Grid>
             </Grid>
           ) : null}

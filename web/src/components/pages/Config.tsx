@@ -1,5 +1,4 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
 
 // mui
 import Accordion from '@mui/material/Accordion'
@@ -16,7 +15,6 @@ import RacehorseEditor from '../organisms/RacehorseEditor'
  * 設定画面
  */
 const ConfigPage: React.FC = () => {
-  const dispatch = useDispatch()
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -29,7 +27,7 @@ const ConfigPage: React.FC = () => {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>出走馬情報</Typography>
+            <Typography>出泳魚情報</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <RacehorseEditor />

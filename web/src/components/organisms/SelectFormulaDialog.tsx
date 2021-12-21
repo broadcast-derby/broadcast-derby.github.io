@@ -9,6 +9,7 @@ import ListItemText from '@mui/material/ListItemText'
 
 // utils
 import { FORMULAS } from '../../const'
+import { Formula } from '../../interface'
 
 /**
  * 式別選択ダイアログProps
@@ -46,7 +47,7 @@ const SelectFormulaDialog: React.FC<SelectFormulaDialogProps> = ({
     <Dialog onClose={() => { onClose(null) }} open={open}>
       <DialogTitle>式別を選択してください</DialogTitle>
       <List>
-        {FORMULAS.map((formula: any, index: number) => (
+        {FORMULAS.map((formula: Formula, index: number) => (
           <ListItem button onClick={() => handleListItemClick(index)} key={index}>
             <ListItemText primary={formula.name} secondary={formula.description} />
           </ListItem>

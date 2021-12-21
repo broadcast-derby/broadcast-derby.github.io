@@ -9,7 +9,13 @@ import Slider from '@mui/material/Slider'
 import Typography from '@mui/material/Typography'
 
 
-const PrettoSlider = styled(Slider)({
+/**
+ * スタイル指定のスライダー
+ */
+const StyledSlider = styled(Slider)({
+  /**
+   * disabledの時も青色にする
+   */
   '& .MuiSlider-disabled': {
     color: 'blue',
   },
@@ -118,7 +124,7 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
       </Grid>
       <React.Fragment>
         <Grid item xs={6}>
-          <PrettoSlider
+          <StyledSlider
             disabled={readonly}
             value={value}
             onChange={(_, val) => handleSliderChange(val)}

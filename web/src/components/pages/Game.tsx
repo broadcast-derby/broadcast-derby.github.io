@@ -100,7 +100,7 @@ const GamePage: React.FC = () => {
    * 読み上げられたコメント
    */
   const [activeComments, setActiveComments] = useState<any[]>([])
-  const phaseSteps = ['待機中', '出走馬紹介', '馬券購入締め切り', 'レース', '結果表示']
+  const phaseSteps = ['待機中', '出泳魚紹介', '魚券購入締め切り', 'レース', '結果表示']
   const [activePhaseStep, setActivePhaseStep] = React.useState(0)
   const handlePhaseStep = (step: number) => () => {
     // 出走馬紹介画面を開いたタイミングで出走馬のステータスを更新する

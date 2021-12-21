@@ -27,8 +27,8 @@ export const COLORS: Color[] = [
 export const FORMULAS: Formula[] = [
   { name: '単勝', description: '一着になる魚を当てる', racehorseCount: 1, isCombination: true, keyword: 't' },
   { name: '複勝', description: '三着までに入る魚を当てる', racehorseCount: 1, isCombination: true, keyword: 'f' },
-  { name: '馬連', description: '一着と二着の組み合わせを当てる', racehorseCount: 2, isCombination: true, keyword: 'ur' },
-  { name: '馬単', description: '一着と二着の着順を当てる', racehorseCount: 2, isCombination: false, keyword: 'ut' },
+  { name: '魚連', description: '一着と二着の組み合わせを当てる', racehorseCount: 2, isCombination: true, keyword: 'ur' },
+  { name: '魚単', description: '一着と二着の着順を当てる', racehorseCount: 2, isCombination: false, keyword: 'ut' },
   { name: 'ワイド', description: '三着までに入る二尾の組み合わせを当てる', racehorseCount: 2, isCombination: true, keyword: 'w' },
   { name: '三連複', description: '三着までの魚の組み合わせを当てる', racehorseCount: 3, isCombination: true, keyword: '3p' },
   { name: '三連単', description: '三着までの魚の着順を当てる', racehorseCount: 3, isCombination: false, keyword: '3t' },

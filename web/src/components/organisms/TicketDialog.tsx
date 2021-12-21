@@ -10,6 +10,7 @@ import Input from '@mui/material/Input'
 
 // utils
 import { FORMULAS } from '../../const'
+import { RacehorseBase } from '../../interface'
 
 
 /**
@@ -102,7 +103,7 @@ const TicketDialog: React.FC<TicketDialogProps> = ({
               {FORMULAS[formula].name}
             </Grid>
             <Grid item container xs={12}>
-              {racehorses.map((rh, index) => (
+              {racehorses.map((rh: RacehorseBase, index: number) => (
                 <Grid item container xs={12} key={index}>
                   <Grid item xs={1}>
                   </Grid>
