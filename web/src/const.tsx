@@ -49,7 +49,6 @@ export const RACEHORSES: RacehorseBase[] = [
   { name: 'カサゴ', color: 'S', number: 9, imagePath: '/Kasago.png' },
   { name: 'タイ', color: 'W', number: 10, imagePath: '/Tai.png' },
   { name: 'ブリ', color: 'Y', number: 11, imagePath: '/Buri.png' },
-  
 ]
 
 /**
@@ -59,11 +58,21 @@ export const RACEHORSES: RacehorseBase[] = [
 export const ACTION_COMMENT_GET_COMMENTS = 'ACTION_COMMENT_GET_COMMENTS'
 /**
  * アクションキー名
- * 出走馬情報更新
+ * localStorageの情報を正としてstateを更新する
  */
 export const ACTION_RACEHORSE_CONSISTENCY = 'ACTION_RACEHORSE_CONSISTENCY'
 /**
  * アクションキー名
- * localStorageの情報を正としてstateを更新する
+ * 出走馬情報更新
  */
 export const ACTION_RACEHORSE_UPDATE_RACEHORSES = 'ACTION_RACEHORSE_UPDATE_RACEHORSES'
+/**
+ * アクション名
+ * ユーザが購入した馬券情報削除
+ */
+export const ACTION_USER_CLEAN_BOUGHT_TICKETS = 'ACTION_USER_CLEAN_BOUGHT_TICKETS'
+/**
+ * アクション名
+ * チケット購入アクション
+ */
+export const ACTION_USER_BUY_TICKET = 'ACTION_USER_BUY_TICKET'

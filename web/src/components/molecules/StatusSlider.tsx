@@ -38,10 +38,6 @@ export interface StatusSliderProps {
    */
   min: number,
   /**
-   * 読み取り専用かどうか
-   */
-  readonly: boolean,
-  /**
    * 項目名
    */
   title: string,
@@ -70,10 +66,6 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
    * 最小値
    */
   min,
-  /**
-   * 読み取り専用かどうか
-   */
-  readonly,
   /**
    * 項目名
    */
@@ -119,13 +111,12 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
           {title}
         </Typography>
         <Typography gutterBottom>
-          {readonly ? value : description}
+          {description}
         </Typography>
       </Grid>
       <React.Fragment>
         <Grid item xs={6}>
           <StyledSlider
-            disabled={readonly}
             value={value}
             onChange={(_, val) => handleSliderChange(val)}
             min={min}
@@ -133,28 +124,24 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
           />
         </Grid>
         <Grid item xs={1}>
-          {readonly ? null : (
-            <Input
-              fullWidth
-              value={value}
-              onChange={(e) => handleInputChange(e.target.value)}
-              inputProps={{
-                min: min,
-                max: max,
-                type: 'number',
-              }}
-            />
-          )}
+          <Input
+            fullWidth
+            value={value}
+            onChange={(e) => handleInputChange(e.target.value)}
+            inputProps={{
+              min: min,
+              max: max,
+              type: 'number',
+            }}
+          />
         </Grid>
         <Grid item xs={3}>
-          {readonly ? null : (
-            <Button
-              variant="contained"
-              onClick={handleRandomButtonClick}
-            >
-              ランダム
-            </Button>
-          )}
+          <Button
+            variant="contained"
+            onClick={handleRandomButtonClick}
+          >
+            ランダム
+          </Button>
         </Grid>
       </React.Fragment>
     </Grid>

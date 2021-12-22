@@ -22,10 +22,6 @@ interface RacehorseConfigProps {
    */
   racehorse: RacehorseDetail,
   /**
-   * 読み取り専用かどうか
-   */
-  readonly: boolean,
-  /**
    * 出走馬情報変更時イベント
    */
   onChange: Function,
@@ -42,10 +38,6 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
    * 出走馬情報
    */
   racehorse,
-  /**
-   * 読み取り専用かどうか
-   */
-  readonly,
   /**
    * 出走馬情報変更時イベント
    */
@@ -124,21 +116,10 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
               </Grid>
             </Grid>
           </Grid>
-          {readonly ? (
-            <Grid item container xs={12}>
-              <Grid item xs={3}>
-                今日の調子
-              </Grid>
-              <Grid item xs={9}>
-                {/* <Rating name="customized-10" readOnly value={Math.round(racehorse.currentCondition / 10.0)} max={10} /> */}
-              </Grid>
-            </Grid>
-          ) : null}
           <StatusSlider
             description={"応援されるとスピードが上がります"}
             max={100}
             min={0}
-            readonly={readonly}
             title={"応援補正"}
             value={racehorse.support}
             onChange={(val: number | number[]) => handleSupportStatusChange(val)}
@@ -147,7 +128,6 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
             description={"調子がいいとスピードが上がります"}
             max={100}
             min={0}
-            readonly={readonly}
             title={"調子補正"}
             value={racehorse.condition}
             onChange={(val: number | number[]) => handleConditionStatusChange(val)}
@@ -156,7 +136,6 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
             description={"上位を走っているとスピードが上がります"}
             max={100}
             min={0}
-            readonly={readonly}
             title={"順位補正"}
             value={racehorse.ranking}
             onChange={(val: number | number[]) => handleRankingStatusChange(val)}
@@ -165,7 +144,6 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
             description={"走った距離に応じてスピードが上がります"}
             max={100}
             min={0}
-            readonly={readonly}
             title={"距離補正"}
             value={racehorse.distance}
             onChange={(val: number | number[]) => handleDistanceStatusChange(val)}
@@ -174,18 +152,15 @@ const RacehorseConfig: React.FC<RacehorseConfigProps> = ({
             description={"人気に応じてスピードが上がります"}
             max={100}
             min={0}
-            readonly={readonly}
             title={"人気補正"}
             value={racehorse.popular}
             onChange={(val: number | number[]) => handlePopularStatusChange(val)}
           />
         </Grid>
       </CardContent >
-      {readonly ? null : (
-        <CardActions>
-          <Button onClick={() => onDelete()}>削除</Button>
-        </CardActions>
-      )}
+      <CardActions>
+        <Button onClick={() => onDelete()}>削除</Button>
+      </CardActions>
     </Card >
   )
 }

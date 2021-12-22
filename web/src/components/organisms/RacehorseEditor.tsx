@@ -47,11 +47,21 @@ const RacehorseEditor: React.FC = () => {
    */
   const handleAddRacehorseClick = () => {
     // 出走馬一覧からまだ追加されていない出走馬を設定する
-    const racehorse: RacehorseDetail = castDetail(
-      RACEHORSES.find(
-        (constRacehorses: RacehorseBase) => !racehorses.find((r: RacehorseDetail) => r.number === constRacehorses.number)
-      )
+    const base: RacehorseBase | undefined = RACEHORSES.find(
+      (constRacehorses: RacehorseBase) => !racehorses.find((r: RacehorseDetail) => r.number === constRacehorses.number)
     )
+    if (base === undefined) {
+      return
+    }
+    const racehorse: RacehorseDetail = {
+      ...base,
+      support: 1,
+      condition: 1,
+      ranking: 1,
+      distance: 1,
+      popular: 1,
+
+    }
     racehorses.push(racehorse)
     dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })
   }
@@ -280,7 +290,6 @@ const RacehorseEditor: React.FC = () => {
                   description={'応援されるとスピードが上がります'}
                   max={100}
                   min={0}
-                  readonly={false}
                   title={'応援補正'}
                   value={allSupport}
                   onChange={(val: number | number[]) => handleAllSupportStatusChange(val)}
@@ -289,7 +298,6 @@ const RacehorseEditor: React.FC = () => {
                   description={'調子がいいとスピードが上がります'}
                   max={100}
                   min={0}
-                  readonly={false}
                   title={'調子補正'}
                   value={allCondition}
                   onChange={(val: number | number[]) => handleAllConditionStatusChange(val)}
@@ -298,7 +306,6 @@ const RacehorseEditor: React.FC = () => {
                   description={'上位を走っているとスピードが上がります'}
                   max={100}
                   min={0}
-                  readonly={false}
                   title={'順位補正'}
                   value={allRanking}
                   onChange={(val: number | number[]) => handleAllRankingStatusChange(val)}
@@ -307,7 +314,6 @@ const RacehorseEditor: React.FC = () => {
                   description={'走った距離に応じてスピードが上がります'}
                   max={100}
                   min={0}
-                  readonly={false}
                   title={'距離補正'}
                   value={allDistance}
                   onChange={(val: number | number[]) => handleAllDistanceStatusChange(val)}
@@ -316,7 +322,6 @@ const RacehorseEditor: React.FC = () => {
                   description={'人気に応じてスピードが上がります'}
                   max={100}
                   min={0}
-                  readonly={false}
                   title={'人気補正'}
                   value={allPopular}
                   onChange={(val: number | number[]) => handleAllPopularStatusChange(val)}
@@ -330,7 +335,6 @@ const RacehorseEditor: React.FC = () => {
             <Grid item xs={4} key={index}>
               <RacehorseConfig
                 racehorse={rh}
-                readonly={false}
                 onChange={(r: RacehorseDetail) => handleRacehorseConfigChange(r, index)}
                 onDelete={() => handleRacehorseDelete(index)}
               />

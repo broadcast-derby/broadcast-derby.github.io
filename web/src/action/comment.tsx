@@ -1,5 +1,7 @@
 import httpClient from '../httpClient'
+
 import { ACTION_COMMENT_GET_COMMENTS } from '../const'
+import { Comment } from '../interface'
 
 /**
  * DOMParser
@@ -12,16 +14,16 @@ const parser = new window.DOMParser()
  */
 export const getComments = async (dispatch: any) => {
   const response = await httpClient.get('/setting/comment.xml')
-  const xmlData = parser.parseFromString(response.data, 'text/xml')
-  let result = []
-  let comments = xmlData.getElementsByTagName('comment')
+  const xmlData: Document = parser.parseFromString(response.data, 'text/xml')
+  const result: Comment[] = []
+  const comments: HTMLCollectionOf<Element> = xmlData.getElementsByTagName('comment')
   for (let i = 0; i < comments.length; i++) {
-    let comment = comments[i]
-    let obj = {
-      time: comment?.getAttributeNode('time')?.value || '',
-      no: comment?.getAttributeNode('no')?.value || '',
-      owner: comment?.getAttributeNode('owner')?.value || '',
-      handle: comment?.getAttributeNode('handle')?.value || '',
+    const comment: any = comments[i]
+    const obj: Comment = {
+      time: Number(comment?.getAttributeNode('time')?.value) || 0,
+      no: Number(comment?.getAttributeNode('no')?.value) || 0,
+      owner: Number(comment?.getAttributeNode('owner')?.value) || 0,
+      userName: comment?.getAttributeNode('handle')?.value || '',
       service: comment?.getAttributeNode('service')?.value || '',
       content: comment?.firstChild ? comment.firstChild.nodeValue : '',
     }

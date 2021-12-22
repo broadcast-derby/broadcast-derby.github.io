@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { styled } from '@mui/material/styles'
+import { alpha } from '@mui/material'
 import { useSelector, useDispatch, ReactReduxContext } from 'react-redux'
 
 // mui
@@ -9,8 +10,10 @@ import Slider from '@mui/material/Slider'
 // utils
 import { RealRacehorse } from '../../interface'
 
-
-const MaguroSlider = styled(Slider)({
+/**
+ * スライダーのレイアウト
+ */
+const BaseStyledSlider = styled(Slider)({
   height: 8,
   '& .MuiSlider-rail': {
     opacity: 0,
@@ -19,61 +22,134 @@ const MaguroSlider = styled(Slider)({
     opacity: 0,
   },
   '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 100,
-    // backgroundImage: 'url(maguro.jpg)',
     borderRadius: '0%',
+    backgroundColor: alpha('#ffffff', 0)
   },
-});
-const KajikiSlider = styled(Slider)({
-  height: 8,
-  '& .MuiSlider-rail': {
-    opacity: 0,
-  },
-  '& .MuiSlider-track': {
-    opacity: 0,
-  },
+  '& .MuiSlider-thumb:before': {
+    boxShadow: '0px 0px 0px rgba(0,0,0,0)',
+  }
+})
+/**
+ * アジスライダー
+ */
+const AjiSlider = styled(BaseStyledSlider)({
   '& .MuiSlider-thumb': {
     // 画像の高さに合わせる必要がある
     height: 100,
-    width: 100,
-    // backgroundImage: 'url(kajiki.png)',
-    borderRadius: '0%',
+    width: 370,
+    backgroundImage: 'url(Aji.png)',
   },
-});
-const SakeSlider = styled(Slider)({
-  height: 8,
-  '& .MuiSlider-rail': {
-    opacity: 0,
-  },
-  '& .MuiSlider-track': {
-    opacity: 0,
-  },
+})
+/**
+ * ブリスライダー
+ */
+const BuriSlider = styled(BaseStyledSlider)({
   '& .MuiSlider-thumb': {
     // 画像の高さに合わせる必要がある
     height: 100,
-    width: 100,
-    // backgroundImage: 'url(sake.jpn)',
-    borderRadius: '0%',
+    width: 450,
+    backgroundImage: 'url(Buri.png)',
   },
-});
-const AjiSlider = styled(Slider)({
-  height: 8,
-  '& .MuiSlider-rail': {
-    opacity: 0,
-  },
-  '& .MuiSlider-track': {
-    opacity: 0,
-  },
+})
+/**
+ * イカスライダー
+ */
+const IkaSlider = styled(BaseStyledSlider)({
   '& .MuiSlider-thumb': {
     // 画像の高さに合わせる必要がある
     height: 100,
-    width: 100,
-    // backgroundImage: 'url(aji.jpg)',
-    borderRadius: '0%',
+    width: 414,
+    backgroundImage: 'url(Ika.png)',
   },
-});
+})
+/**
+ * カジキスライダー
+ */
+const KajikiSlider = styled(BaseStyledSlider)({
+  '& .MuiSlider-thumb': {
+    // 画像の高さに合わせる必要がある
+    height: 100,
+    width: 442,
+    backgroundImage: 'url(Kajiki.png)',
+  },
+})
+/**
+ * カサゴスライダー
+ */
+const KasagoSlider = styled(BaseStyledSlider)({
+  '& .MuiSlider-thumb': {
+    // 画像の高さに合わせる必要がある
+    height: 100,
+    width: 334,
+    backgroundImage: 'url(Kasago.png)',
+  },
+})
+/**
+ * カツオスライダー
+ */
+const KatsuoSlider = styled(BaseStyledSlider)({
+  '& .MuiSlider-thumb': {
+    // 画像の高さに合わせる必要がある
+    height: 100,
+    width: 376,
+    backgroundImage: 'url(Katsuo.png)',
+  },
+})
+/**
+ * マグロスライダー
+ */
+const MaguroSlider = styled(BaseStyledSlider)({
+  '& .MuiSlider-thumb': {
+    // 画像の高さに合わせる必要がある
+    height: 100,
+    width: 392,
+    backgroundImage: 'url(Maguro.png)',
+  },
+})
+/**
+ * サバスライダー
+ */
+const SabaSlider = styled(BaseStyledSlider)({
+  '& .MuiSlider-thumb': {
+    // 画像の高さに合わせる必要がある
+    height: 100,
+    width: 594,
+    backgroundImage: 'url(Saba.png)',
+  },
+})
+/**
+ * サケスライダー
+ */
+const SakeSlider = styled(BaseStyledSlider)({
+  '& .MuiSlider-thumb': {
+    // 画像の高さに合わせる必要がある
+    height: 100,
+    width: 544,
+    backgroundImage: 'url(Sake.png)',
+  },
+})
+/**
+ * タイスライダー
+ */
+const TaiSlider = styled(BaseStyledSlider)({
+  '& .MuiSlider-thumb': {
+    // 画像の高さに合わせる必要がある
+    height: 100,
+    width: 320,
+    backgroundImage: 'url(Tai.png)',
+  },
+})
+/**
+ * タコスライダー
+ */
+const TakoSlider = styled(BaseStyledSlider)({
+  '& .MuiSlider-thumb': {
+    // 画像の高さに合わせる必要がある
+    height: 100,
+    width: 326,
+    backgroundImage: 'url(Tako.png)',
+  },
+})
 
 /**
  * レース中
@@ -127,30 +203,77 @@ const Race: React.FC = ({ }) => {
                 max={10000}
                 value={rh.val}
               />
-              : index === 1 ?
-                <SakeSlider
-                  min={0}
-                  max={10000}
-                  value={rh.val}
-                />
-                : index === 2 ?
-                  <KajikiSlider
-                    min={0}
-                    max={10000}
-                    value={rh.val}
-                  />
-                  : index === 3 ?
-                    <AjiSlider
-                      min={0}
-                      max={10000}
-                      value={rh.val}
-                    />
-                    :
-                    <Slider
-                      min={0}
-                      max={10000}
-                      value={rh.val}
-                    />}
+              : null}
+            {index === 1 ?
+              <SakeSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 2 ?
+              <KajikiSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 3 ?
+              <AjiSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 4 ?
+              <SabaSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 5 ?
+              <KatsuoSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 6 ?
+              <IkaSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 7 ?
+              <TakoSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 8 ?
+              <KasagoSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 9 ?
+              <TaiSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
+            {index === 10 ?
+              <BuriSlider
+                min={0}
+                max={10000}
+                value={rh.val}
+              />
+              : null}
           </Grid>
         </React.Fragment>
       ))}

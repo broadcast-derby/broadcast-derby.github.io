@@ -19,7 +19,7 @@ export interface RacehorseBase {
   /**
    * 画像のパス
    */
-   imagePath: string,
+  imagePath: string,
 }
 /**
  * 出走馬詳細
@@ -108,4 +108,76 @@ export interface Formula {
    * キーワード
    */
   keyword: string,
+}
+
+/**
+ * コメント
+ */
+export interface Comment {
+  /**
+   * コメント投稿時間
+   */
+  time: number,
+  /**
+   * コメントNO
+   * 多分時間が被ったときに使われる
+   */
+  no: number,
+  /**
+   * オーナー
+   * 使わない？
+   */
+  owner: number,
+  /**
+   * ユーザ名
+   */
+  userName: string,
+  /**
+   * サービス名
+   */
+  service: string,
+  /**
+   * コメント内容
+   */
+  content: string,
+}
+
+/**
+ * ユーザ情報
+ */
+export interface User {
+  /**
+   * 名前
+   */
+  name: string,
+  /**
+   * サービス名
+   */
+  service: string,
+  /**
+   * 持ち金
+   */
+  money: number,
+  /**
+   * 購入馬券
+   */
+   boughtTickets: Ticket[],
+}
+
+/**
+ * 馬券
+ */
+export interface Ticket {
+  /**
+   * 式別
+   */
+  formula: number,
+  /**
+   * 選択した出走馬番号
+   */
+  racehorses: number[],
+  /**
+   * 掛け金
+   */
+  money: number,
 }
