@@ -38,17 +38,89 @@ export const FORMULAS: Formula[] = [
  * 全ての出走馬情報
  */
 export const RACEHORSES: RacehorseBase[] = [
-  { name: 'マグロ', color: 'B', number: 1, imagePath: '/Maguro.png' },
-  { name: 'シャケ', color: 'C', number: 2, imagePath: '/Sake.png' },
-  { name: 'カジキ', color: 'G', number: 3, imagePath: '/Kajiki.png' },
-  { name: 'アジ', color: 'I', number: 4, imagePath: '/Aji.png' },
-  { name: 'サバ', color: 'M', number: 5, imagePath: '/Saba.png' },
-  { name: 'カツオ', color: 'O', number: 6, imagePath: '/Katsuo.png' },
-  { name: 'イカ', color: 'P', number: 7, imagePath: '/Ika.png' },
-  { name: 'タコ', color: 'R', number: 8, imagePath: '/Tako.png' },
-  { name: 'カサゴ', color: 'S', number: 9, imagePath: '/Kasago.png' },
-  { name: 'タイ', color: 'W', number: 10, imagePath: '/Tai.png' },
-  { name: 'ブリ', color: 'Y', number: 11, imagePath: '/Buri.png' },
+  {
+    name: 'マグロ', color: 'B', number: 1, imagePath: '/Maguro.png',
+    keywordRegexList: [
+      /.*マ.*グ.*ロ.*/, /.*ま.*ぐ.*ろ.*/, /.*鮪.*/,
+      // /.*青.*/, /.*あ.*お.*/, /.*ア.*オ.*/,
+      // /.*(１|1).*/,
+    ]
+  },
+  {
+    name: 'シャケ', color: 'C', number: 2, imagePath: '/Sake.png',
+    keywordRegexList: [
+      /.*シャ.*ケ.*/, /.*しゃ.*け.*/, /.*鮭.*/,
+      /.*サ.*ー.*モ.*ン.*/, /.*さ.*け.*/, /.*サ.*ケ.*/,
+      // /.*青.*/, /.*あ.*お.*/, /.*ア.*オ.*/,
+      // /.*(２|2).*/,
+    ]
+  },
+  {
+    name: 'カジキ', color: 'G', number: 3, imagePath: '/Kajiki.png', keywordRegexList: [
+      /.*カ.*ジ.*キ.*/, /.*か.*じ.*き.*/,
+      // /.*緑.*/, /.*み.*ど.*り.*/, /.*ミ.*ド.*リ.*/,
+      // /.*(３|3).*/,
+    ]
+  },
+  {
+    name: 'アジ', color: 'I', number: 4, imagePath: '/Aji.png', keywordRegexList: [
+      /.*ア.*ジ.*/, /.*あ.*じ.*/, /.*鯵.*/, /.*鰺.*/,
+      // /.*藍.*/, /.*あ.*い.*/, /.*ア.*イ.*/,
+      // /.*紺.*/, /.*こ.*ん.*/, /.*コ.*ン.*/,
+      // /.*(４|4).*/,
+    ]
+  },
+  {
+    name: 'サバ', color: 'M', number: 5, imagePath: '/Saba.png', keywordRegexList: [
+      /.*サ.*バ.*/, /.*さ.*ば.*/, /.*鯖.*/,
+      // /.*マ.*ゼ.*ン.*タ.*/, /.*ま.*ぜ.*ん.*た.*/,
+      // /.*ピ.*ン.*ク.*/, /.*ぴ.*ん.*く.*/,
+      // /.*(５|5).*/,
+    ]
+  },
+  {
+    name: 'カツオ', color: 'O', number: 6, imagePath: '/Katsuo.png', keywordRegexList: [
+      /.*カ.*ツ.*オ.*/, /.*か.*つ.*お.*/, /.*鰹.*/,
+      // /.*オ.*レ.*ン.*ジ.*/, /.*お.*れ.*ん.*じ.*/, /.*橙.*/,
+      // /.*(６|6).*/,
+    ]
+  },
+  {
+    name: 'イカ', color: 'P', number: 7, imagePath: '/Ika.png', keywordRegexList: [
+      /.*い.*か.*/, /.*イ.*カ.*/, /.*烏.*賊.*/,
+      // /.*紫.*/, /.*ム.*ラ.*サ.*キ.*/, /.*む.*ら.*さ.*き.*/,
+      // /.*(７|7).*/,
+    ]
+  },
+  {
+    name: 'タコ', color: 'R', number: 8, imagePath: '/Tako.png', keywordRegexList: [
+      /.*タ.*コ.*/, /.*た.*こ.*/, /.*蛸.*/,
+      // /.*あ.*か.*/, /.*ア.*カ.*/, /.*赤.*/,
+      // /.*(８|8).*/,
+    ]
+  },
+  {
+    name: 'カサゴ', color: 'S', number: 9, imagePath: '/Kasago.png', keywordRegexList: [
+      /.*カ.*サ.*ゴ.*/, /.*か.*さ.*ご.*/,
+      // /.*銀.*/, /.*ぎ.*ん.*/, /.*ギ.*ン.*/,
+      // /.*灰.*/, /.*は.*い.*/, /.*ハ.*イ.*/,
+      // /.*(９|9).*/,
+    ]
+  },
+  {
+    name: 'タイ', color: 'W', number: 10, imagePath: '/Tai.png', keywordRegexList: [
+      /.*タ.*イ.*/, /.*た.*い.*/, /.*鯛.*/,
+      // /.*白.*/, /.*し.*ろ.*/, /.*シ.*ロ.*/,
+      // /.*(１０|10).*/,
+    ]
+  },
+  {
+    name: 'ブリ', color: 'Y', number: 11, imagePath: '/Buri.png', keywordRegexList: [
+      /.*ブ.*リ.*/, /.*ぶ.*り.*/, /.*鰤.*/,
+      // /.*黄.*色.*/, /.*き.*い.*ろ.*/, /.*キ.*イ.*ロ.*/,
+      // /.*(１１|11).*/,
+    ]
+  },
 ]
 
 /**
@@ -76,3 +148,9 @@ export const ACTION_USER_CLEAN_BOUGHT_TICKETS = 'ACTION_USER_CLEAN_BOUGHT_TICKET
  * チケット購入アクション
  */
 export const ACTION_USER_BUY_TICKET = 'ACTION_USER_BUY_TICKET'
+
+/**
+ * アクション名
+ * ユーザ情報取得
+ */
+export const ACTION_GET_USERS = 'ACTION_GET_USERS'

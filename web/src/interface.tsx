@@ -20,6 +20,10 @@ export interface RacehorseBase {
    * 画像のパス
    */
   imagePath: string,
+  /**
+   * 応援キーワード
+   */
+  keywordRegexList: RegExp[],
 }
 /**
  * 出走馬詳細
@@ -56,6 +60,30 @@ export interface RealRacehorse extends RacehorseDetail {
    * 今の調子
    */
   currentCondition: number,
+  /**
+   * 走った距離
+   */
+  runValue: number,
+  /**
+   * 応援され度
+   */
+  supportPower: number,
+  /**
+   * オッズ
+   */
+  odds: number,
+  /**
+   * 単勝掛け金
+   */
+   singleMoney: number,
+   /**
+    * 得票数
+    */
+   votes:number,
+   /**
+    * 実際の人気度
+    */
+   popularPower:number,
 }
 
 /**
@@ -161,7 +189,7 @@ export interface User {
   /**
    * 購入馬券
    */
-   boughtTickets: Ticket[],
+  boughtTickets: Ticket[],
 }
 
 /**

@@ -7,14 +7,28 @@ import Grid from '@mui/material/Grid'
 import Step from '@mui/material/Step'
 import StepButton from '@mui/material/StepButton'
 import Stepper from '@mui/material/Stepper'
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 // utils
 import {
   ACTION_USER_BUY_TICKET,
   ACTION_USER_CLEAN_BOUGHT_TICKETS,
+  RACEHORSES,
 } from '../../const'
 import { getComments } from '../../action/comment'
-import { RealRacehorse, RacehorseDetail, Comment, Formula, RacehorseBase } from '../../interface'
+import {
+  Comment,
+  RacehorseBase,
+  RacehorseDetail,
+  RealRacehorse,
+  Ticket,
+  User,
+} from '../../interface'
 
 // organisms
 import Race from '../organisms/Race'
@@ -28,13 +42,10 @@ const useStyles = makeStyles(() => ({
  * ゲーム画面
  * 
  * 23日
- * ４．レース画面にスタートのボタン実装
- * ５．ゴールした順番を表示
- * ６．レース画面中に応援コメントを判定して馬のスピードに加える
+ * ３．結果表示画面表示時に馬券情報と勝ち馬の情報をもとに、各ユーザの持ち金を操作する
  * 
  * 24日
- * ３．購入締め切り画面表示時にストレージの中の馬券情報から倍率を算出
- * ７．結果表示画面表示時に馬券情報と勝ち馬の情報をもとに、各ユーザの持ち金を操作する
+ * ブラッシュアップ（見た目とか）
  * 
  * 24日夜
  * 遊ぶ！！！！！！
@@ -146,6 +157,19 @@ const GamePage: React.FC = () => {
    */
   const [realRacehorses, setRealRacehorses] = useState<RealRacehorse[]>([])
   /**
+   * ユーザ情報
+   */
+  const users: User[] = useSelector((state: any) => state.userReducer.users)
+  /**
+   * 掛け金合計金額
+   */
+  const [totalMoney, setTotalMoney] = useState<number>(0)
+  /**
+   * 投票数合計
+   * 三連単みたいに3頭出走馬を選択する場合は3頭分票が入る
+   */
+  const [totalVote, setTotalVote] = useState<number>(0)
+  /**
    * フェーズ変更時イベント
    */
   const handlePhaseStep = (step: number) => () => {
@@ -162,12 +186,49 @@ const GamePage: React.FC = () => {
             const realRacehorse: RealRacehorse = {
               ...detail,
               currentCondition: Math.floor(Math.random() * 100),
+              runValue: 0,
+              supportPower: 0,
+              odds: 0,
+              singleMoney: 0,
+              votes: 0,
+              popularPower: 0,
             }
             rhs.push(realRacehorse)
           })
           setRealRacehorses(rhs)
         }, 0)
         break
+      // 馬券購入締め切り
+      case 2:
+        let total = 0
+        let voteTotal = 0
+        users.map((user: User) => {
+          user.boughtTickets.map((ticket: Ticket) => {
+            total += ticket.money
+            // 人気度を求める
+            ticket.racehorses.map((racehorseNumber: number) => {
+              const target = realRacehorses.find((realRacehorse: RealRacehorse) => realRacehorse.number === racehorseNumber)
+              if (target) {
+                target.votes++
+                voteTotal++
+              }
+            })
+            // 単勝の倍率を求める
+            if (ticket.formula === 0) {
+              const target = realRacehorses.find((realRacehorse: RealRacehorse) => realRacehorse.number === ticket.racehorses[0])
+              if (target) {
+                target.singleMoney += ticket.money
+              }
+            }
+          })
+        })
+        realRacehorses.map((realRacehorse: RealRacehorse) => {
+          realRacehorse.odds = realRacehorse.singleMoney ? Math.round(total / realRacehorse.singleMoney * 100) / 100 : 0
+          realRacehorse.popularPower = realRacehorse.votes ? Math.round(realRacehorse.votes / voteTotal * 100) / 100 : 0
+        })
+        setRealRacehorses(realRacehorses.concat())
+        setTotalMoney(total)
+        setTotalVote(voteTotal)
     }
     setActivePhaseStep(step)
   }
@@ -236,6 +297,30 @@ const GamePage: React.FC = () => {
     })
   }
   /**
+   * 特定のキーワードに該当したときにもらえる力
+   */
+  const SPECIAL_POWER = 10
+  /**
+   * 何かしらコメントがあるともらえる力
+   */
+  const COMMENT_POWER = 1
+  /**
+   * コメントで出走馬を応援づける
+   */
+  const cheerUpRacehorse = (commentContent: string) => {
+    realRacehorses.map((real: RealRacehorse) => {
+      real.supportPower += COMMENT_POWER
+      const regexList = RACEHORSES.find((base: RacehorseBase) => base.number === real.number)?.keywordRegexList ?? []
+      regexList.map((regex: RegExp) => {
+        if (commentContent.match(regex)) {
+          real.supportPower += SPECIAL_POWER
+          return
+        }
+      })
+    })
+    setRealRacehorses(realRacehorses.concat())
+  }
+  /**
    * アクティブコメント取得時イベント
    */
   useEffect(() => {
@@ -250,6 +335,9 @@ const GamePage: React.FC = () => {
         break
       // レース中
       case 3:
+        activeComments.map((c: Comment) => {
+          cheerUpRacehorse(c.content)
+        })
         break
     }
   }, [activeComments])
@@ -285,12 +373,55 @@ const GamePage: React.FC = () => {
       ) : null}
       {activePhaseStep === 2 ? (
         <Grid item container xs={12}>
-          bbbb
+          <Grid item xs={12}>
+            魚券金額合計:{totalMoney.toLocaleString()}
+          </Grid>
+          <Grid item xs={12}>
+            合計指名数:{totalVote.toLocaleString()}
+          </Grid>
+          <Grid item xs={12}>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>出走魚</TableCell>
+                    <TableCell align="right">番号</TableCell>
+                    <TableCell align="right">人気度</TableCell>
+                    <TableCell align="right">単勝倍率</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {realRacehorses.map((realRacehorse: RealRacehorse) => (
+                    <TableRow key={realRacehorse.number}>
+                      <TableCell component="th" scope="row">
+                        {realRacehorse.name}
+                      </TableCell>
+                      <TableCell align="right">{realRacehorse.number}</TableCell>
+                      <TableCell align="right">{realRacehorse.popularPower * 100}%</TableCell>
+                      <TableCell align="right">{realRacehorse.odds}倍</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Grid>
         </Grid>
       ) : null}
       {activePhaseStep === 3 ? (
         <Grid item container xs={12}>
-          <Race />
+          <Race
+            realRacehorses={realRacehorses}
+          />
+          {realRacehorses.map((r, index) => (
+            <React.Fragment key={index}>
+              <Grid item xs={2}>
+                {r.name}
+              </Grid>
+              <Grid item xs={10}>
+                {r.supportPower}
+              </Grid>
+            </React.Fragment>
+          ))}
         </Grid>
       ) : null}
       {activePhaseStep === 4 ? (

@@ -1,279 +1,158 @@
 import React, { useEffect, useState } from 'react'
-import { styled } from '@mui/material/styles'
-import { alpha } from '@mui/material'
-import { useSelector, useDispatch, ReactReduxContext } from 'react-redux'
 
 // mui
+import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
-import Slider from '@mui/material/Slider'
 
 // utils
-import { RealRacehorse } from '../../interface'
+import { RacehorseBase, RealRacehorse } from '../../interface'
+import { RACEHORSES } from '../../const'
+
+// fish slider
+import AjiSlider from '../molecules/fish-slider/AjiSlider'
+import BuriSlider from '../molecules/fish-slider/BuriSlider'
+import IkaSlider from '../molecules/fish-slider/IkaSlider'
+import KajikiSlider from '../molecules/fish-slider/KajikiSlider'
+import KasagoSlider from '../molecules/fish-slider/KasagoSlider'
+import KatsuoSlider from '../molecules/fish-slider/KatsuoSlider'
+import MaguroSlider from '../molecules/fish-slider/MaguroSlider'
+import SabaSlider from '../molecules/fish-slider/SabaSlider'
+import SakeSlider from '../molecules/fish-slider/SakeSlider'
+import TaiSlider from '../molecules/fish-slider/TaiSlider'
+import TakoSlider from '../molecules/fish-slider/TakoSlider'
 
 /**
- * スライダーのレイアウト
+ * レース中Props
  */
-const BaseStyledSlider = styled(Slider)({
-  height: 8,
-  '& .MuiSlider-rail': {
-    opacity: 0,
-  },
-  '& .MuiSlider-track': {
-    opacity: 0,
-  },
-  '& .MuiSlider-thumb': {
-    borderRadius: '0%',
-    backgroundColor: alpha('#ffffff', 0)
-  },
-  '& .MuiSlider-thumb:before': {
-    boxShadow: '0px 0px 0px rgba(0,0,0,0)',
-  }
-})
-/**
- * アジスライダー
- */
-const AjiSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 370,
-    backgroundImage: 'url(Aji.png)',
-  },
-})
-/**
- * ブリスライダー
- */
-const BuriSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 450,
-    backgroundImage: 'url(Buri.png)',
-  },
-})
-/**
- * イカスライダー
- */
-const IkaSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 414,
-    backgroundImage: 'url(Ika.png)',
-  },
-})
-/**
- * カジキスライダー
- */
-const KajikiSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 442,
-    backgroundImage: 'url(Kajiki.png)',
-  },
-})
-/**
- * カサゴスライダー
- */
-const KasagoSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 334,
-    backgroundImage: 'url(Kasago.png)',
-  },
-})
-/**
- * カツオスライダー
- */
-const KatsuoSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 376,
-    backgroundImage: 'url(Katsuo.png)',
-  },
-})
-/**
- * マグロスライダー
- */
-const MaguroSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 392,
-    backgroundImage: 'url(Maguro.png)',
-  },
-})
-/**
- * サバスライダー
- */
-const SabaSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 594,
-    backgroundImage: 'url(Saba.png)',
-  },
-})
-/**
- * サケスライダー
- */
-const SakeSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 544,
-    backgroundImage: 'url(Sake.png)',
-  },
-})
-/**
- * タイスライダー
- */
-const TaiSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 320,
-    backgroundImage: 'url(Tai.png)',
-  },
-})
-/**
- * タコスライダー
- */
-const TakoSlider = styled(BaseStyledSlider)({
-  '& .MuiSlider-thumb': {
-    // 画像の高さに合わせる必要がある
-    height: 100,
-    width: 326,
-    backgroundImage: 'url(Tako.png)',
-  },
-})
-
-/**
- * レース中
- */
-const Race: React.FC = ({ }) => {
+interface RaceProps {
   /**
    * 出走馬一覧
    */
-  const racehorses = useSelector((state: any) => state.racehorsesReducer.racehorses)
-  const [runningRacehorse, setRunningRacehorse] = useState<any[]>([])
-  const [isStart, setStart] = useState(false)
+  realRacehorses: RealRacehorse[],
+}
+/**
+ * レース中
+ */
+const Race: React.FC<RaceProps> = ({
   /**
-   * 初期表示時に馬の情報を設定する
+   * 出走馬一覧
+   */
+  realRacehorses,
+}) => {
+  /**
+   * 実際に走っている出走馬情報一覧
+   */
+  const [runningRacehorse, setRunningRacehorse] = useState<RealRacehorse[]>([])
+  /**
+   * スタートしたかどうか
+   */
+  const [isStart, setStart] = useState<boolean>(false)
+  /**
+   * 初期表示時にpropsから受け取った出走馬の情報をstateに保持する
    */
   useEffect(() => {
-    const runnings: any[] = []
-    racehorses.map((r: any) => {
-      const runner = r
-      runner.val = 0
-      runnings.push(runner)
-    })
-    setRunningRacehorse(runnings)
-    setStart(true)
+    setRunningRacehorse(realRacehorses.concat())
   }, [])
+  /**
+   * スタートボタン押下時イベント
+   */
+  const handleStartClick = () => {
+    setStart(true)
+  }
+  /**
+   * 走った距離を更新する頻度(ms)
+   */
+  const RUN_INTERVAL = 200
+  /**
+   * 順位
+   */
+  const [rankInNumbers, setRankInNumbers] = useState<number[]>([])
+  /**
+   * setIntervalで指定間隔毎に出走馬の走った距離を更新する
+   */
   useEffect(() => {
     if (!isStart) {
       return
     }
-    setInterval(() => {
+    let timer: number | undefined = setInterval(() => {
       const min = 1
       const max = 50
-      const runnings: any[] = []
-      runningRacehorse.map(r => {
-        r.val += Math.floor(Math.random() * (max - min) + min)
+      const runnings: RealRacehorse[] = []
+      runningRacehorse.map((r: RealRacehorse) => {
+        r.runValue += Math.floor(Math.random() * (max - min) + min + (r.supportPower > 0 ? 25 : 0))
+        if (10000 <= r.runValue && !rankInNumbers.includes(r.number)) {
+          rankInNumbers.push(r.number)
+          setRankInNumbers(rankInNumbers.concat())
+        }
+        if (r.supportPower > 0) {
+          r.supportPower--
+        }
         runnings.push(r)
       })
-      setRunningRacehorse(runnings)
-    }, 200)
+      setRunningRacehorse(runnings.concat())
+    }, RUN_INTERVAL)
+    return () => {
+      if (timer) {
+        clearInterval(timer)
+        timer = undefined
+      }
+    }
   }, [isStart])
+  /**
+   * スライダー一覧
+   */
+  const SLIDER_LIST: any[] = [
+    MaguroSlider,
+    SakeSlider,
+    KajikiSlider,
+    AjiSlider,
+    SabaSlider,
+    KatsuoSlider,
+    IkaSlider,
+    TakoSlider,
+    KasagoSlider,
+    TaiSlider,
+    BuriSlider,
+  ]
   return (
     <Grid container >
-      {runningRacehorse.map((rh: any, index: number) => (
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          onClick={handleStartClick}
+        >スタート</Button>
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container>
+          {rankInNumbers.map((rankInNumber: number, index: number) => (
+            <React.Fragment key={index}>
+              <Grid item xs={3}>
+                {index + 1}着
+              </Grid>
+              <Grid item xs={9}>
+                {RACEHORSES.find((r: RacehorseBase) => r.number === rankInNumber)?.name ?? ''}
+              </Grid>
+            </React.Fragment>
+          ))}
+        </Grid>
+      </Grid>
+      {runningRacehorse.map((rh: RealRacehorse, index: number) => (
         <React.Fragment key={index}>
           <Grid item xs={3}>
             {rh.name}
           </Grid>
           <Grid item xs={9}>
-            {index === 0 ?
-              <MaguroSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 1 ?
-              <SakeSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 2 ?
-              <KajikiSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 3 ?
-              <AjiSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 4 ?
-              <SabaSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 5 ?
-              <KatsuoSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 6 ?
-              <IkaSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 7 ?
-              <TakoSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 8 ?
-              <KasagoSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 9 ?
-              <TaiSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
-            {index === 10 ?
-              <BuriSlider
-                min={0}
-                max={10000}
-                value={rh.val}
-              />
-              : null}
+            {SLIDER_LIST.map((Slider, index) => (
+              <React.Fragment key={index}>
+                {index + 1 === rh.number ? (
+                  <Slider
+                    min={0}
+                    max={10000}
+                    value={rh.runValue}
+                  />
+                ) : null}
+              </React.Fragment>
+            ))}
           </Grid>
         </React.Fragment>
       ))}

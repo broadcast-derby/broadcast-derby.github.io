@@ -27,22 +27,6 @@ const RacehorseEditor: React.FC = () => {
    */
   const racehorses: RacehorseDetail[] = useSelector((state: any) => state.racehorsesReducer.racehorses)
   /**
-   * RacehorseBaseからRacehorseDetailへキャスト
-   */
-  const castDetail = (base: RacehorseBase | undefined): RacehorseDetail => {
-    return {
-      name: base?.name ?? '',
-      color: base?.color ?? '',
-      number: base?.number ?? 0,
-      imagePath: base?.imagePath ?? '',
-      support: 1,
-      condition: 1,
-      ranking: 1,
-      distance: 1,
-      popular: 1,
-    }
-  }
-  /**
    * 出走馬追加ボタン押下時イベント
    */
   const handleAddRacehorseClick = () => {
@@ -60,7 +44,6 @@ const RacehorseEditor: React.FC = () => {
       ranking: 1,
       distance: 1,
       popular: 1,
-
     }
     racehorses.push(racehorse)
     dispatch({ type: ACTION_RACEHORSE_UPDATE_RACEHORSES, payload: racehorses.concat() })

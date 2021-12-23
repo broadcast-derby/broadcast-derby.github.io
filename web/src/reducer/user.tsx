@@ -1,6 +1,7 @@
 import {
   ACTION_USER_CLEAN_BOUGHT_TICKETS,
   ACTION_USER_BUY_TICKET,
+  ACTION_GET_USERS,
 } from '../const'
 import { User, Ticket } from '../interface'
 
@@ -58,6 +59,11 @@ export const userReducer = (state = initialState(), action: any) => {
       window.localStorage.setItem('users', JSON.stringify(users))
       return {
         users: users,
+      }
+    case ACTION_GET_USERS:
+      const usersStr = window.localStorage.getItem('users') ?? '[]'
+      return {
+        users: JSON.stringify(usersStr)
       }
     default:
       return state
