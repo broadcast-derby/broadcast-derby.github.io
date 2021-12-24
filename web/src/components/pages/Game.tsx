@@ -355,19 +355,44 @@ const GamePage: React.FC = () => {
    * レース結果
    */
   const [raceResult, setRaceResult] = useState<RaceResultInterface | null>(null)
+  const calcMoney = (totalMoney: number, tickets: Ticket[], condition: Function) => {
+    const filteringTicket: Ticket[] = []
+    tickets.map((ticket: Ticket) => {
+      console.log(`formula:${ticket.formula}`)
+      console.log(`racehorses:${JSON.stringify(ticket.racehorses)}`)
+      if (condition(ticket.formula, ticket.racehorses)) {
+        console.log("ticket push!")
+        filteringTicket.push(ticket)
+      }
+    })
+    console.log(`filteringTicketLength:${filteringTicket.length}`)
+    let money = 0
+    filteringTicket.map((ticket: Ticket) => {
+      money += ticket.money
+    })
+    return money === 0 ? 0 : Math.round(totalMoney / money * 100) / 100
+  }
   /**
    * 全員ゴール時イベント
    */
   const handleGoal = (rankInNumbers: number[]) => {
+    console.log(`totalMoney:${totalMoney}`)
+    console.log(`rankInNumbers:${JSON.stringify(rankInNumbers)}`)
     const allTickets: Ticket[] = []
-    users.map((user: User) => allTickets.concat(user.boughtTickets))
+    users.map((user: User) =>
+      user.boughtTickets.map((ticket: Ticket) => allTickets.push(ticket))
+    )
+    console.log(`allTicketsLength:${allTickets.length}`)
     const raceResult: RaceResultInterface = {
       top3Numbers: rankInNumbers.filter((_: number, index: number) => index < 3),
       singleWin: {
-        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-          ticket.formula === 0 &&
-          ticket.racehorses[0] === rankInNumbers[0]
-        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        money: calcMoney(
+          totalMoney,
+          allTickets,
+          (formula: number, racehorses: number[]) =>
+            formula === 0 &&
+            racehorses[0] === rankInNumbers[0]
+        ),
         popular: allTickets.filter((ticket: Ticket) =>
           ticket.formula === 0 &&
           ticket.racehorses[0] === rankInNumbers[0]
@@ -376,10 +401,13 @@ const GamePage: React.FC = () => {
       },
       doubleWin: [
         {
-          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-            ticket.formula === 1 &&
-            ticket.racehorses[0] === rankInNumbers[0]
-          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          money: calcMoney(
+            totalMoney,
+            allTickets,
+            (formula: number, racehorses: number[]) =>
+              formula === 1 &&
+              racehorses[0] === rankInNumbers[0]
+          ),
           popular: allTickets.filter((ticket: Ticket) =>
             ticket.formula === 1 &&
             ticket.racehorses[0] === rankInNumbers[0]
@@ -387,10 +415,13 @@ const GamePage: React.FC = () => {
           displayNumber: rankInNumbers[0].toString(),
         },
         {
-          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-            ticket.formula === 1 &&
-            ticket.racehorses[0] === rankInNumbers[1]
-          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          money: calcMoney(
+            totalMoney,
+            allTickets,
+            (formula: number, racehorses: number[]) =>
+              formula === 1 &&
+              racehorses[0] === rankInNumbers[1]
+          ),
           popular: allTickets.filter((ticket: Ticket) =>
             ticket.formula === 1 &&
             ticket.racehorses[0] === rankInNumbers[1]
@@ -398,10 +429,13 @@ const GamePage: React.FC = () => {
           displayNumber: rankInNumbers[1].toString(),
         },
         {
-          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-            ticket.formula === 1 &&
-            ticket.racehorses[0] === rankInNumbers[2]
-          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          money: calcMoney(
+            totalMoney,
+            allTickets,
+            (formula: number, racehorses: number[]) =>
+              formula === 1 &&
+              racehorses[0] === rankInNumbers[2]
+          ),
           popular: allTickets.filter((ticket: Ticket) =>
             ticket.formula === 1 &&
             ticket.racehorses[0] === rankInNumbers[2]
@@ -410,11 +444,14 @@ const GamePage: React.FC = () => {
         },
       ],
       compoundWin: {
-        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-          ticket.formula === 2 &&
-          ticket.racehorses.includes(rankInNumbers[0]) &&
-          ticket.racehorses.includes(rankInNumbers[1])
-        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        money: calcMoney(
+          totalMoney,
+          allTickets,
+          (formula: number, racehorses: number[]) =>
+            formula === 2 &&
+            racehorses.includes(rankInNumbers[0]) &&
+            racehorses.includes(rankInNumbers[1])
+        ),
         popular: allTickets.filter((ticket: Ticket) =>
           ticket.formula === 2 &&
           ticket.racehorses.includes(rankInNumbers[0]) &&
@@ -423,11 +460,14 @@ const GamePage: React.FC = () => {
         displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1],
       },
       continueWin: {
-        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-          ticket.formula === 3 &&
-          ticket.racehorses[0] === rankInNumbers[0] &&
-          ticket.racehorses[1] === rankInNumbers[1]
-        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        money: calcMoney(
+          totalMoney,
+          allTickets,
+          (formula: number, racehorses: number[]) =>
+            formula === 3 &&
+            racehorses[0] === rankInNumbers[0] &&
+            racehorses[1] === rankInNumbers[1]
+        ),
         popular: allTickets.filter((ticket: Ticket) =>
           ticket.formula === 3 &&
           ticket.racehorses[0] === rankInNumbers[0] &&
@@ -437,11 +477,14 @@ const GamePage: React.FC = () => {
       },
       wideWin: [
         {
-          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-            ticket.formula === 4 &&
-            ticket.racehorses.includes(rankInNumbers[0]) &&
-            ticket.racehorses.includes(rankInNumbers[1])
-          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          money: calcMoney(
+            totalMoney,
+            allTickets,
+            (formula: number, racehorses: number[]) =>
+              formula === 4 &&
+              racehorses.includes(rankInNumbers[0]) &&
+              racehorses.includes(rankInNumbers[1])
+          ),
           popular: allTickets.filter((ticket: Ticket) =>
             ticket.formula === 4 &&
             ticket.racehorses.includes(rankInNumbers[0]) &&
@@ -450,11 +493,14 @@ const GamePage: React.FC = () => {
           displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1],
         },
         {
-          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-            ticket.formula === 4 &&
-            ticket.racehorses.includes(rankInNumbers[1]) &&
-            ticket.racehorses.includes(rankInNumbers[2])
-          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          money: calcMoney(
+            totalMoney,
+            allTickets,
+            (formula: number, racehorses: number[]) =>
+              formula === 4 &&
+              racehorses.includes(rankInNumbers[1]) &&
+              racehorses.includes(rankInNumbers[2])
+          ),
           popular: allTickets.filter((ticket: Ticket) =>
             ticket.formula === 4 &&
             ticket.racehorses.includes(rankInNumbers[1]) &&
@@ -463,11 +509,14 @@ const GamePage: React.FC = () => {
           displayNumber: rankInNumbers[1] + "-" + rankInNumbers[2],
         },
         {
-          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-            ticket.formula === 4 &&
-            ticket.racehorses.includes(rankInNumbers[0]) &&
-            ticket.racehorses.includes(rankInNumbers[2])
-          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          money: calcMoney(
+            totalMoney,
+            allTickets,
+            (formula: number, racehorses: number[]) =>
+              formula === 4 &&
+              racehorses.includes(rankInNumbers[0]) &&
+              racehorses.includes(rankInNumbers[2])
+          ),
           popular: allTickets.filter((ticket: Ticket) =>
             ticket.formula === 4 &&
             ticket.racehorses.includes(rankInNumbers[0]) &&
@@ -477,12 +526,15 @@ const GamePage: React.FC = () => {
         }
       ],
       trifectaWin: {
-        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-          ticket.formula === 5 &&
-          ticket.racehorses.includes(rankInNumbers[0]) &&
-          ticket.racehorses.includes(rankInNumbers[1]) &&
-          ticket.racehorses.includes(rankInNumbers[2])
-        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        money: calcMoney(
+          totalMoney,
+          allTickets,
+          (formula: number, racehorses: number[]) =>
+            formula === 5 &&
+            racehorses.includes(rankInNumbers[0]) &&
+            racehorses.includes(rankInNumbers[1]) &&
+            racehorses.includes(rankInNumbers[2])
+        ),
         popular: allTickets.filter((ticket: Ticket) =>
           ticket.formula === 5 &&
           ticket.racehorses.includes(rankInNumbers[0]) &&
@@ -492,12 +544,15 @@ const GamePage: React.FC = () => {
         displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1] + "-" + rankInNumbers[2],
       },
       tripleWin: {
-        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
-          ticket.formula === 6 &&
-          ticket.racehorses[0] === rankInNumbers[0] &&
-          ticket.racehorses[1] === rankInNumbers[1] &&
-          ticket.racehorses[2] === rankInNumbers[2]
-        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        money: calcMoney(
+          totalMoney,
+          allTickets,
+          (formula: number, racehorses: number[]) =>
+            formula === 6 &&
+            racehorses[0] === rankInNumbers[0] &&
+            racehorses[1] === rankInNumbers[1] &&
+            racehorses[2] === rankInNumbers[2]
+        ),
         popular: allTickets.filter((ticket: Ticket) =>
           ticket.formula === 6 &&
           ticket.racehorses[0] === rankInNumbers[0] &&
@@ -507,6 +562,15 @@ const GamePage: React.FC = () => {
         displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1] + "-" + rankInNumbers[2],
       },
     }
+    // 最終計算時にInfinityになるのを修正
+    raceResult.singleWin.money = raceResult.singleWin.money === Infinity ? 0 : raceResult.singleWin.money
+    raceResult.doubleWin.map(r => r.money = r.money === Infinity ? 0 : r.money)
+    raceResult.compoundWin.money = raceResult.compoundWin.money === Infinity ? 0 : raceResult.compoundWin.money
+    raceResult.continueWin.money = raceResult.continueWin.money === Infinity ? 0 : raceResult.continueWin.money
+    raceResult.wideWin.map(r => r.money = r.money === Infinity ? 0 : r.money)
+    raceResult.trifectaWin.money = raceResult.trifectaWin.money === Infinity ? 0 : raceResult.trifectaWin.money
+    raceResult.tripleWin.money = raceResult.tripleWin.money === Infinity ? 0 : raceResult.tripleWin.money
+
     setRaceResult(raceResult)
 
     users.map((user: User) => {
@@ -595,7 +659,8 @@ const GamePage: React.FC = () => {
             }
             break
         }
-        ticket.refund = rate === 0.0 ? 0 : Math.round(totalMoney / rate * ticket.money)
+        ticket.refund = rate === 0.0 ? 0 : Math.round(rate * ticket.money)
+        console.log(`ticket.refund:${ticket.refund}`)
         user.money += ticket.refund
       })
     })
@@ -645,7 +710,7 @@ const GamePage: React.FC = () => {
                       <TableRow key={index}>
                         <TableCell>{user.service}</TableCell>
                         <TableCell>{user.name}</TableCell>
-                        <TableCell >{user.money}</TableCell>
+                        <TableCell >{user.money.toLocaleString()}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
@@ -688,7 +753,7 @@ const GamePage: React.FC = () => {
                         {realRacehorse.name}
                       </TableCell>
                       <TableCell align="right">{realRacehorse.number}</TableCell>
-                      <TableCell align="right">{realRacehorse.popularPower * 100}%</TableCell>
+                      <TableCell align="right">{(realRacehorse.popularPower * 100).toString().split('.')[0]}%</TableCell>
                       <TableCell align="right">{realRacehorse.odds}倍</TableCell>
                     </TableRow>
                   ))}
@@ -752,7 +817,7 @@ const GamePage: React.FC = () => {
                           <TableCell>{FORMULAS[ticket.formula].name}</TableCell>
                           <TableCell>
                             {ticket.racehorses.reduce<string>(
-                              (str: string, num: number, index: number) => str + num + (index === 0 ? '' : '-'),
+                              (str: string, num: number, index: number) => str + num + (index === ticket.racehorses.length - 1 ? '' : '-'),
                               ''
                             )}
                           </TableCell>
