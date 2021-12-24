@@ -3,21 +3,29 @@ import { useSelector, useDispatch } from 'react-redux'
 import { makeStyles } from '@mui/styles'
 
 // mui
+import Container from '@mui/material/Container'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import FormControl from '@mui/material/FormControl'
+import FormLabel from '@mui/material/FormLabel'
 import Grid from '@mui/material/Grid'
+import Radio from '@mui/material/Radio'
+import RadioGroup from '@mui/material/RadioGroup'
 import Step from '@mui/material/Step'
 import StepButton from '@mui/material/StepButton'
 import Stepper from '@mui/material/Stepper'
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
 
 // utils
 import {
+  ACTION_UPDATE_USERS,
   ACTION_USER_BUY_TICKET,
   ACTION_USER_CLEAN_BOUGHT_TICKETS,
+  FORMULAS,
   RACEHORSES,
 } from '../../const'
 import { getComments } from '../../action/comment'
@@ -25,13 +33,16 @@ import {
   Comment,
   RacehorseBase,
   RacehorseDetail,
+  RaceResult as RaceResultInterface,
   RealRacehorse,
+  ResultRacehorse,
   Ticket,
   User,
 } from '../../interface'
 
 // organisms
 import Race from '../organisms/Race'
+import RaceResult from '../organisms/RaceResult'
 import RacehorseIntroduction from '../organisms/RacehorseIntroduction'
 import { ACTION_RACEHORSE_CONSISTENCY } from '../../const'
 
@@ -40,15 +51,6 @@ const useStyles = makeStyles(() => ({
 
 /**
  * ゲーム画面
- * 
- * 23日
- * ３．結果表示画面表示時に馬券情報と勝ち馬の情報をもとに、各ユーザの持ち金を操作する
- * 
- * 24日
- * ブラッシュアップ（見た目とか）
- * 
- * 24日夜
- * 遊ぶ！！！！！！
  */
 const GamePage: React.FC = () => {
   // -------------------------------------------------------- 
@@ -173,7 +175,15 @@ const GamePage: React.FC = () => {
    * フェーズ変更時イベント
    */
   const handlePhaseStep = (step: number) => () => {
+    // 全員がゴールしていない状態で結果発表画面にはいけないようにする
+    if (raceResult === null && step === 4) {
+      return
+    }
     switch (step) {
+      // 初期表示時に購入済みチケットをクリアする
+      case 0:
+        users.map((user: User) => user.boughtTickets = [])
+        dispatch({ type: ACTION_UPDATE_USERS, payload: users })
       // 出走馬紹介画面を開いたタイミングで出走馬のステータスを更新する
       case 1:
         // 初期表示時に最新のlocalStorageの情報を取得する
@@ -341,7 +351,260 @@ const GamePage: React.FC = () => {
         break
     }
   }, [activeComments])
+  /**
+   * レース結果
+   */
+  const [raceResult, setRaceResult] = useState<RaceResultInterface | null>(null)
+  /**
+   * 全員ゴール時イベント
+   */
+  const handleGoal = (rankInNumbers: number[]) => {
+    const allTickets: Ticket[] = []
+    users.map((user: User) => allTickets.concat(user.boughtTickets))
+    const raceResult: RaceResultInterface = {
+      top3Numbers: rankInNumbers.filter((_: number, index: number) => index < 3),
+      singleWin: {
+        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 0 &&
+          ticket.racehorses[0] === rankInNumbers[0]
+        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        popular: allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 0 &&
+          ticket.racehorses[0] === rankInNumbers[0]
+        ).length,
+        displayNumber: rankInNumbers[0].toString(),
+      },
+      doubleWin: [
+        {
+          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 1 &&
+            ticket.racehorses[0] === rankInNumbers[0]
+          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          popular: allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 1 &&
+            ticket.racehorses[0] === rankInNumbers[0]
+          ).length,
+          displayNumber: rankInNumbers[0].toString(),
+        },
+        {
+          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 1 &&
+            ticket.racehorses[0] === rankInNumbers[1]
+          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          popular: allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 1 &&
+            ticket.racehorses[0] === rankInNumbers[1]
+          ).length,
+          displayNumber: rankInNumbers[1].toString(),
+        },
+        {
+          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 1 &&
+            ticket.racehorses[0] === rankInNumbers[2]
+          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          popular: allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 1 &&
+            ticket.racehorses[0] === rankInNumbers[2]
+          ).length,
+          displayNumber: rankInNumbers[2].toString(),
+        },
+      ],
+      compoundWin: {
+        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 2 &&
+          ticket.racehorses.includes(rankInNumbers[0]) &&
+          ticket.racehorses.includes(rankInNumbers[1])
+        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        popular: allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 2 &&
+          ticket.racehorses.includes(rankInNumbers[0]) &&
+          ticket.racehorses.includes(rankInNumbers[1])
+        ).length,
+        displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1],
+      },
+      continueWin: {
+        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 3 &&
+          ticket.racehorses[0] === rankInNumbers[0] &&
+          ticket.racehorses[1] === rankInNumbers[1]
+        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        popular: allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 3 &&
+          ticket.racehorses[0] === rankInNumbers[0] &&
+          ticket.racehorses[1] === rankInNumbers[1]
+        ).length,
+        displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1],
+      },
+      wideWin: [
+        {
+          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 4 &&
+            ticket.racehorses.includes(rankInNumbers[0]) &&
+            ticket.racehorses.includes(rankInNumbers[1])
+          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          popular: allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 4 &&
+            ticket.racehorses.includes(rankInNumbers[0]) &&
+            ticket.racehorses.includes(rankInNumbers[1])
+          ).length,
+          displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1],
+        },
+        {
+          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 4 &&
+            ticket.racehorses.includes(rankInNumbers[1]) &&
+            ticket.racehorses.includes(rankInNumbers[2])
+          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          popular: allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 4 &&
+            ticket.racehorses.includes(rankInNumbers[1]) &&
+            ticket.racehorses.includes(rankInNumbers[2])
+          ).length,
+          displayNumber: rankInNumbers[1] + "-" + rankInNumbers[2],
+        },
+        {
+          money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 4 &&
+            ticket.racehorses.includes(rankInNumbers[0]) &&
+            ticket.racehorses.includes(rankInNumbers[2])
+          ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+          popular: allTickets.filter((ticket: Ticket) =>
+            ticket.formula === 4 &&
+            ticket.racehorses.includes(rankInNumbers[0]) &&
+            ticket.racehorses.includes(rankInNumbers[2])
+          ).length,
+          displayNumber: rankInNumbers[0] + "-" + rankInNumbers[2],
+        }
+      ],
+      trifectaWin: {
+        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 5 &&
+          ticket.racehorses.includes(rankInNumbers[0]) &&
+          ticket.racehorses.includes(rankInNumbers[1]) &&
+          ticket.racehorses.includes(rankInNumbers[2])
+        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        popular: allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 5 &&
+          ticket.racehorses.includes(rankInNumbers[0]) &&
+          ticket.racehorses.includes(rankInNumbers[1]) &&
+          ticket.racehorses.includes(rankInNumbers[2])
+        ).length,
+        displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1] + "-" + rankInNumbers[2],
+      },
+      tripleWin: {
+        money: Math.round(totalMoney / (allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 6 &&
+          ticket.racehorses[0] === rankInNumbers[0] &&
+          ticket.racehorses[1] === rankInNumbers[1] &&
+          ticket.racehorses[2] === rankInNumbers[2]
+        ) ?? []).reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)) || 0,
+        popular: allTickets.filter((ticket: Ticket) =>
+          ticket.formula === 6 &&
+          ticket.racehorses[0] === rankInNumbers[0] &&
+          ticket.racehorses[1] === rankInNumbers[1] &&
+          ticket.racehorses[2] === rankInNumbers[2]
+        ).length,
+        displayNumber: rankInNumbers[0] + "-" + rankInNumbers[1] + "-" + rankInNumbers[2],
+      },
+    }
+    setRaceResult(raceResult)
 
+    users.map((user: User) => {
+      // チケット購入金額分所持金を減らす
+      user.money -= user.boughtTickets.reduce<number>((total: number, ticket: Ticket) => total + ticket.money, 0)
+      // チケット毎に払い戻し金額を計算する
+      user.boughtTickets.map((ticket: Ticket) => {
+        let rate = 0.0
+        switch (ticket.formula) {
+          // 単勝
+          case 0:
+            if (ticket.racehorses[0] === rankInNumbers[0]) {
+              rate = raceResult.singleWin.money
+            }
+            break
+          // 複勝
+          case 1:
+            if (ticket.racehorses[0] === rankInNumbers[0]) {
+              rate = raceResult.doubleWin[0].money
+            }
+            else if (ticket.racehorses[0] === rankInNumbers[1]) {
+              rate = raceResult.doubleWin[1].money
+
+            }
+            else if (ticket.racehorses[0] === rankInNumbers[2]) {
+              rate = raceResult.doubleWin[2].money
+            }
+            break
+          // 魚連
+          case 2:
+            if (
+              ticket.racehorses.includes(rankInNumbers[0]) &&
+              ticket.racehorses.includes(rankInNumbers[1])
+            ) {
+              rate = raceResult.compoundWin.money
+            }
+            break
+          // 魚単
+          case 3:
+            if (
+              ticket.racehorses[0] === rankInNumbers[0] &&
+              ticket.racehorses[1] === rankInNumbers[1]
+            ) {
+              rate = raceResult.continueWin.money
+            }
+            break
+          // ワイド
+          case 4:
+            if (
+              ticket.racehorses.includes(rankInNumbers[0]) &&
+              ticket.racehorses.includes(rankInNumbers[1])
+            ) {
+              rate = raceResult.wideWin[0].money
+            }
+            else if (
+              ticket.racehorses.includes(rankInNumbers[1]) &&
+              ticket.racehorses.includes(rankInNumbers[2])
+            ) {
+              rate = raceResult.wideWin[1].money
+            }
+            else if (
+              ticket.racehorses.includes(rankInNumbers[0]) &&
+              ticket.racehorses.includes(rankInNumbers[2])
+            ) {
+              rate = raceResult.wideWin[2].money
+            }
+            break
+          // 三連複
+          case 5:
+            if (
+              ticket.racehorses.includes(rankInNumbers[0]) &&
+              ticket.racehorses.includes(rankInNumbers[1]) &&
+              ticket.racehorses.includes(rankInNumbers[2])
+            ) {
+              rate = raceResult.trifectaWin.money
+            }
+            break
+          // 三連単
+          case 6:
+            if (
+              ticket.racehorses[0] === rankInNumbers[0] &&
+              ticket.racehorses[1] === rankInNumbers[1] &&
+              ticket.racehorses[2] === rankInNumbers[2]
+            ) {
+              rate = raceResult.tripleWin.money
+            }
+            break
+        }
+        ticket.refund = rate === 0.0 ? 0 : Math.round(totalMoney / rate * ticket.money)
+        user.money += ticket.refund
+      })
+    })
+    dispatch({ type: ACTION_UPDATE_USERS, payload: users })
+  }
+  const [resultRadioValue, setResultRadioValue] = useState<string>("race")
+  const handleResultRadioValueChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
+    setResultRadioValue(value)
+  }
   return (
     <Grid container>
       <Grid item xs={12}>
@@ -360,8 +623,36 @@ const GamePage: React.FC = () => {
       </Grid>
       {activePhaseStep === 0 ? (
         <Grid item container xs={12}>
-          ちょっと待ってね
-          {activeComments.map((c, index) => (<div key={index}>{c.content}</div>))}
+          <Grid item xs={12}>
+            {activeComments.map((c, index) => (<div key={index}>{c.content}</div>))}
+          </Grid>
+          <Grid item xs={12}>
+            参加者リスト
+          </Grid>
+          <Grid item xs={12}>
+            <Container maxWidth="md">
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>サービス名</TableCell>
+                      <TableCell>ユーザ名</TableCell>
+                      <TableCell >所持金(10,000スタート)</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {users.map((user: User, index: number) => (
+                      <TableRow key={index}>
+                        <TableCell>{user.service}</TableCell>
+                        <TableCell>{user.name}</TableCell>
+                        <TableCell >{user.money}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </Container>
+          </Grid>
         </Grid>
       ) : null}
       {activePhaseStep === 1 ? (
@@ -409,24 +700,72 @@ const GamePage: React.FC = () => {
       ) : null}
       {activePhaseStep === 3 ? (
         <Grid item container xs={12}>
+          <Grid item xs={12}>
+            .
+          </Grid>
           <Race
             realRacehorses={realRacehorses}
+            onGoal={handleGoal}
           />
-          {realRacehorses.map((r, index) => (
-            <React.Fragment key={index}>
-              <Grid item xs={2}>
-                {r.name}
-              </Grid>
-              <Grid item xs={10}>
-                {r.supportPower}
-              </Grid>
-            </React.Fragment>
-          ))}
         </Grid>
       ) : null}
       {activePhaseStep === 4 ? (
         <Grid item container xs={12}>
-          dddd
+          <Grid item xs={12}>
+            <FormControl component="fieldset">
+              <RadioGroup
+                defaultValue="race"
+                name="radio-buttons-group"
+                value={resultRadioValue}
+                onChange={handleResultRadioValueChange}
+              >
+                <FormControlLabel value="race" control={<Radio />} label="レース結果" />
+                <FormControlLabel value="money" control={<Radio />} label="払戻金" />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            {resultRadioValue === "race" && raceResult !== null ? (
+              <RaceResult
+                raceResult={raceResult}
+              />
+            ) : null}
+            {resultRadioValue === "money" ? (
+              <Container maxWidth="md">
+                <TableContainer>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>サービス名</TableCell>
+                        <TableCell>ユーザ名</TableCell>
+                        <TableCell align="right">式別</TableCell>
+                        <TableCell align="right">魚券</TableCell>
+                        <TableCell align="right">購入金額</TableCell>
+                        <TableCell align="right">払い戻し金額</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {users.map((u: User) => u.boughtTickets.map((ticket: Ticket) => (
+                        <TableRow>
+                          <TableCell component="th" scope="row">{u.service}</TableCell>
+                          <TableCell>{u.name}</TableCell>
+                          <TableCell>{FORMULAS[ticket.formula].name}</TableCell>
+                          <TableCell>
+                            {ticket.racehorses.reduce<string>(
+                              (str: string, num: number, index: number) => str + num + (index === 0 ? '' : '-'),
+                              ''
+                            )}
+                          </TableCell>
+                          <TableCell align="right">{ticket.money.toLocaleString()}</TableCell>
+                          <TableCell align="right">{ticket.refund.toLocaleString()}</TableCell>
+                        </TableRow>
+                      )))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Container>
+            ) : null}
+          </Grid>
         </Grid>
       ) : null}
     </Grid >

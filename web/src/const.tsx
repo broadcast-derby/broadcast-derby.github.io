@@ -148,9 +148,13 @@ export const ACTION_USER_CLEAN_BOUGHT_TICKETS = 'ACTION_USER_CLEAN_BOUGHT_TICKET
  * チケット購入アクション
  */
 export const ACTION_USER_BUY_TICKET = 'ACTION_USER_BUY_TICKET'
-
 /**
  * アクション名
  * ユーザ情報取得
  */
 export const ACTION_GET_USERS = 'ACTION_GET_USERS'
+/**
+ * アクション名
+ * ユーザ情報更新
+ */
+export const ACTION_UPDATE_USERS = 'ACTION_UPDATE_USERS'

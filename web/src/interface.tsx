@@ -75,15 +75,15 @@ export interface RealRacehorse extends RacehorseDetail {
   /**
    * 単勝掛け金
    */
-   singleMoney: number,
-   /**
-    * 得票数
-    */
-   votes:number,
-   /**
-    * 実際の人気度
-    */
-   popularPower:number,
+  singleMoney: number,
+  /**
+   * 得票数
+   */
+  votes: number,
+  /**
+   * 実際の人気度
+   */
+  popularPower: number,
 }
 
 /**
@@ -208,4 +208,62 @@ export interface Ticket {
    * 掛け金
    */
   money: number,
+  /**
+   * 払戻金
+   */
+  refund: number,
+}
+/**
+ * 出走馬結果
+ */
+export interface ResultRacehorse {
+  /**
+   * 払戻金
+   */
+  money: number,
+  /**
+   * 人気
+   */
+  popular: number,
+  /**
+   * 表示番号
+   */
+  displayNumber: string,
+}
+/**
+ * 結果
+ */
+export interface RaceResult {
+  /**
+   * 上位3位までの出走馬番号
+   */
+  top3Numbers: number[],
+  /**
+   * 単勝
+   */
+  singleWin: ResultRacehorse,
+  /**
+   * 複勝
+   */
+  doubleWin: ResultRacehorse[],
+  /**
+   * 馬連
+   */
+  compoundWin: ResultRacehorse,
+  /**
+   * 馬単
+   */
+  continueWin: ResultRacehorse,
+  /**
+   * ワイド
+   */
+  wideWin: ResultRacehorse[],
+  /***
+   * 三連複
+   */
+  trifectaWin: ResultRacehorse,
+  /**
+   * 三連単
+   */
+  tripleWin: ResultRacehorse,
 }

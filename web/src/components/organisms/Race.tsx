@@ -29,6 +29,10 @@ interface RaceProps {
    * 出走馬一覧
    */
   realRacehorses: RealRacehorse[],
+  /**
+   * 全員ゴール時イベント
+   */
+  onGoal: Function,
 }
 /**
  * レース中
@@ -38,6 +42,10 @@ const Race: React.FC<RaceProps> = ({
    * 出走馬一覧
    */
   realRacehorses,
+  /**
+   * 全員ゴール時イベント
+   */
+  onGoal,
 }) => {
   /**
    * 実際に走っている出走馬情報一覧
@@ -114,6 +122,17 @@ const Race: React.FC<RaceProps> = ({
     TaiSlider,
     BuriSlider,
   ]
+  /**
+   * 出走馬のゴール判定を確認して、
+   * 全員がゴールしたら親コンポーネントに結果を渡す
+   */
+  useEffect(() => {
+    // 全員ゴールしてないなら何もしない
+    if (rankInNumbers.length === 0 || rankInNumbers.length !== runningRacehorse.length) {
+      return
+    }
+    onGoal(rankInNumbers)
+  }, [rankInNumbers])
   return (
     <Grid container >
       <Grid item xs={12}>
@@ -121,20 +140,6 @@ const Race: React.FC<RaceProps> = ({
           variant="contained"
           onClick={handleStartClick}
         >スタート</Button>
-      </Grid>
-      <Grid item xs={12}>
-        <Grid container>
-          {rankInNumbers.map((rankInNumber: number, index: number) => (
-            <React.Fragment key={index}>
-              <Grid item xs={3}>
-                {index + 1}着
-              </Grid>
-              <Grid item xs={9}>
-                {RACEHORSES.find((r: RacehorseBase) => r.number === rankInNumber)?.name ?? ''}
-              </Grid>
-            </React.Fragment>
-          ))}
-        </Grid>
       </Grid>
       {runningRacehorse.map((rh: RealRacehorse, index: number) => (
         <React.Fragment key={index}>
@@ -156,6 +161,20 @@ const Race: React.FC<RaceProps> = ({
           </Grid>
         </React.Fragment>
       ))}
+      <Grid item xs={12}>
+        <Grid container>
+          {rankInNumbers.map((rankInNumber: number, index: number) => (
+            <React.Fragment key={index}>
+              <Grid item xs={3}>
+                {index + 1}着
+              </Grid>
+              <Grid item xs={9}>
+                {RACEHORSES.find((r: RacehorseBase) => r.number === rankInNumber)?.name ?? ''}
+              </Grid>
+            </React.Fragment>
+          ))}
+        </Grid>
+      </Grid>
     </Grid>
   )
 }

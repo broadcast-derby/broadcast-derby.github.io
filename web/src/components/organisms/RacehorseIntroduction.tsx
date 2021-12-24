@@ -39,6 +39,9 @@ const RacehorseIntroduction: React.FC<RacehorseIntroductionProps> = ({
               <Grid container>
                 <Grid item xs={12}>
                   <Grid container>
+                    <Grid item xs={12}>
+                      <img src={rh.imagePath} />
+                    </Grid>
                     <Grid item xs={3}>
                       名前
                     </Grid>

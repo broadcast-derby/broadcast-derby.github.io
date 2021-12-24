@@ -66,6 +66,7 @@ const TopPage: React.FC = () => {
           color: '',
           number: 0,
           imagePath: '',
+          keywordRegexList:[],
         })
       }
     }

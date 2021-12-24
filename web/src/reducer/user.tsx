@@ -2,6 +2,7 @@ import {
   ACTION_USER_CLEAN_BOUGHT_TICKETS,
   ACTION_USER_BUY_TICKET,
   ACTION_GET_USERS,
+  ACTION_UPDATE_USERS,
 } from '../const'
 import { User, Ticket } from '../interface'
 
@@ -43,6 +44,7 @@ export const userReducer = (state = initialState(), action: any) => {
         formula: action.payload.formula,
         racehorses: action.payload.racehorses,
         money: action.payload.money,
+        refund: 0,
       }
       // localStorageからユーザが見つからなければ新規登録
       if (targetUserIndex === null) {
@@ -64,6 +66,11 @@ export const userReducer = (state = initialState(), action: any) => {
       const usersStr = window.localStorage.getItem('users') ?? '[]'
       return {
         users: JSON.stringify(usersStr)
+      }
+    case ACTION_UPDATE_USERS:
+      window.localStorage.setItem('users', JSON.stringify(action.payload))
+      return {
+        users: action.payload
       }
     default:
       return state
