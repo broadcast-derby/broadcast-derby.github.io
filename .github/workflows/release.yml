@@ -11,16 +11,26 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    # nodejsのセットアップ
     - name: setup node
       uses: actions/setup-node@v1
       with:
         node-version: '16.6'
 
+    # node modulesのインストール
     - name: install
       run: cd ./web && npm install
 
+    # ビルド
     - name: build
       run: cd ./web && npm run build
+
+    # github pagesへアップロード
+    - name: upload github pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./web/dist
 
     # npmのバージョン情報を取得
     #
@@ -32,13 +42,14 @@ jobs:
       with:
         path: web
 
+    # リリース
     - name: Create release
       id: create_release
       uses: actions/create-release@v1.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: version ${{ steps.package-version.outputs.current-version}}
+        tag_name: version_${{ steps.package-version.outputs.current-version}}
         release_name: Release ${{ steps.package-version.outputs.current-version}}
         draft: false
         prerelease: false
