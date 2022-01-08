@@ -29,6 +29,8 @@ jobs:
     - name: get-npm-version
       id: package-version
       uses: martinbeentjes/npm-get-version-action@master
+      with:
+        path: web/package.json
 
     - name: Create release
       id: create_release
