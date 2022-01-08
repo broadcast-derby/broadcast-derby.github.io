@@ -19,15 +19,23 @@ export const getComments = async (dispatch: any) => {
   const comments: HTMLCollectionOf<Element> = xmlData.getElementsByTagName('comment')
   for (let i = 0; i < comments.length; i++) {
     const comment: any = comments[i]
-    const obj: Comment = {
-      time: Number(comment?.getAttributeNode('time')?.value) || 0,
-      no: Number(comment?.getAttributeNode('no')?.value) || 0,
-      owner: Number(comment?.getAttributeNode('owner')?.value) || 0,
-      userName: comment?.getAttributeNode('handle')?.value || '',
-      service: comment?.getAttributeNode('service')?.value || '',
-      content: comment?.firstChild ? comment.firstChild.nodeValue : '',
+    if (comment) {
+      const time = comment.getAttributeNode('time')
+      const no = comment.getAttributeNode('no')
+      const owner = comment.getAttributeNode('owner')
+      const userName = comment.getAttributeNode('handle')
+      const service = comment.getAttributeNode('service')
+      const content = comment.firstChild
+      const obj: Comment = {
+        time: time ? Number(time.value) : 0,
+        no: no ? Number(no.value) : 0,
+        owner: owner ? Number(owner.value) : 0,
+        userName: userName ? userName.value : '',
+        service: service ? service.value : '',
+        content: content ? content.nodeValue : '',
+      }
+      result.push(obj)
     }
-    result.push(obj)
   }
   dispatch({ type: ACTION_COMMENT_GET_COMMENTS, payload: result })
 }

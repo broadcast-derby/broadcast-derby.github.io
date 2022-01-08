@@ -8,9 +8,12 @@ import {
  * 出走馬情報はLocalStorageに持たせて永続化させる
  */
 const initialState = () => {
-  const racehorses = window.localStorage.getItem('racehorses')
+  let racehorses = window.localStorage.getItem('racehorses')
+  if (!racehorses) {
+    racehorses = '[]'
+  }
   return {
-    racehorses: JSON.parse(racehorses ?? '[]')
+    racehorses: JSON.parse(racehorses)
   }
 }
 
@@ -27,9 +30,12 @@ export const racehorsesReducer = (state = initialState(), action: any) => {
       }
     // localStorageの情報を正としてstateを更新する
     case ACTION_RACEHORSE_CONSISTENCY:
-      const racehorses = window.localStorage.getItem('racehorses')
+      let racehorses = window.localStorage.getItem('racehorses')
+      if (!racehorses) {
+        racehorses = '[]'
+      }
       return {
-        racehorses: JSON.parse(racehorses ?? '[]')
+        racehorses: JSON.parse(racehorses)
       }
     default:
       return state

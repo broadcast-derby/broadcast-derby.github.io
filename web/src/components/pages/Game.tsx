@@ -320,7 +320,14 @@ const GamePage: React.FC = () => {
   const cheerUpRacehorse = (commentContent: string) => {
     realRacehorses.map((real: RealRacehorse) => {
       real.supportPower += COMMENT_POWER
-      const regexList = RACEHORSES.find((base: RacehorseBase) => base.number === real.number)?.keywordRegexList ?? []
+      const racehorse = RACEHORSES.find((base: RacehorseBase) => base.number === real.number)
+      let regexList: RegExp[]
+      if (!racehorse) {
+        regexList = []
+      }
+      else {
+        regexList = racehorse.keywordRegexList
+      }
       regexList.map((regex: RegExp) => {
         if (commentContent.match(regex)) {
           real.supportPower += SPECIAL_POWER

@@ -133,6 +133,20 @@ const Race: React.FC<RaceProps> = ({
     }
     onGoal(rankInNumbers)
   }, [rankInNumbers])
+  /**
+   * 出走馬番号から出走馬名を取得
+   * @param {number} number 出走馬番号
+   * @returns 出走馬名
+   */
+  const getRacehorseName = (number: number) => {
+    const racehorse = RACEHORSES.find((r: RacehorseBase) => r.number === number)
+    if (racehorse) {
+      return racehorse.name
+    }
+    else {
+      ''
+    }
+  }
   return (
     <Grid container >
       <Grid item xs={12}>
@@ -169,7 +183,7 @@ const Race: React.FC<RaceProps> = ({
                 {index + 1}着
               </Grid>
               <Grid item xs={9}>
-                {RACEHORSES.find((r: RacehorseBase) => r.number === rankInNumber)?.name ?? ''}
+                {getRacehorseName(rankInNumber)}
               </Grid>
             </React.Fragment>
           ))}

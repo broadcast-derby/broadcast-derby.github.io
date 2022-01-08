@@ -10,9 +10,12 @@ import { User, Ticket } from '../interface'
  * 初期値
  */
 const initialState = () => {
-  const users = window.localStorage.getItem('users')
+  let usersStr = window.localStorage.getItem('users')
+  if( !usersStr ){
+    usersStr = '[]'
+  }
   return {
-    users: JSON.parse(users ?? '[]')
+    users: JSON.parse(usersStr)
   }
 }
 
@@ -20,8 +23,11 @@ const initialState = () => {
  * ユーザ用State更新Recuder
  */
 export const userReducer = (state = initialState(), action: any) => {
-  const userStr = window.localStorage.getItem('users')
-  const users: User[] = JSON.parse(userStr ?? '[]')
+  let usersStr = window.localStorage.getItem('users')
+  if( !usersStr ){
+    usersStr = '[]'
+  }
+  const users: User[] = JSON.parse(usersStr)
   switch (action.type) {
     // 馬券情報削除
     case ACTION_USER_CLEAN_BOUGHT_TICKETS:
@@ -63,7 +69,10 @@ export const userReducer = (state = initialState(), action: any) => {
         users: users,
       }
     case ACTION_GET_USERS:
-      const usersStr = window.localStorage.getItem('users') ?? '[]'
+      let usersStr = window.localStorage.getItem('users')
+      if( !usersStr ){
+        usersStr = '[]'
+      }
       return {
         users: JSON.stringify(usersStr)
       }

@@ -34,6 +34,20 @@ const RaceResult: React.FC<RaceResultProps> = ({
    */
   raceResult,
 }) => {
+  /**
+   * 出走馬番号から出走馬名を取得
+   * @param {number} number 出走馬番号
+   * @returns 出走馬名
+   */
+  const getRacehorseName = (number: number) => {
+    const racehorse = RACEHORSES.find((r: RacehorseBase) => r.number === number)
+    if (racehorse) {
+      return racehorse.name
+    }
+    else {
+      ''
+    }
+  }
   return (
     <Container maxWidth="xs">
       <Grid container>
@@ -54,8 +68,8 @@ const RaceResult: React.FC<RaceResultProps> = ({
                       <TableCell component="th" scope="row">
                         {index + 1}
                       </TableCell>
-                      <TableCell align="right">{RACEHORSES.find((r: RacehorseBase) => r.number === val)?.number ?? ''}</TableCell>
-                      <TableCell align="right">{RACEHORSES.find((r: RacehorseBase) => r.number === val)?.name ?? ''}</TableCell>
+                      <TableCell align="right">{val}</TableCell>
+                      <TableCell align="right">{getRacehorseName(val)}</TableCell>
                     </TableRow>
                   </React.Fragment>
                 ))}

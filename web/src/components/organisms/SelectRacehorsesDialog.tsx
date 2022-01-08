@@ -47,13 +47,27 @@ const SelectRacehorsesDialog: React.FC<SelectRacehorseDialogProps> = ({
   const handleListItemClick = (index: number) => {
     onClose(index)
   }
+  /**
+   * キーから色名を取得
+   * @param {string} key キー名 
+   * @returns 色名
+   */
+  const getColorName = (key: string) => {
+    const color = COLORS.find((c: Color) => c.key === key)
+    if (color) {
+      return color.name
+    }
+    else {
+      return ''
+    }
+  }
   return (
     <Dialog onClose={() => { onClose(null) }} open={open}>
       <DialogTitle>魚を選択してください</DialogTitle>
       <List>
         {RACEHORSES.map((racehorse: RacehorseBase, index: number) => (
           <ListItem button onClick={() => handleListItemClick(index)} key={index}>
-            <ListItemText primary={racehorse.name} secondary={racehorse.number + " " + COLORS.find((c: Color) => c.key === racehorse.color)?.name ?? ''} />
+            <ListItemText primary={racehorse.name} secondary={racehorse.number + " " + getColorName(racehorse.color)} />
           </ListItem>
         ))}
       </List>
