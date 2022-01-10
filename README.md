@@ -1,5 +1,7 @@
 # おさかなだぁびぃ
 
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/overview.png)
+
 ## おさかなだぁびぃとは
 
 コメントで応援することで、おさかなさんたちのスピードが上がる競魚(競馬)ゲーム
