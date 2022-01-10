@@ -27,11 +27,11 @@ jobs:
 
     # distをnginxに入れる
     - name: move dist
-      run: mv ./web/dist/. nginx/html/.
+      run: mv ./web/dist ./nginx/html
 
     # nginxをリリース物としてzipにまとめる
     - name: zip
-      run: zip -r release nginx/
+      run: zip -r release ./nginx
 
     # github pagesへアップロード
     - name: upload github pages
