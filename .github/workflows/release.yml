@@ -25,13 +25,22 @@ jobs:
     - name: build
       run: cd ./web && npm run build
 
+    # ビルド生成物の中にsettingフォルダを作る
+    - name: make setting directory
+      run: cd ./web/dist && mkdir setting
+
     # distをnginxに入れる
     - name: move dist
       run: mv ./web/dist ./nginx/html
 
+    # リリース物の名前を変える
+    # (release.zipを展開した後の名前)
+    - name: change directory name
+      run: mv nginx osakana-derby
+
     # nginxをリリース物としてzipにまとめる
     - name: zip
-      run: zip -r release ./nginx
+      run: zip -r release ./osakana-derby
 
     # github pagesへアップロード
     - name: upload github pages
