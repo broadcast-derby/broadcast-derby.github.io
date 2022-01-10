@@ -25,9 +25,10 @@ jobs:
     - name: build
       run: cd ./web && npm run build
 
-    # distの中にあるファイルをzipにまとめる
+    # distをnginxに入れてからzipにまとめる
     - name: zip output
-      run: cd ./web && zip -r release dist/
+      run: mv ./web/dist/. nginx/html/.
+      run: zip -r release nginx/
 
     # github pagesへアップロード
     - name: upload github pages
@@ -66,6 +67,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./web/release.zip
+        asset_path: ./release.zip
         asset_name: release.zip
         asset_content_type: application/zip
