@@ -36,11 +36,11 @@ jobs:
     # リリース物の名前を変える
     # (release.zipを展開した後の名前)
     - name: change directory name
-      run: mv nginx osakana-derby
+      run: mv nginx osakana_derby
 
     # nginxをリリース物としてzipにまとめる
     - name: zip
-      run: zip -r release ./osakana-derby
+      run: zip -r release ./osakana_derby
 
     # github pagesへアップロード
     - name: upload github pages
