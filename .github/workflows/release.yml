@@ -25,9 +25,12 @@ jobs:
     - name: build
       run: cd ./web && npm run build
 
-    # distをnginxに入れてからzipにまとめる
-    - name: zip output
+    # distをnginxに入れる
+    - name: move dist
       run: mv ./web/dist/. nginx/html/.
+
+    # nginxをリリース物としてzipにまとめる
+    - name: zip
       run: zip -r release nginx/
 
     # github pagesへアップロード
