@@ -25,6 +25,13 @@ jobs:
     - name: build
       run: cd ./web && npm run build
 
+    # github pagesへアップロード
+    - name: upload github pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./web/dist
+
     # ビルド生成物の中にsettingフォルダを作る
     - name: make setting directory
       run: cd ./web/dist && mkdir setting
@@ -41,14 +48,7 @@ jobs:
     # nginxをリリース物としてzipにまとめる
     - name: zip
       run: zip -r release ./osakana_derby
-
-    # github pagesへアップロード
-    - name: upload github pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./web/dist
-
+      
     # npmのバージョン情報を取得
     #
     # これで使えるようになる
