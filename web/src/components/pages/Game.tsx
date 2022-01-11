@@ -6,7 +6,6 @@ import { makeStyles } from '@mui/styles'
 import Container from '@mui/material/Container'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
-import FormLabel from '@mui/material/FormLabel'
 import Grid from '@mui/material/Grid'
 import Radio from '@mui/material/Radio'
 import RadioGroup from '@mui/material/RadioGroup'
@@ -22,20 +21,22 @@ import TableRow from '@mui/material/TableRow'
 
 // utils
 import {
-  ACTION_UPDATE_USERS,
-  ACTION_USER_BUY_TICKET,
-  ACTION_USER_CLEAN_BOUGHT_TICKETS,
   FORMULAS,
   RACEHORSES,
 } from '../../const'
 import { getComments } from '../../action/comment'
+import { consistencyRacehorses } from '../../action/racehorse'
+import {
+  buyTicket as buyTicketAction,
+  cleanBoughtTickets,
+  updateUsers,
+} from '../../action/user'
 import {
   Comment,
   RacehorseBase,
   RacehorseDetail,
-  RaceResult as RaceResultInterface,
   RealRacehorse,
-  ResultRacehorse,
+  RaceResult as RaceResultInterface,
   Ticket,
   User,
 } from '../../interface'
@@ -44,7 +45,6 @@ import {
 import Race from '../organisms/Race'
 import RaceResult from '../organisms/RaceResult'
 import RacehorseIntroduction from '../organisms/RacehorseIntroduction'
-import { ACTION_RACEHORSE_CONSISTENCY } from '../../const'
 
 const useStyles = makeStyles(() => ({
 }))
@@ -183,12 +183,12 @@ const GamePage: React.FC = () => {
       // 初期表示時に購入済みチケットをクリアする
       case 0:
         users.map((user: User) => user.boughtTickets = [])
-        dispatch({ type: ACTION_UPDATE_USERS, payload: users })
+        updateUsers(dispatch, users)
       // 出走馬紹介画面を開いたタイミングで出走馬のステータスを更新する
       case 1:
         // 初期表示時に最新のlocalStorageの情報を取得する
-        dispatch({ type: ACTION_RACEHORSE_CONSISTENCY })
-        dispatch({ type: ACTION_USER_CLEAN_BOUGHT_TICKETS })
+        dispatch(consistencyRacehorses)
+        dispatch(cleanBoughtTickets)
         // storeの情報に更新しきって(racehorsesが更新されてから)から処理する
         setTimeout(() => {
           const rhs: RealRacehorse[] = []
@@ -296,15 +296,7 @@ const GamePage: React.FC = () => {
         racehorses.push(Number(val))
       }
     })
-    dispatch({
-      type: ACTION_USER_BUY_TICKET, payload: {
-        userName: userName,
-        service: service,
-        formula: formulaIndex,
-        racehorses: racehorses,
-        money: money,
-      }
-    })
+    buyTicketAction(dispatch, userName, service, formulaIndex, racehorses, money)
   }
   /**
    * 特定のキーワードに該当したときにもらえる力
@@ -365,14 +357,10 @@ const GamePage: React.FC = () => {
   const calcMoney = (totalMoney: number, tickets: Ticket[], condition: Function) => {
     const filteringTicket: Ticket[] = []
     tickets.map((ticket: Ticket) => {
-      console.log(`formula:${ticket.formula}`)
-      console.log(`racehorses:${JSON.stringify(ticket.racehorses)}`)
       if (condition(ticket.formula, ticket.racehorses)) {
-        console.log("ticket push!")
         filteringTicket.push(ticket)
       }
     })
-    console.log(`filteringTicketLength:${filteringTicket.length}`)
     let money = 0
     filteringTicket.map((ticket: Ticket) => {
       money += ticket.money
@@ -383,13 +371,10 @@ const GamePage: React.FC = () => {
    * 全員ゴール時イベント
    */
   const handleGoal = (rankInNumbers: number[]) => {
-    console.log(`totalMoney:${totalMoney}`)
-    console.log(`rankInNumbers:${JSON.stringify(rankInNumbers)}`)
     const allTickets: Ticket[] = []
     users.map((user: User) =>
       user.boughtTickets.map((ticket: Ticket) => allTickets.push(ticket))
     )
-    console.log(`allTicketsLength:${allTickets.length}`)
     const raceResult: RaceResultInterface = {
       top3Numbers: rankInNumbers.filter((_: number, index: number) => index < 3),
       singleWin: {
@@ -667,11 +652,10 @@ const GamePage: React.FC = () => {
             break
         }
         ticket.refund = rate === 0.0 ? 0 : Math.round(rate * ticket.money)
-        console.log(`ticket.refund:${ticket.refund}`)
         user.money += ticket.refund
       })
     })
-    dispatch({ type: ACTION_UPDATE_USERS, payload: users })
+    updateUsers(dispatch, users)
   }
   const [resultRadioValue, setResultRadioValue] = useState<string>("race")
   const handleResultRadioValueChange = (event: React.ChangeEvent<HTMLInputElement>, value: string) => {
