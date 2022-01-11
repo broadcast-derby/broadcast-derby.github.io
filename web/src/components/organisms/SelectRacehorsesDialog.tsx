@@ -24,6 +24,10 @@ interface SelectRacehorseDialogProps {
    */
   open: boolean,
   /**
+   * 選択済みの出走馬情報一覧
+   */
+   selectedRacehorses: RacehorseBase[],
+  /**
    * ダイアログを閉じたときのイベント
    */
   onClose: Function,
@@ -36,6 +40,10 @@ const SelectRacehorsesDialog: React.FC<SelectRacehorseDialogProps> = ({
    * 開いているかどうか
    */
   open,
+  /**
+   * 選択済みの出走馬情報一覧
+   */
+   selectedRacehorses,
   /**
    * ダイアログを閉じたときのイベント
    */
@@ -66,7 +74,12 @@ const SelectRacehorsesDialog: React.FC<SelectRacehorseDialogProps> = ({
       <DialogTitle>魚を選択してください</DialogTitle>
       <List>
         {RACEHORSES.map((racehorse: RacehorseBase, index: number) => (
-          <ListItem button onClick={() => handleListItemClick(index)} key={index}>
+          <ListItem
+            button
+            disabled={selectedRacehorses.includes(racehorse)}
+            onClick={() => handleListItemClick(index)}
+            key={index}
+          >
             <ListItemText primary={racehorse.name} secondary={racehorse.number + " " + getColorName(racehorse.color)} />
           </ListItem>
         ))}

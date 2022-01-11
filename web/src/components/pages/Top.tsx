@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { makeStyles } from '@mui/styles'
+import { styled } from '@mui/material/styles'
 
 // mui
 import Button from '@mui/material/Button'
@@ -18,15 +18,44 @@ import TicketDialog from '../organisms/TicketDialog'
 import SelectFormulaDialog from '../organisms/SelectFormulaDialog'
 import SelectRacehorsesDialog from '../organisms/SelectRacehorsesDialog'
 import { RacehorseBase } from '../../interface'
+import { Typography } from '@mui/material'
 
-const useStyles = makeStyles(() => ({
-}))
-
+/**
+ * カードアクションレイアウト
+ */
+const StyledCardActions = styled(CardActions)({
+  justifyContent: "right",
+})
+/**
+ * タイトルレイアウト
+ */
+const TitleGrid = styled(Grid)({
+  marginBottom: "20px",
+})
+/**
+ * サブタイトルレイアウト
+ */
+const SubTitleGrid = styled(Grid)({
+  marginTop: "20px",
+  marginBottom: "20px",
+})
+/**
+ * 選択した出走馬の一覧レイアウト
+ */
+const SelectedRacehorseRow = styled(Grid)({
+  marginBottom: "5px",
+})
+/**
+ * エラー文言レイアウト
+ */
+const ErrorTypograpy = styled(Typography)({
+  marginRight: "10px",
+  color: "#999999",
+})
 /**
  * TOP画面
  */
 const TopPage: React.FC = () => {
-  const classes = useStyles()
   /**
    * 選択中の式別
    */
@@ -66,7 +95,7 @@ const TopPage: React.FC = () => {
           color: '',
           number: 0,
           imagePath: '',
-          keywordRegexList:[],
+          keywordRegexList: [],
         })
       }
     }
@@ -156,22 +185,77 @@ const TopPage: React.FC = () => {
     setSelectedFormula(null)
     setMoney(0)
   }
+  /**
+   * エラー文言取得
+   * @param {number | null} selectedFormula 選択された式別
+   * @param {RacehorseBase[]} selectedRacehorses 選択された出走馬一覧
+   * @param {number} money 金額
+   */
+  const getErrorMessage = (
+    selectedFormula: number | null,
+    selectedRacehorses: RacehorseBase[],
+    money: number
+  ) => {
+    if (selectedFormula === null) {
+      return "式別を選択してください"
+    }
+    if (selectedRacehorses.find((r: RacehorseBase) => r.name === '')) {
+      return "おさかなを選択してください"
+    }
+    if (money === 0) {
+      return "金額を入力してください"
+    }
+    return ""
+  }
   return (
     <React.Fragment>
-      <Container maxWidth="lg">
+      <Container maxWidth="md">
         <Card>
           <CardContent>
             <Grid container>
+              <TitleGrid item xs={12}>
+                <Typography
+                  variant="h3"
+                >
+                  券売機
+                </Typography>
+              </TitleGrid>
+              <SubTitleGrid item xs={12}>
+                <Typography
+                  variant="h4"
+                >
+                  式別
+                </Typography>
+                <Typography
+                  variant="body2"
+                >
+                  式別は魚券の種類です。
+                </Typography>
+              </SubTitleGrid>
               <Grid container item xs={12}>
-                <Grid item xs={1}>
+                <Grid item xs={2}></Grid>
+                <Grid container item xs={6}>
+                  <Grid item xs={12}>
+                    {selectedFormula !== null ? (
+                      <Typography
+                        variant="h5">
+                        {FORMULAS[selectedFormula].name}
+                      </Typography>
+                    ) :
+                      '式別を選択してください'
+                    }
+                  </Grid>
+                  <Grid item xs={12}>
+                    {selectedFormula !== null ? (
+
+                      <Typography
+                        variant="body2">
+                        {FORMULAS[selectedFormula].description}
+                      </Typography>
+                    ) : null}
+                  </Grid>
                 </Grid>
                 <Grid item xs={2}>
-                  式別
-                </Grid>
-                <Grid item xs={6}>
-                  {selectedFormula !== null ? FORMULAS[selectedFormula].name : '式別を選択してください'}
-                </Grid>
-                <Grid item xs={3}>
                   <Button
                     variant="contained"
                     onClick={handleOpenSelectFormulaDialogClick}
@@ -179,38 +263,74 @@ const TopPage: React.FC = () => {
                     選択する
                   </Button>
                 </Grid>
+                <Grid item xs={2}></Grid>
               </Grid>
+              <SubTitleGrid item xs={12}>
+                <Typography
+                  variant="h4"
+                >
+                  おさかな
+                </Typography>
+                <Typography
+                  variant="body2"
+                >
+                  おさかなを選択してください
+                </Typography>
+              </SubTitleGrid>
               <Grid item container xs={12}>
-                {selectedFormula !== null ? (
-                  <React.Fragment>
-                    <Grid item xs={12}>
-                      {FORMULAS[selectedFormula].description}
-                    </Grid>
-                    {selectedRacehorses.map((rh: RacehorseBase, index: number) => (
-                      <Grid item container xs={12} key={index}>
-                        <Grid item xs={1}>
-                        </Grid>
-                        <Grid item xs={2} >
-                          {FORMULAS[selectedFormula].isCombination ? null : (
-                            (index + 1) + '着'
-                          )}
-                        </Grid>
-                        <Grid item xs={6}>
+                {selectedFormula !== null ? selectedRacehorses.map((rh: RacehorseBase, index: number) => (
+                  <React.Fragment key={index}>
+                    <SelectedRacehorseRow item xs={2}></SelectedRacehorseRow>
+                    {FORMULAS[selectedFormula].isCombination ? (
+                      <SelectedRacehorseRow item xs={6}>
+                        {rh.name || '魚を選択してください'}
+                      </SelectedRacehorseRow>
+                    ) : (
+                      <React.Fragment>
+                        <SelectedRacehorseRow item xs={1} >
+                          {(index + 1) + '着'}
+                        </SelectedRacehorseRow>
+                        <SelectedRacehorseRow item xs={5}>
                           {rh.name || '魚を選択してください'}
-                        </Grid>
-                        <Grid item xs={3}>
-                          <Button
-                            variant="contained"
-                            onClick={() => handleOpenSelectRacehorseDialogClick(index)}
-                          >
-                            選択する
-                          </Button>
-                        </Grid>
-                      </Grid>
-                    ))}
+                        </SelectedRacehorseRow>
+                      </React.Fragment>
+                    )}
+                    <SelectedRacehorseRow item xs={2}>
+                      <Button
+                        variant="contained"
+                        onClick={() => handleOpenSelectRacehorseDialogClick(index)}
+                      >
+                        選択する
+                      </Button>
+                    </SelectedRacehorseRow>
+                    <SelectedRacehorseRow item xs={2}></SelectedRacehorseRow>
                   </React.Fragment>
-                ) : null}
+                )) : (
+                  <React.Fragment>
+                    <Grid item xs={2}></Grid>
+                    <Grid item xs={8}>
+                      <Typography
+                        variant="body1"
+                      >
+                        まずは式別を選択してください
+                      </Typography>
+                    </Grid>
+                    <Grid item xs={2}></Grid>
+                  </React.Fragment>
+                )}
               </Grid>
+              <SubTitleGrid item xs={12}>
+                <Typography
+                  variant="h4"
+                >
+                  金額
+                </Typography>
+                <Typography
+                  variant="body2"
+                >
+                  魚券1枚をいくらで購入するかを決めます
+                </Typography>
+              </SubTitleGrid>
               <Grid container item xs={12}>
                 <Grid item xs={4}></Grid>
                 <Grid item container xs={4}>
@@ -229,13 +349,16 @@ const TopPage: React.FC = () => {
               </Grid>
             </Grid>
           </CardContent>
-          <CardActions>
-            <Button
-              variant="contained"
-              onClick={handleClearButtonClick}
+          <StyledCardActions>
+            <ErrorTypograpy
+              variant="body2"
             >
-              クリア
-            </Button>
+              {getErrorMessage(
+                selectedFormula,
+                selectedRacehorses,
+                money
+              )}
+            </ErrorTypograpy>
             <Button
               variant="contained"
               onClick={handleIssueButtonClick}
@@ -243,7 +366,13 @@ const TopPage: React.FC = () => {
             >
               発行
             </Button>
-          </CardActions>
+            <Button
+              variant="outlined"
+              onClick={handleClearButtonClick}
+            >
+              クリア
+            </Button>
+          </StyledCardActions>
         </Card>
       </Container>
       <SelectFormulaDialog
@@ -252,6 +381,7 @@ const TopPage: React.FC = () => {
       />
       <SelectRacehorsesDialog
         open={isOpenSelectRacehorseDialog}
+        selectedRacehorses={selectedRacehorses}
         onClose={handleSelectRacehorse}
       />
       <TicketDialog

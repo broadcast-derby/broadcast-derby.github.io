@@ -42,6 +42,9 @@ const NumberButton = styled(Button)({
   marginBottom: "4px",
   fontSize: "15pt",
 })
+/**
+ * グリッドの中央レイアウト
+ */
 const CenterGrid = styled(Grid)({
   paddingLeft: "3px",
   paddingRight: "3px",
@@ -108,6 +111,7 @@ const Calculator: React.FC<CalculatorProps> = ({
           InputProps={{
             endAdornment: <InputAdornment position="end">円</InputAdornment>,
           }}
+          fullWidth
         />
       </Grid>
       <Grid item container xs={12}>
