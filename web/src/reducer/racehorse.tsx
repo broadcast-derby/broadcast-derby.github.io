@@ -19,6 +19,9 @@ const initialState = () => {
 
 /**
  * 出走馬情報更新Reducer
+ * 
+ * @param {any} state storeに保持される状態
+ * @param {any} action stateを更新するaction
  */
 export const racehorsesReducer = (state = initialState(), action: any) => {
   switch (action.type) {

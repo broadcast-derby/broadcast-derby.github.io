@@ -85,6 +85,8 @@ const TopPage: React.FC = () => {
   /**
    * 出走馬選択ダイアログを表示するボタン押下時イベント
    * 引数より、選択した出走馬の情報を配列のどこに入れるかをstateに格納する
+   * 
+   * @param {number} selectedRacehorseIndex 選択された出走馬のindex
    */
   const handleOpenSelectRacehorseDialogClick = (selectedRacehorseIndex: number) => {
     setSelectedIndex(selectedRacehorseIndex)
@@ -92,6 +94,8 @@ const TopPage: React.FC = () => {
   }
   /**
    * 出走馬選択時イベント
+   * 
+   * @param {number|null} racehorseIndex 選択された出走馬のindex　選択されていない場合がある
    */
   const handleSelectRacehorse = (racehorseIndex: number | null) => {
     setOpenSelectRacehorseDialog(false)

@@ -11,6 +11,8 @@ const parser = new window.DOMParser()
 
 /**
  * コメント取得Action
+ * 
+ * @param {any} dispatch
  */
 export const getComments = async (dispatch: any) => {
   const response = await httpClient.get('/setting/comment.xml')

@@ -7,6 +7,8 @@ import { User, Ticket } from '../interface'
 
 /**
  * 手持ちの馬券情報削除
+ * 
+ * @param {any} dispatch
  */
 export const cleanBoughtTickets = (dispatch: any) => {
   let usersStr = window.localStorage.getItem('users')
@@ -21,6 +23,7 @@ export const cleanBoughtTickets = (dispatch: any) => {
 
 /**
  * 馬券購入
+ * @param {any} dispatch
  * @param {string} userName ユーザ名
  * @param {string} service サービス名
  * @param {number} formula 式別
@@ -72,6 +75,8 @@ export const buyTicket = (
 
 /**
  * ユーザ情報更新
+ * 
+ * @param {any} dispatch
  * @param {User[]} users ユーザ情報一覧
  */
 export const updateUsers = (dispatch: any, users: User[]) => {

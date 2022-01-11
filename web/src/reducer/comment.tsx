@@ -11,6 +11,9 @@ const initialState = () => {
 
 /**
  * コメント用State更新Recuder
+ * 
+ * @param {any} state storeに保持される状態
+ * @param {any} action stateを更新するaction
  */
 export const commentReducer = (state = initialState(), action: any) => {
   switch (action.type) {
