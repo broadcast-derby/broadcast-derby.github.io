@@ -16,13 +16,15 @@
 
 ### 1. 魚券(馬券)を買う
 
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/ticket_vending_machine.png)
+
 [こちらのリンク](https://broadcast-derby.github.io/)から魚券が購入できます
 
 式別、魚、金額を入力して、発行ボタンを押すと魚券が発行されます
 
 発行された魚券に記載されているコードをコピーして、出泳魚紹介画面が表示されているうちにコメントしよう！
 
-### 式別一覧
+#### 式別一覧
 
 | 式別名 | 概要 |
 |---|---|
@@ -35,6 +37,8 @@
 |三連単|三着までの魚の着順を当てる| 
 
 ### 2. 応援する
+
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/race.png)
 
 レースが開始したらがんばってほしいおさかなさんを名指しで応援しよう！
 
@@ -64,31 +68,60 @@ Windows10以降
 
 ### 配信準備
 
-#### アプリダウンロード
+#### 1.Releasesから `release.zip` をダウンロード
 
-1. Releasesから `release.zip` をダウンロード
-1. `releases.zip` を解凍して、`osakana_derby/html/setting` へ移動  
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release1.png)
+
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release2.png)
+
+※バージョン番号はスクショと異なる場合があります
+
+#### 2. `releases.zip` を解凍して、`osakana_derby\html\setting` へ移動  
+
 ※解凍先のフォルダに日本語が入ってるとうまく動かない場合があります
 1. フォルダのパスをメモしておく
 
-#### コメントを取得できるように設定
+#### 3.コメントを取得できるように設定
 
-1. 検索枠で `cmd` と入力
-1. コマンドプロンプトを右クリック→ `管理者として実行`
-1. `cd` コマンドを使用して `osakana_derby/html/setting` へ移動  
-例： D:\>cd D:\osakana_derby\html\setting
-1. `Multi Comment Viewer` のコメジェネ連携先にある `comment.xml` を `osakana_derby/html/setting/comment.xml` にシンボリックリンクとして設定する  
+1.検索枠で `cmd` と入力
+2.コマンドプロンプトを右クリック→ `管理者として実行`
+
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release3.png)
+
+3.`cd` コマンドを使用して `osakana_derby\html\setting` へ移動  
+
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release4.png)
+
+※スクショはDドライブに `osakana_derby` フォルダがある場合のコマンド例です  
+※Cドライブに `osakana_derby` フォルダを解凍した場合 `/D` は入力する必要ありません
+例： C:\>cd C:\osakana_derby\html\setting
+
+4.`Multi Comment Viewer` のコメジェネ連携先にある `comment.xml` を `osakana_derby\html\setting\comment.xml` にシンボリックリンクとして設定する  
 テンプレート： > mklink comment.xml <リンク元>  
 例： D:\osakana_derby\html\setting> mklink comment.xml C:\CommentGenerator\Multi\CommentGenerator0.0.8a\comment.xml
-1. `osakana_derby/html/setting/comment.xml` が表示されているのを確認する  
-※右クリックからショートカットの作成だとうまくいかないことがあるので注意
+
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release5.png)
+
+※ `comment.xml <<===>> [Multi Comment Viewerのリンク先] のシンボリック リンクが作成されました` が表示されていればOKです
+
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release6.png)
+
+※settingフォルダを開くとcomment.xmlのショートカットが表示されていれば成功です
+（右クリックからショートカットの作成だとうまくいかないことがあるので注意）
 
 #### アプリを起動する
 
-1. `osakana_derby` フォルダでコマンドプロンプトを開く
-1. `start nginx` と入力する
-1. `http://localhost/game` をブラウザで開くとゲーム画面が表示されます
-1. 待機中画面であれば、コメントが表示されるので、そこで確認できます
+1.`osakana_derby` フォルダでコマンドプロンプトを開く
+
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release7.png)
+
+※スクショの欄で `cmd` と入力するとコマンドプロンプトが立ち上がります
+
+2.`start nginx` と入力してエンター
+3.`http://localhost/game` をブラウザで開くとゲーム画面が表示されます
+4.待機中画面であれば、コメントが表示されるので、そこで確認できます
+
+![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release7.png)
 
 #### おさかなを設定する
 
