@@ -48,13 +48,12 @@
 
 ### 3. 結果発表
 
-全てのおさかなさんがゴールしたら結果発表！
-順位と魚券の組み合わせから払い戻し金が送られるぞ！
-目指せ億万長者！
+全てのおさかなさんがゴールしたら結果発表！  
+順位と魚券の組み合わせから払い戻し金が送られるぞ！  
+目指せ億万長者！  
 
-### 注意
-
-ニコニコで遊ぶ場合はコテハンが必要になります
+> 注意  
+> ニコニコで遊ぶ場合はコテハンが必要になります
 
 ## 配信者向け操作方法
 
@@ -74,52 +73,57 @@ Windows10以降
 
 ![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release2.png)
 
-※バージョン番号はスクショと異なる場合があります
+> ※バージョン番号はスクショと異なる場合があります
 
 #### 2. `releases.zip` を解凍して、`osakana_derby\html\setting` へ移動  
 
-※解凍先のフォルダに日本語が入ってるとうまく動かない場合があります
-1. フォルダのパスをメモしておく
+> ※解凍先のフォルダに日本語が入ってるとうまく動かない場合があります
 
 #### 3.コメントを取得できるように設定
 
-1.検索枠で `cmd` と入力
-2.コマンドプロンプトを右クリック→ `管理者として実行`
+検索枠で `cmd` と入力  
+コマンドプロンプトを右クリック→ `管理者として実行`
 
 ![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release3.png)
 
-3.`cd` コマンドを使用して `osakana_derby\html\setting` へ移動  
+`cd` コマンドを使用して `osakana_derby\html\setting` へ移動  
 
 ![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release4.png)
 
-※スクショはDドライブに `osakana_derby` フォルダがある場合のコマンド例です  
-※Cドライブに `osakana_derby` フォルダを解凍した場合 `/D` は入力する必要ありません
-例： C:\>cd C:\osakana_derby\html\setting
+> ※スクショはDドライブに `osakana_derby` フォルダがある場合のコマンド例です  
+> ※Cドライブに `osakana_derby` フォルダを解凍した場合 `/D` は入力する必要ありません  
+> 例： C:\>cd C:\osakana_derby\html\setting
 
-4.`Multi Comment Viewer` のコメジェネ連携先にある `comment.xml` を `osakana_derby\html\setting\comment.xml` にシンボリックリンクとして設定する  
+`Multi Comment Viewer` のコメジェネ連携先にある `comment.xml` を `osakana_derby\html\setting\comment.xml` にシンボリックリンクとして設定する  
+
+```
 テンプレート： > mklink comment.xml <リンク元>  
+```
+
+```
 例： D:\osakana_derby\html\setting> mklink comment.xml C:\CommentGenerator\Multi\CommentGenerator0.0.8a\comment.xml
+```
 
 ![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release5.png)
 
-※ `comment.xml <<===>> [Multi Comment Viewerのリンク先] のシンボリック リンクが作成されました` が表示されていればOKです
+> ※ `comment.xml <<===>> [Multi Comment Viewerのリンク先] のシンボリック リンクが作成されました` が表示されていればOKです
 
 ![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release6.png)
 
-※settingフォルダを開くとcomment.xmlのショートカットが表示されていれば成功です
-（右クリックからショートカットの作成だとうまくいかないことがあるので注意）
+> ※settingフォルダを開くとcomment.xmlのショートカットが表示されていれば成功です  
+> （右クリックからショートカットの作成だとうまくいかないことがあるので注意）
 
 #### アプリを起動する
 
-1.`osakana_derby` フォルダでコマンドプロンプトを開く
+`osakana_derby` フォルダでコマンドプロンプトを開く
 
 ![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release7.png)
 
-※スクショの欄で `cmd` と入力するとコマンドプロンプトが立ち上がります
+> ※スクショの欄で `cmd` と入力するとコマンドプロンプトが立ち上がります
 
-2.`start nginx` と入力してエンター
-3.`http://localhost/game` をブラウザで開くとゲーム画面が表示されます
-4.待機中画面であれば、コメントが表示されるので、そこで確認できます
+`start nginx` と入力してエンター  
+`http://localhost/game` をブラウザで開くとゲーム画面が表示されます  
+待機中画面であれば、コメントが表示されるので、そこで確認できます  
 
 ![スクショ](https://github.com/broadcast-derby/broadcast-derby.github.io/blob/main/docs/images/release7.png)
 
@@ -127,7 +131,8 @@ Windows10以降
 
 1. `http://localhost/config` をブラウザで開くと設定画面が表示されます
 1. 出泳魚を好きなだけ追加してください  
-※ゲーム画面をOBSのブラウザソースで表示する場合には、configもOBSのブラウザソースで開き、対話ボタンから操作してください
+
+> ※ゲーム画面をOBSのブラウザソースで表示する場合には、configもOBSのブラウザソースで開き、対話ボタンから操作してください
 
 #### 配信者のおさかなだぁびぃの運営の仕方
 
