@@ -8,8 +8,8 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 
 // utils
-import { FORMULAS } from '../../const'
-import { Formula } from '../../interface'
+import { FORMULAS } from '../../../const'
+import { Formula } from '../../../interface'
 
 /**
  * 式別選択ダイアログProps
@@ -21,8 +21,10 @@ interface SelectFormulaDialogProps {
   open: boolean,
   /**
    * ダイアログを閉じた時のイベント
+   * 
+   * @param {number|null} index 選択した要素番号
    */
-  onClose: Function,
+  onClose: (index: number | null) => void,
 }
 /**
  * 式別選択ダイアログ

@@ -1,27 +1,15 @@
 import React from 'react'
-import { styled } from '@mui/material/styles'
 
 // mui
 import Button from '@mui/material/Button'
-import CardActions from '@mui/material/CardActions'
+
+// molecules
+import ErrorTypograpy from '../../molecules/top/ErrorTypograpy'
+import StyledCardActions from '../../molecules/top/StyledCardActions'
 
 // organisms
 import { RacehorseBase } from '../../../interface'
-import { Typography } from '@mui/material'
 
-/**
- * カードアクションレイアウト
- */
-const StyledCardActions = styled(CardActions)({
-  justifyContent: "right",
-})
-/**
- * エラー文言レイアウト
- */
-const ErrorTypograpy = styled(Typography)({
-  marginRight: "10px",
-  color: "#999999",
-})
 /**
  * TOP画面のCardActionsのコンポーネントProps
  */

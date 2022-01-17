@@ -124,6 +124,11 @@ export const RACEHORSES: RacehorseBase[] = [
 ]
 
 /**
+ * 金額最大桁数
+ */
+export const MAX_MONEY_LENGTH = 6
+
+/**
  * アクションキー名
  * コメント取得
  */

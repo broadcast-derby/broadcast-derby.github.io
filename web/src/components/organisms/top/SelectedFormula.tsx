@@ -3,7 +3,7 @@ import React from 'react'
 // mui
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
-import { Typography } from '@mui/material'
+import Typography from '@mui/material/Typography'
 
 // utils
 import { FORMULAS } from '../../../const'

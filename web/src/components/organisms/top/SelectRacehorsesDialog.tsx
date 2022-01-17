@@ -1,5 +1,4 @@
 import React from 'react'
-import { makeStyles } from '@mui/styles'
 
 // mui
 import Dialog from '@mui/material/Dialog'
@@ -9,11 +8,8 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 
 // util
-import { RACEHORSES, COLORS } from '../../const'
-import { RacehorseBase, Color } from '../../interface'
-
-const useStyles = makeStyles(() => ({
-}))
+import { RACEHORSES, COLORS } from '../../../const'
+import { RacehorseBase, Color } from '../../../interface'
 
 /**
  * 出走馬選択ダイアログProps
@@ -26,11 +22,13 @@ interface SelectRacehorseDialogProps {
   /**
    * 選択済みの出走馬情報一覧
    */
-   selectedRacehorses: RacehorseBase[],
+  selectedRacehorses: RacehorseBase[],
   /**
    * ダイアログを閉じたときのイベント
+   * 
+   * @param {number|null} 選択した要素番号
    */
-  onClose: Function,
+  onClose: (index: number | null) => void,
 }
 /**
  * 出走馬選択ダイアログ
@@ -43,7 +41,7 @@ const SelectRacehorsesDialog: React.FC<SelectRacehorseDialogProps> = ({
   /**
    * 選択済みの出走馬情報一覧
    */
-   selectedRacehorses,
+  selectedRacehorses,
   /**
    * ダイアログを閉じたときのイベント
    */

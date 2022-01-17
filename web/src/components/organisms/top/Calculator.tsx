@@ -1,11 +1,13 @@
 import React from 'react'
-import { styled } from '@mui/material/styles'
 
 // mui
-import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
-import TextField from '@mui/material/TextField'
 import InputAdornment from '@mui/material/InputAdornment'
+
+// molecules
+import CenterGrid from '../../molecules/top/CenterGrid'
+import NumberButton from '../../molecules/top/NumberButton'
+import MoneyTextField from '../../molecules/top/MoneyTextField'
 
 /**
  * 電卓Props
@@ -21,34 +23,11 @@ interface CalculatorProps {
   value: number,
   /**
    * 値更新時イベント
+   * 
+   * @param {number} number 更新する値
    */
-  onChange: Function,
+  onChange: ( number: number) => void,
 }
-/**
- * 金額レイアウト
- */
-const MoneyTextField = styled(TextField)({
-  paddingTop: "10px",
-  paddingBottom: "10px",
-  textAlign: "right",
-  "& > div > input": {
-    textAlign: "right",
-  },
-})
-/**
- * 電卓のボタンレイアウト
- */
-const NumberButton = styled(Button)({
-  marginBottom: "4px",
-  fontSize: "15pt",
-})
-/**
- * グリッドの中央レイアウト
- */
-const CenterGrid = styled(Grid)({
-  paddingLeft: "3px",
-  paddingRight: "3px",
-})
 /**
  * 電卓
  */
@@ -62,10 +41,11 @@ const Calculator: React.FC<CalculatorProps> = ({
    */
   value,
   /**
-   * 値変更時イベント
+   * 値更新時イベント
+   * 
+   * @param {number} number 更新する値
    */
   onChange,
-
 }) => {
   /**
    * ボタン押下時イベント

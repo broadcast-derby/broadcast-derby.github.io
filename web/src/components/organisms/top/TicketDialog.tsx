@@ -9,9 +9,8 @@ import Grid from '@mui/material/Grid'
 import Input from '@mui/material/Input'
 
 // utils
-import { FORMULAS } from '../../const'
-import { RacehorseBase } from '../../interface'
-
+import { FORMULAS } from '../../../const'
+import { RacehorseBase } from '../../../interface'
 
 /**
  * チケットダイアログProps
@@ -36,7 +35,7 @@ interface TicketDialogProps {
   /**
    * ダイアログを閉じたときのイベント
    */
-  onClose: Function,
+  onClose: () => void,
 }
 /**
  * チケットダイアログ

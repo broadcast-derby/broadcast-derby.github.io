@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { styled } from '@mui/material/styles'
 
 // mui
 import Button from '@mui/material/Button'
@@ -10,37 +9,26 @@ import Grid from '@mui/material/Grid'
 import { Typography } from '@mui/material'
 
 // utils
-import { FORMULAS, RACEHORSES } from '../../const'
+import {
+  FORMULAS,
+  RACEHORSES,
+  MAX_MONEY_LENGTH,
+} from '../../const'
 import { RacehorseBase } from '../../interface'
 
-// organisms
-import Calculator from '../organisms/Calculator'
-import TicketDialog from '../organisms/TicketDialog'
-import SelectFormulaDialog from '../organisms/SelectFormulaDialog'
-import SelectRacehorsesDialog from '../organisms/SelectRacehorsesDialog'
+// molecules
+import SelectedRacehorseRow from '../molecules/top/SelectedRacehorseRow'
+import SubTitleGrid from '../molecules/top/SubTitleGrid'
+import TitleGrid from '../molecules/top/TitleGrid'
 
+// organisms
+import Calculator from '../organisms/top/Calculator'
 import CardActionsOrg from '../organisms/top/CardActionsOrg'
 import SelectedFormula from '../organisms/top/SelectedFormula'
+import SelectFormulaDialog from '../organisms/top/SelectFormulaDialog'
+import SelectRacehorsesDialog from '../organisms/top/SelectRacehorsesDialog'
+import TicketDialog from '../organisms/top/TicketDialog'
 
-/**
- * タイトルレイアウト
- */
-const TitleGrid = styled(Grid)({
-  marginBottom: "20px",
-})
-/**
- * サブタイトルレイアウト
- */
-const SubTitleGrid = styled(Grid)({
-  marginTop: "20px",
-  marginBottom: "20px",
-})
-/**
- * 選択した出走馬の一覧レイアウト
- */
-const SelectedRacehorseRow = styled(Grid)({
-  marginBottom: "5px",
-})
 /**
  * TOP画面
  */
@@ -277,7 +265,7 @@ const TopPage: React.FC = () => {
                   </Grid>
                   <Grid item xs={12}>
                     <Calculator
-                      max={6}
+                      max={MAX_MONEY_LENGTH}
                       value={money}
                       onChange={(val: number) => setMoney(val)}
                     />
