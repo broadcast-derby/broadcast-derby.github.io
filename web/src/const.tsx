@@ -8,17 +8,17 @@ import {
  * 色一覧
  */
 export const COLORS: Color[] = [
-  { key: 'B', name: '青色', code: '#0000ff' },
-  { key: 'C', name: 'シアン', code: '#9999ff' },
-  { key: 'G', name: '緑色', code: '#00ff00' },
-  { key: 'I', name: '藍色', code: '#0000cc' },
-  { key: 'M', name: 'マゼンタ', code: '#ff00ff' },
-  { key: 'O', name: '橙色', code: '#ffcc00' },
-  { key: 'P', name: '紫色', code: '#990099' },
-  { key: 'R', name: '赤色', code: '#ff0000' },
-  { key: 'S', name: '銀色', code: '#cccccc' },
-  { key: 'W', name: '白色', code: '#ffffff' },
-  { key: 'Y', name: '黄色', code: '#ffff00' },
+  { key: 'B', name: '青色', code: '#0000ff', isReverse: true, needBorder: false },
+  { key: 'C', name: 'シアン', code: '#9999ff', isReverse: false, needBorder: false },
+  { key: 'G', name: '緑色', code: '#00ff00', isReverse: false, needBorder: false },
+  { key: 'I', name: '藍色', code: '#0000cc', isReverse: true, needBorder: false },
+  { key: 'M', name: 'マゼンタ', code: '#ff00ff', isReverse: true, needBorder: false },
+  { key: 'O', name: '橙色', code: '#ffcc00', isReverse: false, needBorder: false },
+  { key: 'P', name: '紫色', code: '#990099', isReverse: true, needBorder: false },
+  { key: 'R', name: '赤色', code: '#ff0000', isReverse: true, needBorder: false },
+  { key: 'S', name: '銀色', code: '#cccccc', isReverse: false, needBorder: true },
+  { key: 'W', name: '白色', code: '#ffffff', isReverse: false, needBorder: true },
+  { key: 'Y', name: '黄色', code: '#ffff00', isReverse: false, needBorder: true },
 ]
 
 /**

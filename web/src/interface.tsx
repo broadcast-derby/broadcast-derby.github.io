@@ -102,6 +102,14 @@ export interface Color {
    * カラーコード
    */
   code: string,
+  /**
+   * 文字色を反転させるかどうか
+   */
+  isReverse: boolean,
+  /**
+   * 枠線が必要かどうか
+   */
+  needBorder: boolean,
 }
 
 /**

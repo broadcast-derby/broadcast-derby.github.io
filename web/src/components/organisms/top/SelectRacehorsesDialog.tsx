@@ -3,13 +3,18 @@ import React from 'react'
 // mui
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
+import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
-import ListItemText from '@mui/material/ListItemText'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
 
 // util
 import { RACEHORSES, COLORS } from '../../../const'
 import { RacehorseBase, Color } from '../../../interface'
+
+// molecules
+import RacehorseNumberIcon from '../../molecules/top/RacehorseNumberIcon'
+import RacehorseNameText from '../../molecules/top/RacehorseNameText'
 
 /**
  * 出走馬選択ダイアログProps
@@ -54,22 +59,51 @@ const SelectRacehorsesDialog: React.FC<SelectRacehorseDialogProps> = ({
     onClose(index)
   }
   /**
-   * キーから色名を取得
+   * キーからカラーコードを取得
    * @param {string} key キー名 
-   * @returns 色名
+   * @returns カラーコード
    */
-  const getColorName = (key: string) => {
+  const getColorCode = (key: string): string => {
     const color = COLORS.find((c: Color) => c.key === key)
     if (color) {
-      return color.name
+      return color.code
     }
     else {
-      return ''
+      return "#ffffff"
+    }
+  }
+  /**
+   * キーから文字色を反転させるかどうかを取得
+   * @param {string} key キー名 
+   * @returns 反転させるかどうか
+   */
+  const isReverse = (key: string): boolean => {
+    const color = COLORS.find((c: Color) => c.key === key)
+    if (color) {
+      return color.isReverse
+    }
+    else {
+      return false
+    }
+  }
+  /**
+   * キーから枠線が必要かどうかを取得
+   * @param {string} key キー名 
+   * @returns 枠線が必要かどうか
+   */
+  const needBorder = (key: string): boolean => {
+    const color = COLORS.find((c: Color) => c.key === key)
+    if (color) {
+      return color.needBorder
+    }
+    else {
+      return false
     }
   }
   return (
     <Dialog onClose={() => { onClose(null) }} open={open}>
       <DialogTitle>魚を選択してください</DialogTitle>
+      <Divider variant="middle" />
       <List>
         {RACEHORSES.map((racehorse: RacehorseBase, index: number) => (
           <ListItem
@@ -77,8 +111,20 @@ const SelectRacehorsesDialog: React.FC<SelectRacehorseDialogProps> = ({
             disabled={selectedRacehorses.includes(racehorse)}
             onClick={() => handleListItemClick(index)}
             key={index}
+            alignItems="flex-start"
           >
-            <ListItemText primary={racehorse.name} secondary={racehorse.number + " " + getColorName(racehorse.color)} />
+            <ListItemAvatar>
+              <RacehorseNumberIcon
+                style={{
+                  backgroundColor: getColorCode(racehorse.color),
+                  color: isReverse(racehorse.color) ? "#ffffff" : "#000000",
+                  border: needBorder(racehorse.color) ? "2px solid" : "",
+                }}
+              >
+                {racehorse.number}
+              </RacehorseNumberIcon>
+            </ListItemAvatar>
+            <RacehorseNameText>{racehorse.name}</RacehorseNameText>
           </ListItem>
         ))}
       </List>

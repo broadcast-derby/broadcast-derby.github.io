@@ -3,6 +3,7 @@ import React from 'react'
 // mui
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
+import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
@@ -48,6 +49,7 @@ const SelectFormulaDialog: React.FC<SelectFormulaDialogProps> = ({
   return (
     <Dialog onClose={() => { onClose(null) }} open={open}>
       <DialogTitle>式別を選択してください</DialogTitle>
+      <Divider variant="middle" />
       <List>
         {FORMULAS.map((formula: Formula, index: number) => (
           <ListItem button onClick={() => handleListItemClick(index)} key={index}>
