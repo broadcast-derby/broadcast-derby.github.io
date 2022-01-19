@@ -4,7 +4,7 @@ import BaseStyledSlider from './BaseStyledSlider'
 /**
  * タコスライダー
  */
- const TakoSlider = styled(BaseStyledSlider)({
+const TakoSlider = styled(BaseStyledSlider)({
   '& .MuiSlider-thumb': {
     // 画像の高さに合わせる必要がある
     height: 100,

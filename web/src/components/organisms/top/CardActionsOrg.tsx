@@ -2,10 +2,8 @@ import React from 'react'
 
 // mui
 import Button from '@mui/material/Button'
-
-// molecules
-import ErrorTypograpy from '../../molecules/top/ErrorTypograpy'
-import StyledCardActions from '../../molecules/top/StyledCardActions'
+import CardActions from '@mui/material/CardActions'
+import Typography from '@mui/material/Typography'
 
 // organisms
 import { RacehorseBase } from '../../../interface'
@@ -103,16 +101,22 @@ const CardActionsOrg: React.FC<CardActionsOrgProps> = ({
     return ""
   }
   return (
-    <StyledCardActions>
-      <ErrorTypograpy
+    <CardActions sx={{
+      justifyContent: "right",
+    }}>
+      <Typography
         variant="body2"
+        sx={{
+          marginRight: "10px",
+          color: "#999999",
+        }}
       >
         {getErrorMessage(
           selectedFormula,
           selectedRacehorses,
           money
         )}
-      </ErrorTypograpy>
+      </Typography>
       <Button
         variant="contained"
         onClick={handleIssueButtonClick}
@@ -126,7 +130,7 @@ const CardActionsOrg: React.FC<CardActionsOrgProps> = ({
       >
         クリア
       </Button>
-    </StyledCardActions>
+    </CardActions>
   )
 }
 export default CardActionsOrg

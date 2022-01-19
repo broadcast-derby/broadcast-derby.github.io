@@ -7,14 +7,12 @@ import Divider from '@mui/material/Divider'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
+import ListItemText from '@mui/material/ListItemText'
+import Typography from '@mui/material/Typography'
 
 // util
 import { RACEHORSES, COLORS } from '../../../const'
 import { RacehorseBase, Color } from '../../../interface'
-
-// molecules
-import RacehorseNumberIcon from '../../molecules/top/RacehorseNumberIcon'
-import RacehorseNameText from '../../molecules/top/RacehorseNameText'
 
 /**
  * 出走馬選択ダイアログProps
@@ -114,17 +112,24 @@ const SelectRacehorsesDialog: React.FC<SelectRacehorseDialogProps> = ({
             alignItems="flex-start"
           >
             <ListItemAvatar>
-              <RacehorseNumberIcon
-                style={{
+              <Typography
+                align="center"
+                sx={{
+                  borderRadius: "50%",
+                  width: "30px",
+                  height: "30px",
+                  lineHeight: "30px",
                   backgroundColor: getColorCode(racehorse.color),
                   color: isReverse(racehorse.color) ? "#ffffff" : "#000000",
                   border: needBorder(racehorse.color) ? "2px solid" : "",
                 }}
               >
                 {racehorse.number}
-              </RacehorseNumberIcon>
+              </Typography>
             </ListItemAvatar>
-            <RacehorseNameText>{racehorse.name}</RacehorseNameText>
+            <ListItemText sx={{ marginTop: "14px", }}>
+              {racehorse.name}
+            </ListItemText>
           </ListItem>
         ))}
       </List>

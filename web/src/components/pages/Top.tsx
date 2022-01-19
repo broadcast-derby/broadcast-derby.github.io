@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { styled } from '@mui/material/styles'
 
 // mui
 import Button from '@mui/material/Button'
@@ -16,11 +17,6 @@ import {
 } from '../../const'
 import { RacehorseBase } from '../../interface'
 
-// molecules
-import SelectedRacehorseRow from '../molecules/top/SelectedRacehorseRow'
-import SubTitleGrid from '../molecules/top/SubTitleGrid'
-import TitleGrid from '../molecules/top/TitleGrid'
-
 // organisms
 import Calculator from '../organisms/top/Calculator'
 import CardActionsOrg from '../organisms/top/CardActionsOrg'
@@ -28,6 +24,14 @@ import SelectedFormula from '../organisms/top/SelectedFormula'
 import SelectFormulaDialog from '../organisms/top/SelectFormulaDialog'
 import SelectRacehorsesDialog from '../organisms/top/SelectRacehorsesDialog'
 import TicketDialog from '../organisms/top/TicketDialog'
+
+/**
+ * サブタイトル共通レイアウト
+ */
+const SubTitleGrid = styled(Grid)({
+  marginTop: "20px",
+  marginBottom: "20px",
+})
 
 /**
  * TOP画面
@@ -168,22 +172,16 @@ const TopPage: React.FC = () => {
         <Card>
           <CardContent>
             <Grid container>
-              <TitleGrid item xs={12}>
-                <Typography
-                  variant="h3"
-                >
+              <Grid item xs={12} sx={{ marginBottom: "20px", }}>
+                <Typography variant="h3">
                   券売機
                 </Typography>
-              </TitleGrid>
+              </Grid>
               <SubTitleGrid item xs={12}>
-                <Typography
-                  variant="h4"
-                >
+                <Typography variant="h4">
                   式別
                 </Typography>
-                <Typography
-                  variant="body2"
-                >
+                <Typography variant="body2">
                   式別は魚券の種類です。
                 </Typography>
               </SubTitleGrid>
@@ -192,52 +190,46 @@ const TopPage: React.FC = () => {
                 onSelectButton={handleOpenSelectFormulaDialogClick}
               ></SelectedFormula>
               <SubTitleGrid item xs={12}>
-                <Typography
-                  variant="h4"
-                >
+                <Typography variant="h4">
                   おさかな
                 </Typography>
-                <Typography
-                  variant="body2"
-                >
+                <Typography variant="body2">
                   おさかなを選択してください
                 </Typography>
               </SubTitleGrid>
               <Grid item container xs={12}>
                 {selectedFormula !== null ? selectedRacehorses.map((rh: RacehorseBase, index: number) => (
                   <React.Fragment key={index}>
-                    <SelectedRacehorseRow item xs={2}></SelectedRacehorseRow>
+                    <Grid sx={{ marginBottom: "5px", }} item xs={2}></Grid >
                     {FORMULAS[selectedFormula].isCombination ? (
-                      <SelectedRacehorseRow item xs={6}>
+                      <Grid sx={{ marginBottom: "5px", }} item xs={6}>
                         {rh.name || '魚を選択してください'}
-                      </SelectedRacehorseRow>
+                      </Grid >
                     ) : (
                       <React.Fragment>
-                        <SelectedRacehorseRow item xs={1} >
+                        <Grid sx={{ marginBottom: "5px", }} item xs={1} >
                           {(index + 1) + '着'}
-                        </SelectedRacehorseRow>
-                        <SelectedRacehorseRow item xs={5}>
+                        </Grid >
+                        <Grid sx={{ marginBottom: "5px", }} item xs={5}>
                           {rh.name || '魚を選択してください'}
-                        </SelectedRacehorseRow>
+                        </Grid >
                       </React.Fragment>
                     )}
-                    <SelectedRacehorseRow item xs={2}>
+                    <Grid sx={{ marginBottom: "5px", }} item xs={2}>
                       <Button
                         variant="contained"
                         onClick={() => handleOpenSelectRacehorseDialogClick(index)}
                       >
                         選択する
                       </Button>
-                    </SelectedRacehorseRow>
-                    <SelectedRacehorseRow item xs={2}></SelectedRacehorseRow>
+                    </Grid >
+                    <Grid sx={{ marginBottom: "5px", }} item xs={2}></Grid >
                   </React.Fragment>
                 )) : (
                   <React.Fragment>
                     <Grid item xs={2}></Grid>
                     <Grid item xs={8}>
-                      <Typography
-                        variant="body1"
-                      >
+                      <Typography variant="body1">
                         まずは式別を選択してください
                       </Typography>
                     </Grid>
@@ -246,14 +238,10 @@ const TopPage: React.FC = () => {
                 )}
               </Grid>
               <SubTitleGrid item xs={12}>
-                <Typography
-                  variant="h4"
-                >
+                <Typography variant="h4">
                   金額
                 </Typography>
-                <Typography
-                  variant="body2"
-                >
+                <Typography variant="body2">
                   魚券1枚をいくらで購入するかを決めます
                 </Typography>
               </SubTitleGrid>

@@ -4,7 +4,7 @@ import BaseStyledSlider from './BaseStyledSlider'
 /**
  * マグロスライダー
  */
- const MaguroSlider = styled(BaseStyledSlider)({
+const MaguroSlider = styled(BaseStyledSlider)({
   '& .MuiSlider-thumb': {
     // 画像の高さに合わせる必要がある
     height: 100,

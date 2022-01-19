@@ -4,7 +4,7 @@ import BaseStyledSlider from './BaseStyledSlider'
 /**
  * カツオスライダー
  */
- const KatsuoSlider = styled(BaseStyledSlider)({
+const KatsuoSlider = styled(BaseStyledSlider)({
   '& .MuiSlider-thumb': {
     // 画像の高さに合わせる必要がある
     height: 100,
