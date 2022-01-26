@@ -126,35 +126,53 @@ export const RACEHORSES: RacehorseBase[] = [
 /**
  * 金額最大桁数
  */
-export const MAX_MONEY_LENGTH = 6
+export const MAX_MONEY_LENGTH: number = 6
+
+/**
+ * レース場のデフォルト距離
+ */
+export const DEFAULT_RACE_TRACK_LENGTH: number = 10000
+/**
+ * レース場最短距離
+ */
+export const MIN_RACE_TRACK_LENGTH: number = 5000
+/**
+ * レース場最長距離
+ */
+export const MAX_RACE_TRACK_LENGTH: number = 30000
 
 /**
  * アクションキー名
  * コメント取得
  */
-export const ACTION_COMMENT_GET_COMMENTS = 'ACTION_COMMENT_GET_COMMENTS'
+export const ACTION_COMMENT_GET_COMMENTS: string = 'ACTION_COMMENT_GET_COMMENTS'
 /**
  * アクションキー名
  * localStorageの情報を正としてstateを更新する
  */
-export const ACTION_RACEHORSE_CONSISTENCY = 'ACTION_RACEHORSE_CONSISTENCY'
+export const ACTION_RACEHORSE_CONSISTENCY: string = 'ACTION_RACEHORSE_CONSISTENCY'
 /**
  * アクションキー名
  * 出走馬情報更新
  */
-export const ACTION_RACEHORSE_UPDATE_RACEHORSES = 'ACTION_RACEHORSE_UPDATE_RACEHORSES'
+export const ACTION_RACEHORSE_UPDATE_RACEHORSES: string = 'ACTION_RACEHORSE_UPDATE_RACEHORSES'
 /**
  * アクション名
  * ユーザが購入した馬券情報削除
  */
-export const ACTION_USER_CLEAN_BOUGHT_TICKETS = 'ACTION_USER_CLEAN_BOUGHT_TICKETS'
+export const ACTION_USER_CLEAN_BOUGHT_TICKETS: string = 'ACTION_USER_CLEAN_BOUGHT_TICKETS'
 /**
  * アクション名
  * チケット購入アクション
  */
-export const ACTION_USER_BUY_TICKET = 'ACTION_USER_BUY_TICKET'
+export const ACTION_USER_BUY_TICKET: string = 'ACTION_USER_BUY_TICKET'
 /**
  * アクション名
  * ユーザ情報更新
  */
-export const ACTION_UPDATE_USERS = 'ACTION_UPDATE_USERS'
+export const ACTION_UPDATE_USERS: string = 'ACTION_UPDATE_USERS'
+/**
+ * アクション名
+ * トラック情報更新
+ */
+export const ACTION_TRACK_UPDATE_TRACK: string = 'ACTION_TRACK_UPDATE_TRACK'

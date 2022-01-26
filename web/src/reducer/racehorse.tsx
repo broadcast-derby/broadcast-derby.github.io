@@ -18,7 +18,7 @@ const initialState = () => {
 }
 
 /**
- * 出走馬情報更新Reducer
+ * 出走馬情報用State更新Reducer
  * 
  * @param {any} state storeに保持される状態
  * @param {any} action stateを更新するaction

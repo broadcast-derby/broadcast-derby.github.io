@@ -275,3 +275,12 @@ export interface RaceResult {
    */
   tripleWin: ResultRacehorse,
 }
+/**
+ * トラック情報
+ */
+export interface Track {
+  /**
+   * トラックの長さ
+   */
+  trackLength: number | number[],
+}

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 // mui
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 
 // utils
-import { RacehorseBase, RealRacehorse } from '../../interface'
+import { RacehorseBase, RealRacehorse, Track } from '../../interface'
 import { RACEHORSES } from '../../const'
 
 // fish slider
@@ -48,6 +49,11 @@ const Race: React.FC<RaceProps> = ({
   onGoal,
 }) => {
   /**
+   * トラック情報
+   */
+  const track: Track = useSelector((state: any) => state.raceTrackReducer.raceTrack)
+
+  /**
    * 実際に走っている出走馬情報一覧
    */
   const [runningRacehorse, setRunningRacehorse] = useState<RealRacehorse[]>([])
@@ -88,7 +94,7 @@ const Race: React.FC<RaceProps> = ({
       const runnings: RealRacehorse[] = []
       runningRacehorse.map((r: RealRacehorse) => {
         r.runValue += Math.floor(Math.random() * (max - min) + min + (r.supportPower > 0 ? 25 : 0))
-        if (10000 <= r.runValue && !rankInNumbers.includes(r.number)) {
+        if (track.trackLength <= r.runValue && !rankInNumbers.includes(r.number)) {
           rankInNumbers.push(r.number)
           setRankInNumbers(rankInNumbers.concat())
         }
@@ -166,7 +172,7 @@ const Race: React.FC<RaceProps> = ({
                 {index + 1 === rh.number ? (
                   <Slider
                     min={0}
-                    max={10000}
+                    max={track.trackLength}
                     value={rh.runValue}
                   />
                 ) : null}
