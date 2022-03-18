@@ -11,8 +11,8 @@ import TextField from '@mui/material/TextField'
  * 電卓のボタン共通レイアウト
  */
 const NumberButton = styled(Button)({
-  marginBottom: "4px",
-  fontSize: "15pt",
+  marginBottom: '4px',
+  fontSize: '15pt',
 })
 
 /**
@@ -99,11 +99,11 @@ const Calculator: React.FC<CalculatorProps> = ({
           }}
           fullWidth
           sx={{
-            paddingTop: "10px",
-            paddingBottom: "10px",
-            textAlign: "right",
-            "& > div > input": {
-              textAlign: "right",
+            paddingTop: '10px',
+            paddingBottom: '10px',
+            textAlign: 'right',
+            '& > div > input': {
+              textAlign: 'right',
             },
           }}
         />

@@ -2,7 +2,7 @@ import {
   Color,
   Formula,
   RacehorseBase,
-} from './interface'
+} from 'interface'
 
 /**
  * 色一覧
@@ -44,7 +44,10 @@ export const RACEHORSES: RacehorseBase[] = [
       /.*マ.*グ.*ロ.*/, /.*ま.*ぐ.*ろ.*/, /.*鮪.*/,
       // /.*青.*/, /.*あ.*お.*/, /.*ア.*オ.*/,
       // /.*(１|1).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'シャケ', color: 'C', number: 2, imagePath: '/Sake.png',
@@ -53,14 +56,20 @@ export const RACEHORSES: RacehorseBase[] = [
       /.*サ.*ー.*モ.*ン.*/, /.*さ.*け.*/, /.*サ.*ケ.*/,
       // /.*青.*/, /.*あ.*お.*/, /.*ア.*オ.*/,
       // /.*(２|2).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'カジキ', color: 'G', number: 3, imagePath: '/Kajiki.png', keywordRegexList: [
       /.*カ.*ジ.*キ.*/, /.*か.*じ.*き.*/,
       // /.*緑.*/, /.*み.*ど.*り.*/, /.*ミ.*ド.*リ.*/,
       // /.*(３|3).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'アジ', color: 'I', number: 4, imagePath: '/Aji.png', keywordRegexList: [
@@ -68,7 +77,10 @@ export const RACEHORSES: RacehorseBase[] = [
       // /.*藍.*/, /.*あ.*い.*/, /.*ア.*イ.*/,
       // /.*紺.*/, /.*こ.*ん.*/, /.*コ.*ン.*/,
       // /.*(４|4).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'サバ', color: 'M', number: 5, imagePath: '/Saba.png', keywordRegexList: [
@@ -76,28 +88,40 @@ export const RACEHORSES: RacehorseBase[] = [
       // /.*マ.*ゼ.*ン.*タ.*/, /.*ま.*ぜ.*ん.*た.*/,
       // /.*ピ.*ン.*ク.*/, /.*ぴ.*ん.*く.*/,
       // /.*(５|5).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'カツオ', color: 'O', number: 6, imagePath: '/Katsuo.png', keywordRegexList: [
       /.*カ.*ツ.*オ.*/, /.*か.*つ.*お.*/, /.*鰹.*/,
       // /.*オ.*レ.*ン.*ジ.*/, /.*お.*れ.*ん.*じ.*/, /.*橙.*/,
       // /.*(６|6).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'イカ', color: 'P', number: 7, imagePath: '/Ika.png', keywordRegexList: [
       /.*い.*か.*/, /.*イ.*カ.*/, /.*烏.*賊.*/,
       // /.*紫.*/, /.*ム.*ラ.*サ.*キ.*/, /.*む.*ら.*さ.*き.*/,
       // /.*(７|7).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'タコ', color: 'R', number: 8, imagePath: '/Tako.png', keywordRegexList: [
       /.*タ.*コ.*/, /.*た.*こ.*/, /.*蛸.*/,
       // /.*あ.*か.*/, /.*ア.*カ.*/, /.*赤.*/,
       // /.*(８|8).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'カサゴ', color: 'S', number: 9, imagePath: '/Kasago.png', keywordRegexList: [
@@ -105,21 +129,30 @@ export const RACEHORSES: RacehorseBase[] = [
       // /.*銀.*/, /.*ぎ.*ん.*/, /.*ギ.*ン.*/,
       // /.*灰.*/, /.*は.*い.*/, /.*ハ.*イ.*/,
       // /.*(９|9).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'タイ', color: 'W', number: 10, imagePath: '/Tai.png', keywordRegexList: [
       /.*タ.*イ.*/, /.*た.*い.*/, /.*鯛.*/,
       // /.*白.*/, /.*し.*ろ.*/, /.*シ.*ロ.*/,
       // /.*(１０|10).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
   {
     name: 'ブリ', color: 'Y', number: 11, imagePath: '/Buri.png', keywordRegexList: [
       /.*ブ.*リ.*/, /.*ぶ.*り.*/, /.*鰤.*/,
       // /.*黄.*色.*/, /.*き.*い.*ろ.*/, /.*キ.*イ.*ロ.*/,
       // /.*(１１|11).*/,
-    ]
+    ],
+    staminaDefault: 10,
+    speedDefault: 10,
+    supportDefault: 10,
   },
 ]
 
@@ -142,6 +175,23 @@ export const MIN_RACE_TRACK_LENGTH: number = 5000
 export const MAX_RACE_TRACK_LENGTH: number = 30000
 
 /**
+ * 初期金額デフォルト値
+ */
+export const DEFAULT_TEMP_MONEY = 10000
+/**
+ * 初期金額最低値
+ */
+export const MIN_TEMP_MONEY = 0
+/**
+ * 初期金額最大値
+ */
+export const MAX_TEMP_MONEY = 100000
+/**
+ * コメント取得間隔(ms)
+ */
+export const GET_COMMENT_INTERVAL: number = 100
+
+/**
  * アクションキー名
  * コメント取得
  */
@@ -156,6 +206,11 @@ export const ACTION_RACEHORSE_CONSISTENCY: string = 'ACTION_RACEHORSE_CONSISTENC
  * 出走馬情報更新
  */
 export const ACTION_RACEHORSE_UPDATE_RACEHORSES: string = 'ACTION_RACEHORSE_UPDATE_RACEHORSES'
+/**
+ * アクションキー名
+ * 詳細情報を更新した出走馬情報更新
+ */
+export const ACTION_RACEHORSE_UPDATE_CUSTOM_RACEHORSES: string = 'ACTION_RACEHORSE_UPDATE_CUSTOM_RACEHORSES'
 /**
  * アクション名
  * ユーザが購入した馬券情報削除
@@ -176,3 +231,8 @@ export const ACTION_UPDATE_USERS: string = 'ACTION_UPDATE_USERS'
  * トラック情報更新
  */
 export const ACTION_TRACK_UPDATE_TRACK: string = 'ACTION_TRACK_UPDATE_TRACK'
+/**
+ * アクション名
+ * 初期金額情報更新
+ */
+export const ACTION_MONEY_UPDATE_INITIAL_MONEY: string = 'ACTION_MONEY_UPDATE_INITIAL_MONEY'

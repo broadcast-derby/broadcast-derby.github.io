@@ -1,10 +1,10 @@
 import {
   ACTION_TRACK_UPDATE_TRACK,
   DEFAULT_RACE_TRACK_LENGTH,
-} from '../const'
+} from 'const'
 import {
   Track
-} from '../interface'
+} from 'interface'
 
 /**
  * 初期値

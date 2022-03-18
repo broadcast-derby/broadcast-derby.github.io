@@ -1,7 +1,7 @@
 import httpClient from '../httpClient'
 
-import { ACTION_COMMENT_GET_COMMENTS } from '../const'
-import { Comment } from '../interface'
+import { ACTION_COMMENT_GET_COMMENTS } from 'const'
+import { Comment } from 'interface'
 
 /**
  * DOMParser

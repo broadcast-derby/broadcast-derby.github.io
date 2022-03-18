@@ -24,6 +24,18 @@ export interface RacehorseBase {
    * 応援キーワード
    */
   keywordRegexList: RegExp[],
+  /**
+   * スタミナデフォルト値
+   */
+  staminaDefault: number | number[],
+  /**
+   * スピードデフォルト値
+   */
+  speedDefault: number | number[],
+  /**
+   * 応援補正値デフォルト
+   */
+  supportDefault: number | number[],
 }
 /**
  * 出走馬詳細
@@ -35,21 +47,13 @@ export interface RacehorseDetail extends RacehorseBase {
    */
   support: number | number[],
   /**
-   * 調子補正値
+   * スタミナ
    */
-  condition: number | number[],
+  stamina: number | number[],
   /**
-   * 順位補正値
+   * スピード
    */
-  ranking: number | number[],
-  /**
-   * 距離補正値
-   */
-  distance: number | number[],
-  /**
-   * 人気補正値
-   */
-  popular: number | number[],
+  speed: number | number[],
 }
 /**
  * 出走する出走馬詳細

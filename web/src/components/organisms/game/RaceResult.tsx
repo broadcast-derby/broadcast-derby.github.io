@@ -13,11 +13,11 @@ import TableRow from '@mui/material/TableRow'
 // utils
 import {
   RACEHORSES,
-} from '../../const'
+} from 'const'
 import {
   RacehorseBase,
   RaceResult as RaceResultInterface,
-} from '../../interface'
+} from 'interface'
 
 /**
  * 結果表示Props
@@ -45,11 +45,11 @@ const RaceResult: React.FC<RaceResultProps> = ({
       return racehorse.name
     }
     else {
-      ''
+      return ''
     }
   }
   return (
-    <Container maxWidth="xs">
+    <Container maxWidth="md">
       <Grid container>
         <Grid item xs={12}>
           <TableContainer>

@@ -2,7 +2,7 @@ import {
   ACTION_USER_CLEAN_BOUGHT_TICKETS,
   ACTION_USER_BUY_TICKET,
   ACTION_UPDATE_USERS,
-} from '../const'
+} from 'const'
 
 /**
  * 初期値

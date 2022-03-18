@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 
 // utils
-import { FORMULAS } from '../../../const'
+import { FORMULAS } from 'const'
 
 /**
  * TOP画面の式別選択用コンポーネントProps

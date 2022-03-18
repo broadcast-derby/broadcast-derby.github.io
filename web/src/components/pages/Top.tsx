@@ -14,23 +14,23 @@ import {
   FORMULAS,
   RACEHORSES,
   MAX_MONEY_LENGTH,
-} from '../../const'
-import { RacehorseBase } from '../../interface'
+} from 'const'
+import { RacehorseBase } from 'interface'
 
 // organisms
-import Calculator from '../organisms/top/Calculator'
-import CardActionsOrg from '../organisms/top/CardActionsOrg'
-import SelectedFormula from '../organisms/top/SelectedFormula'
-import SelectFormulaDialog from '../organisms/top/SelectFormulaDialog'
-import SelectRacehorsesDialog from '../organisms/top/SelectRacehorsesDialog'
-import TicketDialog from '../organisms/top/TicketDialog'
+import Calculator from 'organisms/top/Calculator'
+import CardActionsOrg from 'organisms/top/CardActionsOrg'
+import SelectedFormula from 'organisms/top/SelectedFormula'
+import SelectFormulaDialog from 'organisms/top/SelectFormulaDialog'
+import SelectRacehorsesDialog from 'organisms/top/SelectRacehorsesDialog'
+import TicketDialog from 'organisms/top/TicketDialog'
 
 /**
  * サブタイトル共通レイアウト
  */
 const SubTitleGrid = styled(Grid)({
-  marginTop: "20px",
-  marginBottom: "20px",
+  marginTop: '20px',
+  marginBottom: '20px',
 })
 
 /**
@@ -77,6 +77,9 @@ const TopPage: React.FC = () => {
           number: 0,
           imagePath: '',
           keywordRegexList: [],
+          staminaDefault:0,
+          speedDefault:0,
+          supportDefault:0,
         })
       }
     }
@@ -172,7 +175,7 @@ const TopPage: React.FC = () => {
         <Card>
           <CardContent>
             <Grid container>
-              <Grid item xs={12} sx={{ marginBottom: "20px", }}>
+              <Grid item xs={12} sx={{ marginBottom: '20px', }}>
                 <Typography variant="h3">
                   券売機
                 </Typography>
@@ -200,22 +203,22 @@ const TopPage: React.FC = () => {
               <Grid item container xs={12}>
                 {selectedFormula !== null ? selectedRacehorses.map((rh: RacehorseBase, index: number) => (
                   <React.Fragment key={index}>
-                    <Grid sx={{ marginBottom: "5px", }} item xs={2}></Grid >
+                    <Grid sx={{ marginBottom: '5px', }} item xs={2}></Grid >
                     {FORMULAS[selectedFormula].isCombination ? (
-                      <Grid sx={{ marginBottom: "5px", }} item xs={6}>
+                      <Grid sx={{ marginBottom: '5px', }} item xs={6}>
                         {rh.name || '魚を選択してください'}
                       </Grid >
                     ) : (
                       <React.Fragment>
-                        <Grid sx={{ marginBottom: "5px", }} item xs={1} >
+                        <Grid sx={{ marginBottom: '5px', }} item xs={1} >
                           {(index + 1) + '着'}
                         </Grid >
-                        <Grid sx={{ marginBottom: "5px", }} item xs={5}>
+                        <Grid sx={{ marginBottom: '5px', }} item xs={5}>
                           {rh.name || '魚を選択してください'}
                         </Grid >
                       </React.Fragment>
                     )}
-                    <Grid sx={{ marginBottom: "5px", }} item xs={2}>
+                    <Grid sx={{ marginBottom: '5px', }} item xs={2}>
                       <Button
                         variant="contained"
                         onClick={() => handleOpenSelectRacehorseDialogClick(index)}
@@ -223,7 +226,7 @@ const TopPage: React.FC = () => {
                         選択する
                       </Button>
                     </Grid >
-                    <Grid sx={{ marginBottom: "5px", }} item xs={2}></Grid >
+                    <Grid sx={{ marginBottom: '5px', }} item xs={2}></Grid >
                   </React.Fragment>
                 )) : (
                   <React.Fragment>

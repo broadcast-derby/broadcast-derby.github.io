@@ -3,6 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 
 // mui
 import Button from '@mui/material/Button'
+import Card from '@mui/material/Card'
+import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import Input from '@mui/material/Input'
 import Slider from '@mui/material/Slider'
@@ -13,14 +15,17 @@ import {
   DEFAULT_RACE_TRACK_LENGTH,
   MIN_RACE_TRACK_LENGTH,
   MAX_RACE_TRACK_LENGTH
-} from '../../../const'
-import { Track } from '../../../interface'
-import { updateRaceTrack } from '../../../action/raceTrack'
+} from 'const'
+import { Track } from 'interface'
+import { updateRaceTrack } from 'action/raceTrack'
 
 /**
  * トラック設定画面
  */
 const RaceTrackConfig: React.FC = () => {
+  /**
+   * @description reduxに使用する
+   */
   const dispatch = useDispatch()
   /**
    * 永続化されたトラック情報
@@ -82,59 +87,63 @@ const RaceTrackConfig: React.FC = () => {
     updateRaceTrack(dispatch, track)
   }
   return (
-    <Grid container>
-      <Grid container item xs={12} spacing={2}>
-        <Grid item xs={2}>
-          <Typography variant="subtitle1">トラック距離</Typography>
+    <Card>
+      <CardContent>
+        <Grid container>
+          <Grid container item xs={12} spacing={2}>
+            <Grid item xs={2}>
+              <Typography variant="subtitle1">トラック距離</Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Slider
+                value={tempTrackLength}
+                onChange={(_, val) => handleSliderChange(val)}
+                min={MIN_RACE_TRACK_LENGTH}
+                max={MAX_RACE_TRACK_LENGTH}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Input
+                fullWidth
+                value={tempTrackLength}
+                onChange={(e) => handleInputChange(e.target.value)}
+                inputProps={{
+                  min: MIN_RACE_TRACK_LENGTH,
+                  max: MAX_RACE_TRACK_LENGTH,
+                  type: 'number',
+                }}
+              />
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                onClick={handleRandomButtonClick}
+              >
+                ランダム
+              </Button>
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                onClick={handleDefaultButtonClick}
+              >
+                デフォルト
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} container justifyContent="flex-end">
+            <Grid item xs={3}>
+              <Button
+                variant="contained"
+                onClick={handleSaveButtonClick}
+              >
+                保存
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <Slider
-            value={tempTrackLength}
-            onChange={(_, val) => handleSliderChange(val)}
-            min={MIN_RACE_TRACK_LENGTH}
-            max={MAX_RACE_TRACK_LENGTH}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <Input
-            fullWidth
-            value={tempTrackLength}
-            onChange={(e) => handleInputChange(e.target.value)}
-            inputProps={{
-              min: MIN_RACE_TRACK_LENGTH,
-              max: MAX_RACE_TRACK_LENGTH,
-              type: 'number',
-            }}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <Button
-            variant="contained"
-            onClick={handleRandomButtonClick}
-          >
-            ランダム
-          </Button>
-        </Grid>
-        <Grid item xs={2}>
-          <Button
-            variant="contained"
-            onClick={handleDefaultButtonClick}
-          >
-            デフォルト
-          </Button>
-        </Grid>
-      </Grid>
-      <Grid item xs={12} container justifyContent="flex-end">
-        <Grid item xs={3}>
-          <Button
-            variant="contained"
-            onClick={handleSaveButtonClick}
-          >
-            保存
-          </Button>
-        </Grid>
-      </Grid>
-    </Grid>
+      </CardContent>
+    </Card>
   )
 }
 

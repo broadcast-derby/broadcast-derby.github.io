@@ -12,9 +12,36 @@
       "DOM.Iterable",
       "ES2020"
     ],
+    // baseUrlの指定が無いとpathsで相対パスが使えない
+    "baseUrl": "./",
+    // VSCodeがaliasを認識できるようにvite.config.tsと同じものを定義しておく
+    "paths": {
+      "action/*": [
+        "src/action/*"
+      ],
+      "common/*": [
+        "src/common/*"
+      ],
+      "molecules/*": [
+        "src/components/molecules/*"
+      ],
+      "organisms/*": [
+        "src/components/organisms/*"
+      ],
+      "pages/*": [
+        "src/components/pages/*"
+      ],
+      "const": [
+        "src/const.tsx"
+      ],
+      "interface": [
+        "src/interface.tsx"
+      ],
+    },
     "allowJs": false,
     "skipLibCheck": false,
-    "esModuleInterop": false,
+    // import/exportの取り込み型を設定
+    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,

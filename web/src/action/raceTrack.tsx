@@ -1,9 +1,9 @@
 import {
   ACTION_TRACK_UPDATE_TRACK,
-} from '../const'
+} from 'const'
 import {
   Track
-} from '../interface'
+} from 'interface'
 
 /**
  * トラック情報更新

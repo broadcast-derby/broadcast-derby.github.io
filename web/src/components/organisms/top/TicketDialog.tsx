@@ -10,9 +10,15 @@ import Divider from '@mui/material/Divider'
 import Input from '@mui/material/Input'
 import Typography from '@mui/material/Typography'
 
+// mui/icons
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight'
+
 // utils
-import { FORMULAS, COLORS } from '../../../const'
-import { RacehorseBase, Color } from '../../../interface'
+import { FORMULAS } from 'const'
+import { RacehorseBase } from 'interface'
+
+// molecules
+import RacehorseNumberIcon from 'molecules/RacehorseNumberIcon'
 
 /**
  * チケットダイアログProps
@@ -107,53 +113,7 @@ const TicketDialog: React.FC<TicketDialogProps> = ({
     const year = date.getFullYear()
     const month = date.getMonth() + 1
     const day = date.getDate()
-    return year + "年" + month + "月" + day + "日"
-  }
-
-  /**
-   * キーからカラーコードを取得
-   * TODO 同じ処理が他にある
-   * @param {string} key キー名 
-   * @returns カラーコード
-   */
-  const getColorCode = (key: string): string => {
-    const color = COLORS.find((c: Color) => c.key === key)
-    if (color) {
-      return color.code
-    }
-    else {
-      return "#ffffff"
-    }
-  }
-  /**
-   * キーから文字色を反転させるかどうかを取得
-   * TODO 同じ処理が他にある
-   * @param {string} key キー名 
-   * @returns 反転させるかどうか
-   */
-  const isReverse = (key: string): boolean => {
-    const color = COLORS.find((c: Color) => c.key === key)
-    if (color) {
-      return color.isReverse
-    }
-    else {
-      return false
-    }
-  }
-  /**
-   * キーから枠線が必要かどうかを取得
-   * TODO 同じ処理が他にある
-   * @param {string} key キー名 
-   * @returns 枠線が必要かどうか
-   */
-  const needBorder = (key: string): boolean => {
-    const color = COLORS.find((c: Color) => c.key === key)
-    if (color) {
-      return color.needBorder
-    }
-    else {
-      return false
-    }
+    return year + '年' + month + '月' + day + '日'
   }
   return (
     <Dialog onClose={() => onClose()} open={open}>
@@ -170,9 +130,9 @@ const TicketDialog: React.FC<TicketDialogProps> = ({
                 </Grid>
               </Grid>
               <Grid item xs={2} sx={{
-                border: "2px solid",
+                border: '2px solid',
               }} >
-                {FORMULAS[formula].name.split("").map((c: string, index: number) => (
+                {FORMULAS[formula].name.split('').map((c: string, index: number) => (
                   <Typography
                     align="center"
                     key={index}
@@ -187,20 +147,7 @@ const TicketDialog: React.FC<TicketDialogProps> = ({
                   FORMULAS[formula].racehorseCount === 1 ? (
                     <Grid container justifyContent="center">
                       <Grid item xs={1}>
-                        <Typography
-                          align="center"
-                          sx={{
-                            borderRadius: "50%",
-                            width: "25px",
-                            height: "25px",
-                            lineHeight: "25px",
-                            backgroundColor: getColorCode(racehorses[0].color),
-                            color: isReverse(racehorses[0].color) ? "#ffffff" : "#000000",
-                            border: needBorder(racehorses[0].color) ? "2px solid" : "",
-                          }}
-                        >
-                          {racehorses[0].number}
-                        </Typography>
+                        <RacehorseNumberIcon number={racehorses[0].number} />
                       </Grid>
                       <Grid item xs={9}>
                         {racehorses[0].name}
@@ -211,26 +158,14 @@ const TicketDialog: React.FC<TicketDialogProps> = ({
                       {racehorses.map((racehorse: RacehorseBase, index: number) => (
                         <React.Fragment key={index}>
                           <Grid item xs={1}>
-                            <Typography
-                              align="center"
-                              sx={{
-                                borderRadius: "50%",
-                                width: "25px",
-                                height: "25px",
-                                lineHeight: "25px",
-                                backgroundColor: getColorCode(racehorse.color),
-                                color: isReverse(racehorse.color) ? "#ffffff" : "#000000",
-                                border: needBorder(racehorse.color) ? "2px solid" : "",
-                              }}>
-                              {racehorse.number}
-                            </Typography>
+                            <RacehorseNumberIcon number={racehorse.number} />
                           </Grid>
                           <Grid item xs={2}>
                             {racehorse.name}
                           </Grid>
                           {index !== racehorses.length - 1 ? (
                             <Grid item xs={1}>
-                              {FORMULAS[formula].isCombination ? '－' : '＞'}
+                              {FORMULAS[formula].isCombination ? '－' : (<KeyboardArrowRight />)}
                             </Grid>
                           ) : null}
                         </React.Fragment>
@@ -244,8 +179,8 @@ const TicketDialog: React.FC<TicketDialogProps> = ({
               </Grid>
             </Grid>
             <Grid item xs={12} sx={{
-              marginTop: "10px",
-              marginBottom: "10px",
+              marginTop: '10px',
+              marginBottom: '10px',
             }}>
               <Divider variant="middle" />
             </Grid>
@@ -255,7 +190,7 @@ const TicketDialog: React.FC<TicketDialogProps> = ({
                   下の文字列をコピーしてコメントしよう!!
                 </Grid>
                 <Grid item xs={12} sx={{
-                  marginRight: "10px",
+                  marginRight: '10px',
                 }}>
                   <Input
                     fullWidth

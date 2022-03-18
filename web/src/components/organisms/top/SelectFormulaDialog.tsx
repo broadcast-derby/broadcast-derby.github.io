@@ -9,8 +9,8 @@ import ListItem from '@mui/material/ListItem'
 import ListItemText from '@mui/material/ListItemText'
 
 // utils
-import { FORMULAS } from '../../../const'
-import { Formula } from '../../../interface'
+import { FORMULAS } from 'const'
+import { Formula } from 'interface'
 
 /**
  * 式別選択ダイアログProps

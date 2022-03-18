@@ -2,9 +2,9 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 /* Pages */
-import ConfigPage from './components/pages/Config'
-import GamePage from './components/pages/Game'
-import TopPage from './components/pages/Top'
+import ConfigPage from 'pages/Config'
+import GamePage from 'pages/Game'
+import TopPage from 'pages/Top'
 
 /**
  * 画面遷移先をまとめるコンポーネント

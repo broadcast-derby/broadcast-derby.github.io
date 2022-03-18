@@ -8,7 +8,6 @@ import Input from '@mui/material/Input'
 import Slider from '@mui/material/Slider'
 import Typography from '@mui/material/Typography'
 
-
 /**
  * スタイル指定のスライダー
  */
@@ -105,7 +104,7 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
     onChange(Math.floor(Math.random() * (max - min) + min))
   }
   return (
-    <Grid item container xs={12}>
+    <Grid container rowSpacing={1}>
       <Grid item xs={12}>
         <Typography gutterBottom>
           {title}
@@ -115,7 +114,7 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
         </Typography>
       </Grid>
       <React.Fragment>
-        <Grid item xs={6}>
+        <Grid item xs={7}>
           <StyledSlider
             value={value}
             onChange={(_, val) => handleSliderChange(val)}
@@ -135,7 +134,7 @@ const StatusSlider: React.FC<StatusSliderProps> = ({
             }}
           />
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={4}>
           <Button
             variant="contained"
             onClick={handleRandomButtonClick}

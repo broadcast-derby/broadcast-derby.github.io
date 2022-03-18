@@ -2,8 +2,8 @@ import {
   ACTION_USER_CLEAN_BOUGHT_TICKETS,
   ACTION_USER_BUY_TICKET,
   ACTION_UPDATE_USERS,
-} from '../const'
-import { User, Ticket } from '../interface'
+} from 'const'
+import { User, Ticket } from 'interface'
 
 /**
  * 手持ちの馬券情報削除
@@ -29,6 +29,7 @@ export const cleanBoughtTickets = (dispatch: any) => {
  * @param {number} formula 式別
  * @param {number[]} racehorses 選択された出走馬番号
  * @param {number} money 金額
+ * @param {number} defaultMoney ユーザ登録時の初期金額
  */
 export const buyTicket = (
   dispatch: any,
@@ -37,6 +38,7 @@ export const buyTicket = (
   formula: number,
   racehorses: number[],
   money: number,
+  defaultMoney: number,
 ) => {
   let usersStr = window.localStorage.getItem('users')
   if (!usersStr) {
@@ -62,7 +64,7 @@ export const buyTicket = (
     users.push({
       name: userName,
       service: service,
-      money: 10000,
+      money: defaultMoney,
       boughtTickets: [boughtTicket]
     })
   }

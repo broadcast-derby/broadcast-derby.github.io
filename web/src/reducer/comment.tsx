@@ -1,4 +1,4 @@
-import { ACTION_COMMENT_GET_COMMENTS } from '../const'
+import { ACTION_COMMENT_GET_COMMENTS } from 'const'
 
 /**
  * 初期値

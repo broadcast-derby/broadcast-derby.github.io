@@ -6,7 +6,7 @@ import CardActions from '@mui/material/CardActions'
 import Typography from '@mui/material/Typography'
 
 // organisms
-import { RacehorseBase } from '../../../interface'
+import { RacehorseBase } from 'interface'
 
 /**
  * TOP画面のCardActionsのコンポーネントProps
@@ -90,25 +90,25 @@ const CardActionsOrg: React.FC<CardActionsOrgProps> = ({
     money: number
   ) => {
     if (selectedFormula === null) {
-      return "式別を選択してください"
+      return '式別を選択してください'
     }
     if (selectedRacehorses.find((r: RacehorseBase) => r.name === '')) {
-      return "おさかなを選択してください"
+      return 'おさかなを選択してください'
     }
     if (money === 0) {
-      return "金額を入力してください"
+      return '金額を入力してください'
     }
-    return ""
+    return ''
   }
   return (
     <CardActions sx={{
-      justifyContent: "right",
+      justifyContent: 'right',
     }}>
       <Typography
         variant="body2"
         sx={{
-          marginRight: "10px",
-          color: "#999999",
+          marginRight: '10px',
+          color: '#999999',
         }}
       >
         {getErrorMessage(
